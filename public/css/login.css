@@ -1,0 +1,91 @@
+/* Tampilan full page */
+.full-height {
+    height: 100vh;
+}
+
+/* Background putih untuk form */
+.left-side {
+    background-color: #fff;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+/* Background abu-abu untuk ilustrasi */
+.right-side {
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Styling box form */
+.login-box {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+}
+
+/* Warna tombol */
+.btn-orange {
+    background-color: #F57E20;
+    color: white;
+    border: none;
+}
+
+.btn-orange:hover {
+    background-color: #F57E20;
+}
+
+/* Styling input */
+.form-control {
+    height: 45px;
+    border-radius: 8px 0  0 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* Link "Forgot password?" */
+.text-end a {
+    font-size: 14px;
+    color: #F57E20;
+    text-decoration: none;
+}
+
+.text-end a:hover {
+    text-decoration: underline;
+}
+
+/* Batasi ukuran gambar di sebelah kanan */
+.right-side img {
+    max-width: 60%;  /* Ubah ukuran gambar ilustrasi */
+    height: auto;
+}
+
+/* Perkecil ukuran input form */
+.login-form input {
+    width: 50%; /* Atur lebar input lebih kecil */
+    padding: 10px; /* Sesuaikan padding agar tidak terlalu besar */
+    font-size: 14px; /* Perkecil ukuran font */
+}
+
+.input-group-text {
+    background-color: #FF7F1D; /* Warna oren */
+    border: none;
+    color: white; /* Warna ikon */
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.input-group-text i {
+    font-size: 16px;
+}
+
+
+
+
+
