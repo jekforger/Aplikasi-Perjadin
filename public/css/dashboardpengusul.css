@@ -1,0 +1,144 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #F5F6FA;
+}
+
+/* Toggle Button yang Diperbaiki */
+.toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 265px;
+    z-index: 1001; /* Lebih tinggi dari sidebar */
+    background: transparent;
+    color: #2A2D7C;
+    border: none;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    padding: 0;
+}
+
+.toggle-btn:hover {
+    color: #1a1c5a;
+}
+
+/* Hilangkan focus outline */
+.toggle-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding: 10px;
+    background-color: #FFFFFF;
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .description,
+.sidebar.collapsed .sidebar-title,
+.sidebar.collapsed .app-name,
+.sidebar.collapsed .institution-name {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 15px;
+    margin-bottom: 10px;
+}
+
+.sidebar-logo {
+    width: 40px;
+    height: auto;
+}
+
+.sidebar-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-name {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.institution-name {
+    font-size: 14px;
+    color: #666;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    color: black;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #2A2D7C;
+    color: white;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar .nav-link:focus {
+    background-color: #2A2D7C;
+    color: white;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+}
+
+.sidebar .description {
+    font-size: 17px;
+}
+
+.sidebar .icon {
+    font-size: 20px;
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 60px;
+    }
+
+    .sidebar .description,
+    .sidebar .sidebar-title {
+        display: none;
+    }
+
+    .sidebar .nav-link {
+        justify-content: center;
+    }
+}

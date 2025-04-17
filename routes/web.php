@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::get('/home', function () {
-    return view('layouts/home');
+Route::get('/pengusul', function () {
+    return view('layouts/dashboardPengusul');
 });
