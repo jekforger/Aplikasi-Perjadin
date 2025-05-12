@@ -12,7 +12,7 @@
       <!-- Form Bagian Kiri -->
       <div class="col-md-6">
         <!-- Nama Kegiatan -->
-      <div class="mb-3">
+      <div class="mb-3 mt-4">
         <label for="namaKegiatan" class="form-label">Nama Kegiatan</label>
         <textarea class="form-control" id="namaKegiatan" rows="3" placeholder="Nama Kegiatan"></textarea>
       </div>
@@ -82,7 +82,7 @@
     <!-- Form Bagian Kanan -->
     <div class="col-md-6">
       <!-- Ditugaskan Sebagai -->
-      <div class="mb-3">
+      <div class="mb-3 mt-4">
           <label for="ditugaskanSebagai" class="form-label">Ditugaskan Sebagai</label>
           <input type="text" class="form-control" id="ditugaskanSebagai" placeholder="Ditugaskan Sebagai">
         </div>
@@ -109,7 +109,7 @@
         </div>
 
         <!-- Alamat Kegiatan -->
-        <div class="mb-3">
+        <div class="mb-3 mt-4">
           <label for="alamatKegiatan" class="form-label">Alamat Kegiatan</label>
           <textarea class="form-control" id="alamatKegiatan" rows="3" placeholder="Alamat Kegiatan"></textarea>
         </div>
@@ -150,8 +150,10 @@
           <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor Surat Usulan">
         </div>
       </div>
-
-      
+    </div>
+    <!-- Button -->
+    <div class="button-next mt-3">
+      <button class="btn btn-primary" type="submit">Selanjutnya</button>
     </div>
     
     </div>
