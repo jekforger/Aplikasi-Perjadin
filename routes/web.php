@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\pengusulanController;
+use App\Http\Controllers\MenuPengusulanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,5 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::get('/pengusul', function () {
-    return view('layouts/dashboardPengusul');
-});
+Route::get('/pengusul', [pengusulanController::class, 'index']);
+Route::get('/pengusulan', [MenuPengusulanController::class, 'pengusulan']);

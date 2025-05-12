@@ -24,17 +24,14 @@
                 <div class="mb-3">
                     <div class="input-group">
                         <input type="email" class="form-control" placeholder="Email Pengguna" required>
-                        <span class="input-group-text">
-                            <i class="bi bi-envelope"></i>
-                        </span>
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="input-group">
-                        <input type="password" class="form-control" placeholder="Masukkan Password" required>
-                        <span class="input-group-text">
-                            <i class="bi bi-lock"></i>
-                        </span>
+                        <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Masukkan Password" required>
+                        <button type="button" class="input-group-text bg-white" id="togglePassword">
+                            <i class="bi bi-eye-fill"></i>
+                        </button>
                     </div>
                 </div>
                     <div class="text-end">
@@ -54,5 +51,23 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordInput = document.querySelector('#passwordInput');
+    
+    togglePassword.addEventListener('click', function() {
+        // Toggle the type attribute
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // Toggle the icon
+        this.querySelector('i').classList.toggle('bi-eye-fill');
+        this.querySelector('i').classList.toggle('bi-eye-slash-fill');
+    });
+});
+</script>
+
 </body>
 </html>
