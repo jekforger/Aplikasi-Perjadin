@@ -71,13 +71,18 @@
     .text-back-to-select-role {
         margin-top: 1.5rem;
     }
+    /* Panel Kanan (Illustrasi) disembunyikan di mobile */
     .right-panel {
         display: none !important;
     }
+    /* Panel Kiri (Form) mengambil 100% lebar di mobile */
     .left-panel {
-        width: 100% !important;
-        flex: 0 0 30%;
-        max-width: 70%;
-        height: 100vh;
+        width: 100% !important; /* Mengambil seluruh lebar */
+        flex: 0 0 100%; /* Pastikan menjadi full width flex item */
+        max-width: 100%; /* Memastikan tidak ada batasan lebar yang tersisa */
+        height: 100vh; /* Mengambil seluruh tinggi viewport */
+        display: flex; /* Aktifkan flexbox */
+        align-items: center; /* Pusatkan konten vertikal */
+        justify-content: center; /* Pusatkan konten horizontal */
     }
 }

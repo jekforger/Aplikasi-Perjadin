@@ -208,44 +208,84 @@ body {
 
 /* --- Responsiveness --- */
 
-@media (max-width: 991.98px) { /* Screens smaller than large (lg) */
-    .right-panel {
-        display: none !important;
+@media (min-width: 992px) {
+    .login-full-page-wrapper > .row {
+        display: flex; /* Pastikan row adalah flex container */
+        height: 100%;
     }
     .left-panel {
-        width: 100% !important;
-        flex: 0 0 30%;
-        max-width: 70%;
-        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
     }
+    .col-lg-8 { /* Tambahkan ini: Pastikan col-lg-7 tampil sebagai flex di desktop */
+        display: flex !important; /* Agar tampil di desktop */
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    .right-panel {
+        /* Tidak perlu display di sini, karena col-lg-7 sudah mengaturnya */
+        display: flex !important;
+    }
+    /* ... sisa aturan desktop lainnya ... */
+}
+
+/* Mobile / Small screens (< 992px) */
+@media (max-width: 991.98px) {
+    /* **PERBAIKAN UTAMA UNTUK MENYEMBUNYIKAN PANEL KANAN DI SINI** */
+    .col-lg-8, /* Targetkan kelas kolom Bootstrap */
+    .right-panel { /* Targetkan kelas kustom panel kanan */
+        display: none !important; /* Paksa agar elemen ini benar-benar tidak ditampilkan */
+    }
+
+    .left-panel {
+        width: 100% !important; /* Mengambil seluruh lebar */
+        flex: 0 0 100%; /* Menjadi full width flex item */
+        max-width: 100%; /* Memastikan tidak ada batasan lebar yang tersisa */
+        height: 100vh; /* Mengambil seluruh tinggi viewport */
+        display: flex; /* Aktifkan flexbox */
+        align-items: center; /* Pusatkan konten vertikal */
+        justify-content: center; /* Pusatkan konten horizontal */
+    }
+    /* ... sisa aturan mobile yang sudah ada ... */
     .login-form-wrapper {
-        max-width: 100%; /* Di mobile, biarkan dia ambil 100% lebar dari container */
-        padding: 20px;
+        max-width: 400px; /* Batasi lebar form di mobile agar tidak terlalu lebar */
+        width: 100%; /* Mengambil lebar penuh dari max-width */
+        padding: 20px; /* Padding lebih kecil */
     }
     .login-form-padding {
-        padding: 40px 20px;
+        padding: 40px 20px; /* Sesuaikan padding form content */
     }
     .polban-logo-select-role {
-        max-width: 100px;
-    }
-    .app-title-main {
-        font-size: 1.5rem;
-    }
-    .app-subtitle {
-        font-size: 0.85rem;
-    }
-    .role-select-title {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    .custom-select-role, .custom-btn-orange {
-        padding: 0.6rem 1rem;
-        font-size: 1rem;
+        max-width: 100px; /* Logo lebih kecil */
     }
     .app-header-section {
-        margin-bottom: 2rem; /* Kurangi jarak di mobile */
+        margin-bottom: 2rem; /* Jarak bawah header section di mobile */
+        max-width: 280px; /* Batasi lebar header section di mobile */
+        min-width: unset; /* Hapus min-width di mobile */
     }
-    .text-register {
-        margin-top: 1.5rem; /* Kurangi jarak di mobile */
+    .app-title-main { /* Untuk satu baris penuh */
+        font-size: 20px; /* Ukuran font lebih kecil di mobile */
+        white-space: normal; /* Izinkan teks pecah baris di mobile */
+        text-overflow: clip; /* Hapus elipsis jika pecah baris */
+        margin-bottom: 0.5rem; /* Sesuaikan margin bawah */
+    }
+    .app-subtitle { /* Jika ada subtitle terpisah */
+        font-size: 14px; /* Ukuran font lebih kecil di mobile */
+        white-space: normal;
+        text-overflow: clip;
+    }
+    .role-select-title, .role-select-title-login {
+        font-size: 1.5rem; /* Ukuran font judul role/login di mobile */
+        margin-bottom: 1.5rem; /* Jarak bawah judul role/login di mobile */
+    }
+    .custom-select-role, .custom-btn-orange, .custom-form-input {
+        padding: 0.6rem 1rem; /* Padding input/button di mobile */
+        font-size: 1rem; /* Ukuran font input/button di mobile */
+    }
+    .text-register, .text-back-to-select-role {
+        margin-top: 1.5rem; /* Margin atas untuk teks register/kembali di mobile */
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('layouts.authMain')
 
 @section('content')
 <div class="login-full-page-wrapper">
@@ -52,7 +52,7 @@
         </div>
 
         {{-- Right Panel (Illustration) - Hidden on mobile --}}
-        <div class="col-lg-8 d-none d-lg-flex align-items-center justify-content-center right-panel">
+        <div class="col-lg-8 align-items-center justify-content-center right-panel"> 
             <img src="{{ asset('img/login.png') }}" alt="Login Illustration" class="img-fluid illustration-img">
         </div>
     </div>

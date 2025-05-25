@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('layouts.authMain')
 
 @section('content')
 <div class="login-full-page-wrapper"> {{-- Menggunakan wrapper yang sama untuk konsistensi layout --}}
@@ -37,8 +37,8 @@
 
                     <input type="hidden" name="role" value="{{ request()->role }}">
 
-                    <div class="mb-3 form-group-custom"> {{-- Class baru untuk styling form group --}}
-                        <label for="email" class="form-label visually-hidden">Email Instansi</label>
+                    <div class="mb-3 form-group-custom"> 
+                        <label for="email" class="form-label visually-hidden">Email Polban</label>
                         <input type="email" class="form-control custom-form-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Email Instansi">
                         @error('email')
                             <div class="invalid-feedback">
@@ -47,7 +47,7 @@
                         @enderror
                     </div>
 
-                    <div class="mb-4 form-group-custom"> {{-- Class baru untuk styling form group --}}
+                    <div class="mb-4 form-group-custom">
                         <label for="password" class="form-label visually-hidden">Password</label>
                         <div class="position-relative"> {{-- Gunakan position-relative di sini --}}
                             <input type="password" class="form-control custom-form-input password-input-with-icon @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Password">
@@ -70,7 +70,7 @@
         </div>
 
         {{-- Right Panel (Illustration) - Hidden on mobile --}}
-        <div class="col-lg-7 d-none d-lg-flex align-items-center justify-content-center right-panel">
+        <div class="col-lg-8 d-none d-lg-flex align-items-center justify-content-center right-panel">
             <img src="{{ asset('img/login.png') }}" alt="Login Illustration" class="img-fluid illustration-img">
         </div>
     </div>
