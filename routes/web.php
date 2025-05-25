@@ -1,23 +1,63 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\pengusulanController;
+use App\Http\Controllers\pengusulanController; // Anda mungkin tidak menggunakan ini jika pengusulanController sudah direname/digabung
 use App\Http\Controllers\MenuPengusulanController;
+use App\Http\Controllers\Auth\LoginController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Halaman awal untuk memilih role (akan diakses di root URL: '/')
+Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
 
-Route::get('/', function () {
-    return view('auth/login');
+// Halaman form login (misal: /login?role=pengusul)
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
+
+// Proses POST data login
+Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
+
+// Proses Logout (akan dipanggil dari tombol logout di navbar)
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+// --- Rute untuk Role Pengusul (Sudah Pernah Dibahas, Kita Pakai Lagi) ---
+// Nantinya akan ada middleware 'auth' dan 'role' di grup ini
+Route::prefix('pengusul')->name('pengusul.')->group(function () {
+    Route::get('/dashboard', [PengusulController::class, 'dashboard'])->name('dashboard');
+    Route::get('/pengusulan', [PengusulController::class, 'pengusulan'])->name('pengusulan');
+    Route::post('/pengusulan', [PengusulController::class, 'storePengusulan'])->name('store.pengusulan');
+    // Rute placeholder untuk menu lain di sidebar Pengusul
+    Route::get('/status', function() { return 'Halaman Status Pengusul (belum dibuat)'; })->name('status');
+    Route::get('/draft', function() { return 'Halaman Draft Pengusul (belum dibuat)'; })->name('draft');
+    Route::get('/history', function() { return 'Halaman History Pengusul (belum dibuat)'; })->name('history');
 });
 
-Route::get('/pengusul', [pengusulanController::class, 'index']);
-Route::get('/pengusulan', [MenuPengusulanController::class, 'pengusulan']);
+
+// --- Rute Placeholder untuk Role Lain (akan dikembangkan nanti) ---
+// Ini hanya untuk memastikan link redirect di LoginController tidak error "route not defined"
+Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
+    Route::get('/dashboard', function() { return 'Dashboard Pelaksana (belum dibuat)'; })->name('dashboard');
+});
+Route::prefix('bku')->name('bku.')->group(function () {
+    Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
+});
+Route::prefix('wadir')->name('wadir.')->group(function () {
+    Route::get('/dashboard', function() { return 'Dashboard Wadir (belum dibuat)'; })->name('dashboard');
+});
+Route::prefix('direktur')->name('direktur.')->group(function () {
+    Route::get('/dashboard', function() { return 'Dashboard Direktur (belum dibuat)'; })->name('dashboard');
+});
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function() { return 'Dashboard Admin (belum dibuat)'; })->name('dashboard');
+});
+
+// Route::get('/', function () {
+//     return view('auth/login');
+// });
+
+// Jika pengusulanController adalah controller yang sama atau berbeda, sesuaikan.
+// Route::get('/pengusul', [pengusulanController::class, 'index']); // Baris ini mungkin untuk halaman lain
+
+// Rute untuk menampilkan form pengusulan
+// Route::get('/pengusulan', [MenuPengusulanController::class, 'pengusulan'])->name('pengusulan.form'); // Beri nama agar mudah dipanggil
+
+// Rute untuk MENYIMPAN data dari form pengusulan
+// Route::post('/pengusulan', [MenuPengusulanController::class, 'storePengusulan'])->name('pengusulan.store');

@@ -1,103 +1,83 @@
-body {
-    font-family: 'Poppins', sans-serif;
-}
-
-/* Tampilan full page */
-.full-height {
-    height: 100vh;
-}
-
-/* Background putih untuk form */
-.left-side {
-    background-color: #fff;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 10;
-}
-
-/* Background abu-abu untuk ilustrasi */
-.right-side {
-    background-color: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Styling box form */
-.login-box {
-    width: 100%;
-    max-width: 320px;
+/* Judul "Login sebagai [Role]" */
+.role-select-title-login {
+    color: #555;
     text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16.156px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0px;
+    margin-bottom: 2rem;
 }
 
-/* Warna tombol */
-.btn-orange {
-    background-color: #F57E20;
-    color: white; /* Pastikan teks tetap putih */
-    border: none;
-    box-shadow: 0px 10px 10px rgba(255, 127, 29, 0.5); /* Efek shadow oranye */
-    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s;
-}
-
-.btn-orange:hover {
-    background-color: #E96C15; /* Warna lebih gelap saat hover */
-    color: white; /* Pastikan teks tetap putih */
-}
-
-.btn-orange:active {
-    background-color: #D95F10; /* Warna lebih gelap saat diklik */
-    box-shadow: 0px 5px 5px rgba(217, 95, 16, 0.7); /* Efek shadow lebih kecil */
-    transform: scale(0.98); /* Efek klik sedikit mengecil */
-    color: white !important; /* Paksa teks tetap putih saat diklik */
-}
-
-/* Styling input */
-.form-control {
-    height: 45px;
-    border-radius: 8px 8px 8px 8px;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-
-/* Link "Forgot password?" */
-.text-end a {
-    font-size: 14px;
-    color: black;
-    text-decoration: none;
-}
-
-.text-end a:hover {
-    text-decoration: underline;
-}
-
-/* Batasi ukuran gambar di sebelah kanan */
-.right-side img {
-    max-width: 50%;  /* Ubah ukuran gambar ilustrasi */
-    height: auto;
-}
-
-/* Perkecil ukuran input form */
-.login-form input {
-    width: 50%; /* Atur lebar input lebih kecil */
-    padding: 10px; /* Sesuaikan padding agar tidak terlalu besar */
-    font-size: 14px; /* Perkecil ukuran font */
-}
-
-.input-group-text {
+/* Custom Input Fields */
+.custom-form-input {
+    border-radius: 0.5rem;
     border: 1px solid #ced4da;
-    border-left: none;
-    color: black;
-    padding: 8px 12px;
-    cursor: pointer;
+    padding: 0.85rem 1.25rem;
+    font-size: 1rem;
+    color: #495057;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.075);
+    width: 100%; /* Penting untuk lebar penuh */
 }
 
-.input-group-text i {
-    font-size: 16px;
+.custom-form-input::placeholder { /* Styling placeholder */
+    color: #adb5bd;
+    opacity: 1; /* Override default opacity */
 }
 
+.custom-form-input:focus {
+    border-color: #ff7f00;
+    box-shadow: 0 0 0 0.25rem rgba(255, 127, 0, 0.25);
+    outline: 0;
+}
 
+/* Styling untuk input password dengan ikon di dalamnya */
+.password-input-with-icon {
+    padding-right: 3rem; /* Beri ruang ekstra di sisi kanan untuk ikon */
+}
 
+.password-toggle-icon {
+    position: absolute;
+    right: 1.25rem; /* Sesuaikan jarak dari kanan */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer; /* Ubah kursor menjadi pointer saat di-hover */
+    color: black; /* Warna ikon, sesuaikan jika perlu */
+    font-size: 1.1rem; /* Ukuran ikon */
+    z-index: 10; /* Pastikan ikon di atas input */
+}
+
+/* Margin untuk form groups */
+.form-group-custom {
+    margin-bottom: 1.5rem;
+}
+
+/* --- Responsiveness Khusus Halaman Login --- */
+
+@media (max-width: 991.98px) { /* Screens smaller than large (lg) */
+    /* Judul "Login sebagai ..." di mobile */
+    .role-select-title-login {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    /* Input fields di mobile */
+    .custom-form-input {
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+    }
+    .text-back-to-select-role {
+        margin-top: 1.5rem;
+    }
+    .right-panel {
+        display: none !important;
+    }
+    .left-panel {
+        width: 100% !important;
+        flex: 0 0 30%;
+        max-width: 70%;
+        height: 100vh;
+    }
+}

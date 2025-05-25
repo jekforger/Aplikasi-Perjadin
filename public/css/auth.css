@@ -1,0 +1,251 @@
+/* public/css/auth.css */
+
+/* Global Reset and Font Settings */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Overall Login Page Container */
+.login-full-page-wrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.login-full-page-wrapper > .row {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+/* Left Panel (Form Side) */
+.left-panel {
+    background-color: #fff;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+}
+
+.login-form-wrapper {
+    /* Mengurangi max-width agar lebih lebar, sesuai desain */
+    max-width: 480px; /* Nilai ini mungkin perlu disesuaikan sedikit lagi berdasarkan visual */
+    width: 100%;
+}
+
+.login-form-padding {
+    padding: 50px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* App Header Section (Logo, Title, Subtitle) */
+.app-header-section {
+    margin-bottom: 10px; /* Jarak bawah keseluruhan bagian header */
+    max-width: 350px; /* Sesuaikan nilai ini agar teks tidak terpotong di layar kecil */
+    margin-left: auto; /* Pusatkan header section */
+    margin-right: auto;
+}
+
+/* Polban Logo */
+.polban-logo-select-role {
+    max-width: 120px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem; /* Jarak antara logo dan judul */
+}
+
+.app-title-main {
+    color: black;
+    text-align: center;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.role-select-title {
+    color: #555;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16.156px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0px;
+    margin-bottom: 2rem; 
+}
+
+/* Custom Selectbox Styling (diperbarui) */
+.custom-select-role {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    padding: 0.85rem 1.25rem;
+    font-size: 1rem;
+    color: #495057;
+    background-color: #f8f9fa; /* Background default select box */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.075);
+
+    /* Sembunyikan icon panah default browser */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none;
+    padding-right: 2.5rem;
+
+    width: 100%;
+}
+
+/* Container untuk select box dan icon kustom */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+    /* Mengubah warna teks menjadi putih tidak akan terlihat karena select menutupi */
+    background-color: white; /* Memberikan background putih pada wrapper
+    /* Karena select box itu sendiri memiliki background, background wrapper tidak akan terlihat */
+}
+
+/* Icon Kustom (Menggunakan pseudo-element) */
+.select-wrapper::after {
+    content: "\F282"; /* Unicode untuk bi-chevron-down */
+    font-family: "bootstrap-icons" !important;
+    font-size: 1.25rem;
+    color: #495057; /* Warna icon tetap gelap agar terlihat di background putih */
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1; /* Pastikan icon di atas select */
+}
+
+.custom-select-role option {
+    background-color: white; /* Background default untuk semua opsi */
+    color: #495057; /* Warna teks default opsi */
+}
+
+/* Ini adalah upaya, tetapi mungkin tidak bekerja di semua browser */
+.custom-select-role option:checked,
+.custom-select-role option:hover,
+.custom-select-role option:focus {
+    background-color: #e9ecef !important; /* Abu-abu muda/putih tua, !important untuk menimpa default */
+    color: #212529 !important; /* Warna teks saat dipilih/hover */
+}
+
+/* Background select box saat fokus */
+.custom-select-role:focus {
+    border-color: #ff7f00;
+    box-shadow: 0 0 0 0.25rem rgba(255, 127, 0, 0.25);
+    outline: 0;
+}
+
+/* Custom Orange Button */
+.custom-btn-orange {
+    background-color: #ff7f00;
+    border-color: #ff7f00;
+    font-weight: 600;
+    padding: 0.85rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    /* Pastikan lebar 100% */
+    width: 100%; /* Ini penting untuk memastikan button mengambil lebar penuh dari parent-nya */
+}
+
+.custom-btn-orange:hover {
+    background-color: #e67300;
+    border-color: #e67300;
+}
+
+.custom-btn-orange:active,
+.custom-btn-orange:focus,
+.custom-btn-orange.focus-visible {
+    background-color: #e67300 !important;
+    border-color: #e67300 !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 127, 0, 0.25) !important;
+    color: #fff;
+}
+
+/* Register Text */
+.text-register {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 3rem; /* Jarak lebih besar dari tombol login */
+}
+
+.small-text-register {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.text-orange-daftar {
+    color: #ff7f00 !important;
+    font-weight: 700;
+}
+
+/* Right Panel (Illustration Side) */
+.right-panel {
+    background-color: #f0f2f5;
+}
+
+.illustration-img {
+    max-width: 90%;
+    height: auto;
+}
+
+/* --- Responsiveness --- */
+
+@media (max-width: 991.98px) { /* Screens smaller than large (lg) */
+    .right-panel {
+        display: none !important;
+    }
+    .left-panel {
+        width: 100% !important;
+        flex: 0 0 30%;
+        max-width: 70%;
+        height: 100vh;
+    }
+    .login-form-wrapper {
+        max-width: 100%; /* Di mobile, biarkan dia ambil 100% lebar dari container */
+        padding: 20px;
+    }
+    .login-form-padding {
+        padding: 40px 20px;
+    }
+    .polban-logo-select-role {
+        max-width: 100px;
+    }
+    .app-title-main {
+        font-size: 1.5rem;
+    }
+    .app-subtitle {
+        font-size: 0.85rem;
+    }
+    .role-select-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .custom-select-role, .custom-btn-orange {
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+    }
+    .app-header-section {
+        margin-bottom: 2rem; /* Kurangi jarak di mobile */
+    }
+    .text-register {
+        margin-top: 1.5rem; /* Kurangi jarak di mobile */
+    }
+}

@@ -18,7 +18,7 @@ class PegawaiSeeder extends Seeder
         for ($i=1; $i <=500 ; $i++) { 
             \DB::table('pegawai')->insert([
                 'nama' => $faker -> name,
-                'nip' => '199109162019032026',
+                'nip' => $faker -> numerify('199###############'),
                 'pangkat' => 'Penata Muda Tingkat I',
                 'golongan' => 'III/b', 
                 'jabatan' => 'Staf Humas',

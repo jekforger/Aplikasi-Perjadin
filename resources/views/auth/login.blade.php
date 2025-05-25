@@ -1,73 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <link rel="icon" type="image/png" href="{{ asset('img/polban2.png') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Aplikasi Perjalanan Dinas</title>
-</head>
-<body>
-<div class="container-fluid full-height">
-    <div class="row full-height">
-        <!-- Bagian Kiri (Form Login) -->
-        <div class="col-md-4 d-flex align-items-center justify-content-center left-side">
-            <div class="login-box text-center">
-                <img src="img/polban.png" alt="POLBAN Logo" width="100">
-                <h4 class="mt-3">Aplikasi Perjalanan Dinas<br>Politeknik Negeri Bandung</h4>
-                <p class="text-muted">Login</p>
+@extends('layouts.guest')
 
-                <form>
-                <div class="mb-3">
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Email Pengguna" required>
-                    </div>
+@section('content')
+<div class="login-full-page-wrapper"> {{-- Menggunakan wrapper yang sama untuk konsistensi layout --}}
+    <div class="row g-0 h-100 justify-content-center align-items-center"> {{-- Menambahkan justify-content-center dan align-items-center --}}
+        {{-- Left Panel (Login Form) - Akan mengambil lebar penuh di mobile, sesuai desain --}}
+        <div class="col-lg-4 col-md-12 d-flex align-items-center justify-content-center left-panel">
+            <div class="login-form-wrapper login-form-padding">
+                <div class="text-center app-header-section">
+                    <img src="{{ asset('img/polban.png') }}" alt="Polban Logo" class="img-fluid polban-logo-select-role">
+                    <h4 class="fw-bold app-title-main">Aplikasi Perjalanan Dinas Politeknik Negeri Bandung</h4>
                 </div>
-                <div class="mb-3">
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Masukkan Password" required>
-                        <button type="button" class="input-group-text bg-white" id="togglePassword">
-                            <i class="bi bi-eye-fill"></i>
-                        </button>
+
+                <h3 class="role-select-title-login">Login sebagai {{ ucwords(request()->role ?? 'Pengguna') }}</h3> {{-- Class baru untuk judul login --}}
+
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                </div>
-                    <div class="text-end">
-                        <a href="#" class="text-decoration-none">Lupa password?</a>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <button type="submit" class="btn btn-orange w-100 mt-3">Login</button>
-                    <div class="mt-3">
-                        <p class="mb-0">Belum punya akun? <a href="#" class="text-decoration-none">Daftar</a></p>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Terjadi kesalahan validasi. Mohon periksa kembali input Anda.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('login.attempt') }}">
+                    @csrf
+
+                    <input type="hidden" name="role" value="{{ request()->role }}">
+
+                    <div class="mb-3 form-group-custom"> {{-- Class baru untuk styling form group --}}
+                        <label for="email" class="form-label visually-hidden">Email Instansi</label>
+                        <input type="email" class="form-control custom-form-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Email Instansi">
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4 form-group-custom"> {{-- Class baru untuk styling form group --}}
+                        <label for="password" class="form-label visually-hidden">Password</label>
+                        <div class="position-relative"> {{-- Gunakan position-relative di sini --}}
+                            <input type="password" class="form-control custom-form-input password-input-with-icon @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Password">
+                            <span class="password-toggle-icon" id="togglePassword"> {{-- Ubah dari button ke span/i --}}
+                                <i class="bi bi-eye-fill" id="togglePasswordIcon"></i>
+                            </span>
+                            @error('password')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-4"> {{-- Margin-bottom untuk tombol login --}}
+                        <button type="submit" class="btn btn-primary btn-lg custom-btn-orange">Login</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Bagian Kanan (Ilustrasi) -->
-        <div class="col-md-8 right-side">
-            <img src="img/login.png" class="img-fluid" alt="Illustration">
+        {{-- Right Panel (Illustration) - Hidden on mobile --}}
+        <div class="col-lg-7 d-none d-lg-flex align-items-center justify-content-center right-panel">
+            <img src="{{ asset('img/login.png') }}" alt="Login Illustration" class="img-fluid illustration-img">
         </div>
     </div>
 </div>
+@endsection
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const togglePassword = document.querySelector('#togglePassword');
-    const passwordInput = document.querySelector('#passwordInput');
-    
-    togglePassword.addEventListener('click', function() {
-        // Toggle the type attribute
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        
-        // Toggle the icon
-        this.querySelector('i').classList.toggle('bi-eye-fill');
-        this.querySelector('i').classList.toggle('bi-eye-slash-fill');
-    });
-});
-</script>
-
-</body>
-</html>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <script src="{{ asset('js/login.js') }}"></script>
+@endpush

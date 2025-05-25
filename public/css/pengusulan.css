@@ -49,27 +49,7 @@
     }
   }
   
-  /* Mobile view */
-  @media (max-width: 768px) {
-    .card-container {
-      margin-left: 0;
-      padding: 10px;
-    }
-    
-    .card {
-      width: calc(100% - 20px);
-      padding: 15px;
-      min-height: 550px;
-      margin: 5px auto;
-    }
-  }
-  
-  /* Large screens */
-  @media (min-width: 1600px) {
-    .card {
-      max-width: 1300px;
-    }
-  }
+
 
   .page-title {
     margin: 0 0 15px 20px;
