@@ -21,7 +21,7 @@
 
                 <form method="GET" action="{{ route('login.form') }}">
                     <div class="mb-4">
-                        <label for="role_select" class="form-label visually-hidden">Pilih Role</label>
+                        <label for="role_select" class="form-label">Pilih Role</label>
                         <div class="select-wrapper">
                             <select class="form-select form-select-lg custom-select-role @error('role') is-invalid @enderror" id="role_select" name="role" required>
                                 <option value="" disabled selected>Pilih Role</option>

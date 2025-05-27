@@ -262,7 +262,7 @@ body {
         max-width: 100px; /* Logo lebih kecil */
     }
     .app-header-section {
-        margin-bottom: 2rem; /* Jarak bawah header section di mobile */
+        margin-bottom: 0.5rem; /* Jarak bawah header section di mobile */
         max-width: 280px; /* Batasi lebar header section di mobile */
         min-width: unset; /* Hapus min-width di mobile */
     }
@@ -287,5 +287,11 @@ body {
     }
     .text-register, .text-back-to-select-role {
         margin-top: 1.5rem; /* Margin atas untuk teks register/kembali di mobile */
+    }
+    .role-select-title {
+        font-size: 16.156px;
+        line-height: normal;
+        margin-top: 0px;
+        margin-bottom: 2rem;
     }
 }

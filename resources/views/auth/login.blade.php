@@ -38,8 +38,8 @@
                     <input type="hidden" name="role" value="{{ request()->role }}">
 
                     <div class="mb-3 form-group-custom"> 
-                        <label for="email" class="form-label visually-hidden">Email Polban</label>
-                        <input type="email" class="form-control custom-form-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Email Instansi">
+                        <label for="email" class="form-label">Email Polban</label> {{-- form-label visually-hidden --}}
+                        <input type="email" class="form-control custom-form-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Email Polban">
                         @error('email')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="mb-4 form-group-custom">
-                        <label for="password" class="form-label visually-hidden">Password</label>
+                        <label for="password" class="form-label">Password</label>
                         <div class="position-relative"> {{-- Gunakan position-relative di sini --}}
                             <input type="password" class="form-control custom-form-input password-input-with-icon @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Password">
                             <span class="password-toggle-icon" id="togglePassword"> {{-- Ubah dari button ke span/i --}}
