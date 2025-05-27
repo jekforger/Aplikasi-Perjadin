@@ -15,21 +15,21 @@
         <nav class="nav flex-column">
             <a href="{{ route('admin.dashboard') }}" class="nav-link">
                     <span class="icon">
-                        <i class="bi bi-house-door"></i>
+                        <i class="bi bi-people-fill"></i>
                     </span>
-                <span class="description">Dashboard</span>
+                <span class="description">Pegawai</span>
             </a>
              <a href="{{ route('admin.datapegawai') }}" class="nav-link">
                 <span class="icon">
-                    <i class="bi bi-house-door"></i>
+                    <i class="bi bi-people"></i>
                 </span>
-                <span class="description">Pegawai</span>
+                <span class="description">Mahasiswa</span>
             </a>
             <a href="{{ route('admin.datamahasiswa') }}" class="nav-link">
                 <span class="icon">
-                    <i class="bi bi-file-earmark-medical"></i>
+                    <i class="bi bi-person"></i>
                 </span>
-                <span class="description">Mahasiswa</span>
+                <span class="description">Akun</span>
             </a>
         </nav>
     </div>
