@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pengusulanController; // Anda mungkin tidak menggunakan ini jika pengusulanController sudah direname/digabung
 use App\Http\Controllers\MenuPengusulanController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PengusulController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DataPegawaiController;
+use App\Http\Controllers\DataMahasiswaController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -46,7 +50,12 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard Direktur (belum dibuat)'; })->name('dashboard');
 });
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard Admin (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/datapegawai', [DataPegawaiController::class, 'index'])->name('datapegawai');
+    Route::resource('pegawai', DataPegawaiController::class);
+    Route::get('/datamahasiswa', [DataMahasiswaController::class, 'index'])->name('datamahasiswa');
+    Route::resource('mahasiswa', DataMahasiswaController::class);
+
 });
 
 // Route::get('/', function () {
