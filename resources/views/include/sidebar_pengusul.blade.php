@@ -13,13 +13,13 @@
         </div>
     </div>
         <nav class="nav flex-column">
-            <a href="#" class="nav-link">
+            <a href="{{ route('pengusul.dashboard') }}" class="nav-link">
                 <span class="icon">
                     <i class="bi bi-house-door"></i>
                 </span>
                 <span class="description">Dashboard</span>
             </a>
-            <a href="/pengusulan" class="nav-link {{ request()->is('pengusulan') ? 'active' : '' }}">
+            <a href="{{ route('pengusul.pengusulan') }}" class="nav-link {{ request()->is('pengusulan') ? 'active' : '' }}">
                 <span class="icon">
                     <i class="bi bi-file-earmark-medical"></i>
                 </span>
