@@ -3,7 +3,7 @@
 @section('content')
 <div class="login-full-page-wrapper"> {{-- Menggunakan wrapper yang sama untuk konsistensi layout --}}
     <div class="row g-0 h-100 justify-content-center align-items-center"> {{-- Menambahkan justify-content-center dan align-items-center --}}
-        {{-- Left Panel (Login Form) - Akan mengambil lebar penuh di mobile, sesuai desain --}}
+        {{-- Left Panel (Login Form) --}}
         <div class="col-lg-4 col-md-12 d-flex align-items-center justify-content-center left-panel">
             <div class="login-form-wrapper login-form-padding">
                 <div class="text-center app-header-section">
@@ -11,7 +11,7 @@
                     <h4 class="fw-bold app-title-main">Aplikasi Perjalanan Dinas Politeknik Negeri Bandung</h4>
                 </div>
 
-                <h3 class="role-select-title-login">Login sebagai {{ ucwords(request()->role ?? 'Pengguna') }}</h3> {{-- Class baru untuk judul login --}}
+                <h3 class="role-select-title-login">Login sebagai {{ $displayName ?? 'Role' }}</h3> {{-- Class baru untuk judul login --}}
 
                 @if (session('status'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -79,5 +79,8 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@endpush
+
+@push('scripts')
     <script src="{{ asset('js/login.js') }}"></script>
 @endpush
