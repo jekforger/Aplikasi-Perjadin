@@ -2,6 +2,26 @@
 
 @section('content')
 <div class="login-full-page-wrapper"> {{-- Menggunakan wrapper yang sama untuk konsistensi layout --}}
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show global-alert-top" role="alert">
+            Email dan Password yang anda masukkan salah atau tidak sesuai. Mohon periksa kembali.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    {{-- Alert untuk status atau error spesifik --}}
+    @if (session('status'))
+        <div class="alert alert-success alert-dismissible fade show global-alert-top" role="alert">
+            {{ session('status') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show global-alert-top" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row g-0 h-100 justify-content-center align-items-center"> {{-- Menambahkan justify-content-center dan align-items-center --}}
         {{-- Left Panel (Login Form) --}}
         <div class="col-lg-4 col-md-12 d-flex align-items-center justify-content-center left-panel">
@@ -11,26 +31,9 @@
                     <h4 class="fw-bold app-title-main">Aplikasi Perjalanan Dinas Politeknik Negeri Bandung</h4>
                 </div>
 
-                <h3 class="role-select-title-login">Login sebagai {{ $displayName ?? 'Role' }}</h3> {{-- Class baru untuk judul login --}}
+                <h3 class="role-select-title-login">Selamat Datang, {{ $displayName ?? 'Role' }}</h3> {{-- Class baru untuk judul login --}}
 
-                @if (session('status'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('status') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                @if ($errors->any())
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Terjadi kesalahan validasi. Mohon periksa kembali input Anda.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+                
 
                 <form method="POST" action="{{ route('login.attempt') }}">
                     @csrf
