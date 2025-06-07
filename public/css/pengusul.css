@@ -248,7 +248,7 @@ body {
   .page-title {
     margin: 0 0 15px 20px;
     color: black;
-    font-size: 1.5rem;
+    font-size: 1.9rem;
   }
 
 /* Besarkan ukuran tombol tanggal */
@@ -329,3 +329,20 @@ body {
         padding: 15px;
     }
 }
+
+
+    .dashboard-card {
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+  
+
+    
