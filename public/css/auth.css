@@ -76,6 +76,19 @@ body {
     line-height: normal;
 }
 
+/* Global Alert Styling for App Layout */
+.global-alert-app-top {
+    position: absolute; /* Posisikan absolut */
+    top: 70px; /* Jarak dari atas, di bawah navbar. Sesuaikan jika navbar lebih tinggi. */
+    left: 50%; /* Posisikan di tengah horizontal */
+    transform: translateX(-50%); /* Geser ke kiri setengah lebar alert */
+    z-index: 1050; /* Pastikan di atas elemen lain, di atas navbar/modal */
+    max-width: 500px; /* Batasi lebar alert */
+    width: 90%; /* Ambil 90% lebar parent jika max-width tercapai */
+    text-align: center; /* Pusatkan teks */
+    /* margin: 0 auto; <--- Ini tidak diperlukan untuk absolute positioning */
+}
+
 .role-select-title {
     color: #555;
     text-align: center;

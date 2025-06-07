@@ -58,7 +58,7 @@
 /* Global Alert at Top */
 .global-alert-top {
     position: absolute; /* Posisikan absolut terhadap parent (body/login-full-page-wrapper) */
-    top: 20px; /* Jarak dari atas */
+    top: 5px; /* Jarak dari atas */
     left: 50%; /* Posisikan di tengah horizontal */
     transform: translateX(-50%); /* Geser ke kiri setengah lebar alert agar benar-benar di tengah */
     z-index: 1050; /* Pastikan di atas elemen lain (di atas navbar/modal jika ada) */

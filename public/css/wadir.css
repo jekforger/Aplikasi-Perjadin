@@ -1,0 +1,33 @@
+/* public/css/wadir.css */
+
+/* Styling khusus untuk card dashboard Wadir */
+.card.border-left-primary { border-left: .25rem solid #4e73df!important; } /* Warna primary Bootstrap */
+.card.border-left-success { border-left: .25rem solid #1cc88a!important; } /* Warna success Bootstrap */
+.card.border-left-info { border-left: .25rem solid #36b9cc!important; } /* Warna info Bootstrap */
+.card.border-left-warning { border-left: .25rem solid #f6c23e!important; } /* Warna warning Bootstrap */
+
+.text-xs { font-size: .7rem; }
+.font-weight-bold { font-weight: 700; }
+.text-uppercase { text-transform: uppercase!important; }
+.text-gray-800 { color: #5a5c69!important; }
+.text-gray-300 { color: #dddfeb!important; }
+
+/* Penyesuaian untuk tabel */
+.table thead th {
+    background-color: #f8f9fc; /* Warna header tabel */
+    color: #858796;
+    border-bottom: 1px solid #e3e6f0;
+}
+.table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Responsivitas tambahan jika diperlukan untuk elemen-elemen ini */
+@media (max-width: 767.98px) { /* Contoh untuk breakpoint mobile */
+    .card.shadow {
+        /* Tambahan styling untuk card di mobile jika diperlukan */
+    }
+    .table-responsive {
+        /* Tabel Bootstrap sudah cukup responsif, tapi bisa ditambahkan kustomisasi */
+    }
+}

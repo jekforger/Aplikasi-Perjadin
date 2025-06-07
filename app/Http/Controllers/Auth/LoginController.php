@@ -103,6 +103,9 @@ class LoginController extends Controller
 
             // Jika berhasil dan role cocok, generate ulang sesi
             $request->session()->regenerate();
+            
+            $displayName = $this->getRoleDisplayName($chosenRole); // Ambil nama tampilan role yang baru login
+            $request->session()->flash('success_message', 'Selamat datang, ' . $displayName); // Kirim pesan ke sesi
 
             // Redirect user ke dashboard yang sesuai dengan role-nya
             return $this->redirectToRoleDashboard($chosenRole);

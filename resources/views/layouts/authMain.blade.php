@@ -22,10 +22,20 @@
     @stack('styles')
 </head>
 <body>
+    {{-- Global Success Alert for App Layout --}}
+    @if (session('success_message'))
+        <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
+            {{ session('success_message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-    @yield('content')
+    <!-- @include('partials.navbar') -->
+
+        @yield('content') 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     @stack('scripts')
 </body>

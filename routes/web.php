@@ -8,6 +8,7 @@ use App\Http\Controllers\PengusulController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataPegawaiController;
 use App\Http\Controllers\DataMahasiswaController;
+use App\Http\Controllers\WadirController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -45,8 +46,7 @@ Route::prefix('bku')->name('bku.')->group(function () {
 });
 // Rute untuk semua Wakil Direktur (I-IV) mengarah ke dashboard Wadir
 Route::prefix('wadir')->name('wadir.')->group(function () {
-    // Satu rute dashboard umum untuk semua Wadir I-IV
-    Route::get('/dashboard', function() { return 'Dashboard Wakil Direktur (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke WadirController
 });
 Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard Direktur (belum dibuat)'; })->name('dashboard');
