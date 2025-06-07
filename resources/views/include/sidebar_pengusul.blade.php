@@ -15,7 +15,7 @@
         <nav class="nav flex-column">
             <a href="{{ route('pengusul.dashboard') }}" class="nav-link">
                 <span class="icon">
-                    <i class="bi bi-house-door"></i>
+                    <i class="bi bi-columns-gap"></i>
                 </span>
                 <span class="description">Dashboard</span>
             </a>

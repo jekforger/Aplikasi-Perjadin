@@ -91,19 +91,13 @@
           </div>
 
           <!-- Sumber Dana -->
-          <div class="form-section mb-4">
-            <label for="sumber_dana" class="form-label">Sumber Dana</label>
-            <div class="d-flex align-items-end gap-2">
-              <input type="text" class="form-control" id="sumber_dana" name="sumber_dana" placeholder="Sumber Dana" readonly required>
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Pilih
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item pilih-option" data-target="sumber_dana" data-value="RM" href="#">RM</a></li>
-                  <li><a class="dropdown-item pilih-option" data-target="sumber_dana" data-value="PNBP" href="#">PNBP</a></li>
-                </ul>
-              </div>
+          <div class="mb-3">
+            <label for="pagu" class="form-label">Pagu</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Desentralisasi
+              </label>
             </div>
           </div>
 
