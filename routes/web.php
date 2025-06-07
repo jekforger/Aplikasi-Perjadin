@@ -47,11 +47,16 @@ Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
 Route::prefix('bku')->name('bku.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
 });
+// Rute untuk semua Wakil Direktur (I-IV) mengarah ke dashboard Wadir
 Route::prefix('wadir')->name('wadir.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard Wadir (belum dibuat)'; })->name('dashboard');
+    // Satu rute dashboard umum untuk semua Wadir I-IV
+    Route::get('/dashboard', function() { return 'Dashboard Wakil Direktur (belum dibuat)'; })->name('dashboard');
 });
 Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard Direktur (belum dibuat)'; })->name('dashboard');
+});
+Route::prefix('sekdir')->name('sekdir.')->group(function () {
+    Route::get('/dashboard', function() { return 'Dashboard Sekretaris Direktur (belum dibuat)'; })->name('dashboard');
 });
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');

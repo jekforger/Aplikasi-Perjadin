@@ -6,10 +6,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Models\User; // Penting: Import model User
+use App\Models\User;
 
 class LoginController extends Controller
 {
+    // Array mapping untuk nama role agar user-friendly
+    protected $roleDisplayNames = [
+        'pengusul' => 'Pengusul',
+        'pelaksana' => 'Pelaksana',
+        'bku' => 'Badan Keuangan Umum (BKU)',
+        'wadir_1' => 'Wakil Direktur I',
+        'wadir_2' => 'Wakil Direktur II',
+        'wadir_3' => 'Wakil Direktur III',
+        'wadir_4' => 'Wakil Direktur IV',
+        'direktur' => 'Direktur',
+        'sekdir' => 'Sekretaris Direktur',
+        'admin' => 'Admin',
+    ];
+
+    /**
+     * Mengambil nama role yang user-friendly.
+     */
+    public function getRoleDisplayName($roleKey)
+    {
+        return $this->roleDisplayNames[$roleKey] ?? ucwords(str_replace('_', ' ', $roleKey));
+    }
+
     // Method untuk menampilkan halaman "Pilih Role"
     public function showSelectRoleForm()
     {
@@ -22,15 +44,22 @@ class LoginController extends Controller
         $role = $request->query('role'); // Ambil parameter 'role' dari URL
 
         // Daftar role yang diizinkan (pastikan sesuai dengan data di DB)
-        $allowedRoles = ['pengusul', 'pelaksana', 'bku', 'wadir', 'direktur', 'admin'];
+        $allowedRoles = array_keys($this->roleDisplayNames);
 
         // Validasi sederhana: pastikan role yang dipilih ada dalam daftar yang diizinkan
         if (!in_array($role, $allowedRoles)) {
             return redirect()->route('login.select-role')->with('error', 'Pilihan role tidak valid.');
         }
 
+        // --- INI BARIS YANG HARUS DIHILANGKAN KOMENTARNYA ---
+        $displayName = $this->getRoleDisplayName($role);
+
         // Kirim nilai role ke view login
-        return view('auth.login', ['role' => $role]);
+        // --- DAN PASTIKAN $displayName DIKIRIM KE VIEW DI SINI ---
+        return view('auth.login', [
+            'role' => $role,
+            'displayName' => $displayName // Pastikan ini ada dan variabelnya benar
+        ]);
     }
 
     // Method untuk memproses login form
@@ -51,17 +80,24 @@ class LoginController extends Controller
             $user = Auth::user(); // Dapatkan user yang baru saja login
 
             // Validasi role: Pastikan role yang dipilih di halaman awal cocok dengan role user di database
-            // Untuk Wadir/Direktur yang bisa jadi Pelaksana:
-            // Mereka akan login sebagai Wadir/Direktur utama dulu.
-            // Fungsi "beralih role" akan ada di dalam dashboard mereka nanti.
-            if ($user->role !== $chosenRole) {
-                Auth::logout(); // Jika role tidak cocok, logout user
-                $request->session()->invalidate(); // Hancurkan sesi
-                $request->session()->regenerateToken(); // Regenerate token
+            $allowedRoles = array_keys($this->roleDisplayNames);
 
-                // Kirim pesan error kembali ke halaman login
+            if (!in_array($user->role, $allowedRoles)) {
+                 Auth::logout();
+                 $request->session()->invalidate();
+                 $request->session()->regenerateToken();
+                 throw ValidationException::withMessages([
+                     'email' => ['Akun Anda tidak memiliki role yang valid. Silakan hubungi administrator.'],
+                 ]);
+            }
+
+            if ($user->role !== $chosenRole) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
                 throw ValidationException::withMessages([
-                    'email' => ['Role yang Anda pilih tidak cocok dengan akun ini. Silakan pilih role yang sesuai.'],
+                    'email' => ['Role yang Anda pilih tidak cocok dengan akun ini. Anda terdaftar sebagai ' . $this->getRoleDisplayName($user->role) . '.'], // <-- Tampilkan nama user-friendly di sini
                 ]);
             }
 
@@ -81,6 +117,7 @@ class LoginController extends Controller
     // Method untuk mengarahkan user setelah login berhasil
     protected function redirectToRoleDashboard($role)
     {
+        // Sesuaikan rute dashboard untuk setiap role, termasuk Wadir I-IV
         switch ($role) {
             case 'pengusul':
                 return redirect()->route('pengusul.dashboard');
@@ -88,14 +125,18 @@ class LoginController extends Controller
                 return redirect()->route('pelaksana.dashboard');
             case 'bku':
                 return redirect()->route('bku.dashboard');
-            case 'wadir':
+            case 'wadir_1':
+            case 'wadir_2':
+            case 'wadir_3':
+            case 'wadir_4':
                 return redirect()->route('wadir.dashboard');
             case 'direktur':
                 return redirect()->route('direktur.dashboard');
+            case 'sekdir':
+                return redirect()->route('sekdir.dashboard');
             case 'admin':
                 return redirect()->route('admin.dashboard');
             default:
-                // Jika role tidak dikenal, arahkan ke halaman pilih role
                 return redirect()->route('login.select-role')->with('error', 'Role tidak dikenal.');
         }
     }

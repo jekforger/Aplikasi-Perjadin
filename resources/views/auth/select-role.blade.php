@@ -28,8 +28,12 @@
                                 <option value="pengusul">Pengusul</option>
                                 <option value="pelaksana">Pelaksana</option>
                                 <option value="bku">Badan Keuangan Umum (BKU)</option>
-                                <option value="wadir">Wakil Direktur</option>
+                                <option value="wadir_1">Wakil Direktur I</option>
+                                <option value="wadir_2">Wakil Direktur II</option>
+                                <option value="wadir_3">Wakil Direktur III</option>
+                                <option value="wadir_4">Wakil Direktur IV</option>
                                 <option value="direktur">Direktur</option>
+                                <option value="sekdir">Sekretaris Direktur</option>
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
