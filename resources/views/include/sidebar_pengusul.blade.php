@@ -15,7 +15,7 @@
         <nav class="nav flex-column">
             <a href="{{ route('pengusul.dashboard') }}" class="nav-link">
                 <span class="icon">
-                    <i class="bi bi-house-door"></i>
+                    <i class="bi bi-columns-gap"></i>
                 </span>
                 <span class="description">Dashboard</span>
             </a>
@@ -25,19 +25,19 @@
                 </span>
                 <span class="description">Pengusulan</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="{{ route('pengusul.status') }}" class="nav-link">
                 <span class="icon">
                     <i class="bi bi-graph-up"></i>
                 </span>
                 <span class="description">Status</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="{{ route('pengusul.draft') }}" class="nav-link">
                 <span class="icon">
                     <i class="bi bi-file-earmark"></i>
                 </span>
                 <span class="description">Draft</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="{{ route('pengusul.history') }}" class="nav-link">
                 <span class="icon">
                     <i class="bi bi-arrow-counterclockwise"></i>
                 </span>
