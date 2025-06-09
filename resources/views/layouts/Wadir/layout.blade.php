@@ -1,5 +1,5 @@
 {{-- resources/views/wadir/layout.blade.php --}}
-@extends('layouts.main') {{-- Mengganti layouts.app dengan layouts.main --}}
+@extends('layouts.main')
 
 @section('sidebar')
     @include('layouts.Wadir.partials.sidebar')
