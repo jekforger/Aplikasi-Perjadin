@@ -6,6 +6,19 @@ body {
     background-color: #F5F6FA;
 }
 
+/* === GLOBAL ALERT FOR APP LAYOUT === */
+.global-alert-app-top {
+    position: fixed;
+    top: calc(var(--navbar-height) + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1060;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    margin-top: 10px;
+}
+
 .toggle-btn {
     position: fixed;
     top: 20px;

@@ -25,19 +25,9 @@
 
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     
-    @stack('styles') {{-- Untuk CSS spesifik halaman --}}
+    @stack('styles') {{-- Untuk CSS spesifik halaman (misalnya wadir.css) --}}
 </head>
-<body>
-
-    @include('partials.navbar') {{-- NAVBAR DI SINI (AKAN DIATUR FIXED OLEH main.css) --}}
-
-    @yield('sidebar') {{-- SIDEBAR DI SINI (AKAN DIATUR FIXED OLEH main.css) --}}
-
-    <div class="main-wrapper"> {{-- WRAPPER UNTUK KONTEN DI SAMPING SIDEBAR & DI BAWAH NAVBAR --}}
-        <main class="main-content-area"> {{-- Area konten utama --}}
-            @yield('content') {{-- Konten utama halaman --}}
-        </main>
-    </div>
+<body> {{-- Hapus d-flex flex-column min-vh-100 dari body, akan diatur di main.css --}}
 
     {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
     @if (session('success_message'))
@@ -47,9 +37,19 @@
         </div>
     @endif
 
+    @yield('sidebar') {{-- Sidebar akan di-yield di sini (akan menjadi fixed) --}}
+
+    <div class="main-wrapper"> {{-- Pembungkus utama untuk navbar dan konten, akan ada margin-left --}}
+        @include('partials.navbar') {{-- Navbar Aplikasi Anda (akan diposisikan di atas content) --}}
+
+        <main class="main-content-area"> {{-- Area konten utama --}}
+            @yield('content') {{-- Konten halaman spesifik (dashboard, pengusulan, dll.) --}}
+        </main>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <script src="{{ asset('js/app.js') }}"></script>
-    @stack('scripts.main') {{-- Untuk JS spesifik halaman --}}
+    <script src="{{ asset('js/main.js') }}"></script>
+    @stack('scripts') {{-- Untuk JS spesifik halaman --}}
 </body>
 </html>
