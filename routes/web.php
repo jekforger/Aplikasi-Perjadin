@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataPegawaiController;
 use App\Http\Controllers\DataMahasiswaController;
 use App\Http\Controllers\WadirController;
+use App\Http\Controllers\PelaksanaController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -39,7 +40,7 @@ Route::prefix('pengusul')->name('pengusul.')->group(function () {
 // --- Rute Placeholder untuk Role Lain (akan dikembangkan nanti) ---
 // Ini hanya untuk memastikan link redirect di LoginController tidak error "route not defined"
 Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard Pelaksana (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [PelaksanaController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke PelaksanaController
 });
 Route::prefix('bku')->name('bku.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');

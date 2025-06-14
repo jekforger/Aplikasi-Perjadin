@@ -25,29 +25,18 @@
 
       <!-- Diusulkan Kepada -->
       <div class="form-section mb-4">
-        <label for="diusulkanKepada" class="form-label">Diusulkan Kepada</label>
-        <div class="d-flex align-items-end gap-2">
-          <input 
-            type="text" 
-            class="form-control" 
-            id="diusulkanKepada" 
-            placeholder="Diusulkan Kepada" 
-            readonly
-          >
-          <div class="dropdown">
-            <button 
-              class="btn btn-secondary dropdown-toggle" 
-              type="button" 
-              data-bs-toggle="dropdown" 
-              aria-expanded="false"
-            >
+        <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada</label>
+          <div class="d-flex align-items-end gap-2">
+            <input type="text" class="form-control" id="diusulkan_kepada" name="diusulkan_kepada" placeholder="Diusulkan Kepada" readonly required>
+            <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Pilih
             </button>
             <ul class="dropdown-menu">
-              <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur I')">Wakil Direktur I</button></li>
-              <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur II')">Wakil Direktur II</button></li>
-              <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur III')">Wakil Direktur III</button></li>
-              <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur IV')">Wakil Direktur IV</button></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur I" href="#">Wakil Direktur I</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur II" href="#">Wakil Direktur II</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur III" href="#">Wakil Direktur III</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur IV" href="#">Wakil Direktur IV</a></li>
             </ul>
           </div>
         </div>
