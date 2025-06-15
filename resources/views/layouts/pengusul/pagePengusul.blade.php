@@ -23,6 +23,11 @@
         </div>
     </div>
 
-    @include('include.script')
+    {{-- PENTING: Tambahkan ini agar script dari view anak (seperti pengusulan.blade.php) bisa dieksekusi --}}
+    @stack('scripts') 
+
+    {{-- Hapus @include('include.script') dari sini karena isinya akan dibersihkan atau dipindahkan --}}
+    {{-- Jika ada script yang benar-benar global, pindahkan ke layouts/main.blade.php atau biarkan di sini jika hanya untuk layout pengusul --}}
+    {{-- Untuk tombol toggle sidebar, kita bisa letakkan kembali di include.script tapi pastikan itu satu-satunya fungsi --}}
 </body>
 </html>
