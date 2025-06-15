@@ -250,7 +250,7 @@ body {
 .card {
     width: calc(100% - 40px);
     max-width: 1200px;
-    min-height: 650px;
+    min-height: 100px;
     background: white;
     box-shadow: 0 3px 15px rgba(0,0,0,0.05);
     border-radius: 8px;

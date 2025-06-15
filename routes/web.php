@@ -10,6 +10,8 @@ use App\Http\Controllers\DataPegawaiController;
 use App\Http\Controllers\DataMahasiswaController;
 use App\Http\Controllers\WadirController;
 use App\Http\Controllers\PelaksanaController;
+use App\Http\Controllers\DirekturController;
+use App\Http\Controllers\UserController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -22,6 +24,11 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
 
 // Proses Logout (akan dipanggil dari tombol logout di navbar)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('user.change-password.form');
+    Route::post('/change-password', [UserController::class, 'changePassword'])->name('user.change-password');
+});
 
 
 // --- Rute untuk Role Pengusul (Sudah Pernah Dibahas, Kita Pakai Lagi) ---
@@ -50,7 +57,7 @@ Route::prefix('wadir')->name('wadir.')->group(function () {
     Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke WadirController
 });
 Route::prefix('direktur')->name('direktur.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard Direktur (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke DirekturController
 });
 Route::prefix('sekdir')->name('sekdir.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard Sekretaris Direktur (belum dibuat)'; })->name('dashboard');

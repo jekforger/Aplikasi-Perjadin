@@ -8,26 +8,26 @@
         </a>
 
         {{-- Bagian User Info di Kanan --}}
-        <div class="ms-auto"> {{-- ms-auto untuk dorong ke kanan --}}
+        <div class="ms-auto">
             <div class="d-flex align-items-center">
                 @auth {{-- Tampilkan hanya jika user sudah login --}}
                     <div class="dropdown user-info">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center user-profile-toggle position-realtive pe-4" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center user-profile-toggle position-relative pe-4" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'User') }}&background=random&color=fff" alt="User Avatar" class="rounded-circle me-2" width="30" height="30">
                             
-                            <div class="user-info-text d-none d-md-flex flex-column align-items-start"> {{-- Menggunakan d-md-flex flex-column untuk stacking --}}
-                                <span class="user-name">{{ Auth::user()->name ?? 'Guest' }}</span>
+                            <div class="user-info-text d-none d-md-block">
+                                <span class="user-name">{{ Auth::user()->name ?? 'Guest' }}</span><br>
                                 @php
-                                    // Memanggil LoginController untuk mendapatkan nama role yang user-friendly
-                                    $loginController = new \App\Http\Controllers\Auth\LoginController();
+                                    $loginController = new \App\Http\Controllers\Auth\LoginController(); // Instansiasi di sini
                                     $userRoleDisplay = $loginController->getRoleDisplayName(Auth::user()->role ?? '');
                                 @endphp
-                                <small class="user-role-display">{{ $userRoleDisplay }}</small> {{-- Role dengan ukuran lebih kecil --}}
-                                <i class="bi bi-chevron-down navbar-profile-chevron"></i>
+                                <small class="user-role-display">{{ $userRoleDisplay }}</small>
                             </div>
+                            
+                            <i class="bi bi-chevron-down navbar-profile-chevron"></i> 
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
-                            <li><a class="dropdown-item" href="#">Change Password</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.change-password.form') }}">Change Password</a></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -36,8 +36,6 @@
                             </li>
                         </ul>
                     </div>
-                    {{-- Hapus span badge yang menampilkan role secara terpisah --}}
-                    {{-- <span class="badge bg-secondary ms-2">{{ $userRoleDisplay }}</span> --}}
                 @else {{-- Jika belum login --}}
                     <a href="{{ route('login.select-role') }}" class="btn btn-outline-primary me-2">Login</a>
                 @endauth

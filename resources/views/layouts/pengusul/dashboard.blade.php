@@ -1,6 +1,6 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
-@section('content')
+@section('pengusul_content')
 <body>
   <div class="card-container">
 

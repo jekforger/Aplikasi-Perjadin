@@ -1,22 +1,22 @@
-{{-- resources/views/wadir/dashboard.blade.php --}}
-@extends('layouts.Wadir.layout')
+{{-- resources/views/direktur/dashboard.blade.php --}}
+@extends('layouts.direktur.layout') {{-- Mengextend layout khusus Direktur --}}
 
-@section('wadir_content')
-<div class="container-fluid dashboard-wadir-container">
+@section('direktur_content') {{-- Memasukkan konten ke yield 'direktur_content' --}}
+<div class="container-fluid dashboard-direktur-container"> {{-- Kelas kustom untuk Direktur --}}
     <h1 class="dashboard-page-title mb-4">Dashboard</h1>
 
     {{-- Kotak Info Dashboard --}}
-    <div class="row dashboard-info-boxes g-3 mb-4"> {{-- g-3 untuk gutter antara kolom --}}
+    <div class="row dashboard-info-boxes g-3 mb-4">
         {{-- Kotak Total Pengusulan --}}
-        <div class="col-xl-3 col-md-6 col-12"> {{-- col-12 untuk stack di mobile sangat kecil --}}
+        <div class="col-xl-3 col-md-6 col-12">
             <div class="dashboard-card shadow h-100 py-2 border-left-blue">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="info-box-label text-blue text-uppercase"> {{-- text-blue kustom --}}
+                            <div class="info-box-label text-blue text-uppercase">
                                 Total Pengusulan
                             </div>
-                            <div class="info-box-number text-gray-800">{{ $dashboardStats['total_pengusulan'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['total_pengusulan'] }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="bi bi-file-earmark-text info-box-icon text-gray-300"></i>
@@ -26,38 +26,38 @@
             </div>
         </div>
 
-        {{-- Kotak Usulan Baru --}}
+        {{-- Kotak Dalam Proses (Wadir) --}}
         <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-green">
+            <div class="dashboard-card shadow h-100 py-2 border-left-green"> {{-- Warna hijau --}}
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="info-box-label text-green text-uppercase"> {{-- text-green kustom --}}
-                                USULAN BARU
+                            <div class="info-box-label text-green text-uppercase">
+                                DALAM PROSES (WADIR)
                             </div>
-                            <div class="info-box-number text-gray-800">{{ $dashboardStats['usulan_baru'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dalam_proses_wadir'] }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="bi bi-plus-square info-box-icon text-gray-300"></i>
+                            <i class="bi bi-clock-history info-box-icon text-gray-300"></i> {{-- Icon disesuaikan --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Kotak Dalam Proses (Direktur) --}}
+        {{-- Kotak Dalam Proses (BKU) --}}
         <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-purple"> {{-- Ubah warna border & teks --}}
+            <div class="dashboard-card shadow h-100 py-2 border-left-purple"> {{-- Warna ungu --}}
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="info-box-label text-purple text-uppercase">
-                                DALAM PROSES (DIREKTUR)
+                                DALAM PROSES (BKU)
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dalam_proses_direktur'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dalam_proses_bku'] }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="bi bi-bar-chart-fill info-box-icon text-gray-300"></i>
+                            <i class="bi bi-wallet-fill info-box-icon text-gray-300"></i> {{-- Icon disesuaikan --}}
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
 
         {{-- Kotak Bertugas --}}
         <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-orange"> {{-- Ubah warna border & teks --}}
+            <div class="dashboard-card shadow h-100 py-2 border-left-orange">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -87,10 +87,10 @@
     {{-- Tabel Detail Pengusulan --}}
     <div class="card shadow mb-4 dashboard-table-card">
         <div class="card-header py-3 d-flex justify-content-between align-items-center table-header-flex">
-            <h6 class="m-0 font-weight-bold text-gray-800 table-title">Detail</h6> {{-- Judul tabel diubah jadi "Detail", warna gray --}}
+            <h6 class="m-0 font-weight-bold text-gray-800 table-title">Detail</h6>
             <div class="table-search-box input-group w-auto">
                 <input type="text" class="form-control form-control-sm custom-search-input" placeholder="Search...">
-                <button class="btn btn-primary btn-sm custom-search-button"><i class="fas fa-search"></i></button> {{-- Hanya icon search --}}
+                <button class="btn btn-primary btn-sm custom-search-button"><i class="fas fa-search"></i></button>
             </div>
         </div>
         <div class="card-body">
@@ -98,9 +98,8 @@
                 <table class="table table-bordered dashboard-data-table" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Tanggal Pengusulan</th>
                             <th>Tanggal Berangkat</th>
-                            <th>Nomor Surat Pengusulan</th>
+                            <th>Nomor Surat</th>
                             <th>Sumber Dana</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -109,21 +108,20 @@
                     <tbody>
                         @forelse ($pengusulanDetails as $detail)
                         <tr>
-                            <td>{{ $detail['tgl_pengusulan'] }}</td>
                             <td>{{ $detail['tgl_berangkat'] }}</td>
-                            <td>{{ $detail['nomor_surat_pengusulan'] }}</td>
+                            <td>{{ $detail['nomor_surat'] }}</td> {{-- Kolom Nomor Surat --}}
                             <td>{{ $detail['sumber_dana'] }}</td>
                             <td>
-                                @if($detail['status'] == 'Pending')
-                                    <span class="badge status-badge badge-warning text-dark">Pending</span>
-                                @elseif($detail['status'] == 'Disetujui')
-                                    <span class="badge status-badge badge-success">Disetujui</span>
-                                @elseif($detail['status'] == 'Ditolak')
-                                    <span class="badge status-badge badge-danger">Ditolak</span>
+                                @if($detail['status'] == 'Disetujui Wadir')
+                                    <span class="badge status-badge badge-success">Disetujui Wadir</span>
+                                @elseif($detail['status'] == 'Ditolak Wadir')
+                                    <span class="badge status-badge badge-danger">Ditolak Wadir</span>
+                                @elseif($detail['status'] == 'Sedang Diproses')
+                                    <span class="badge status-badge badge-warning text-dark">Sedang Diproses</span>
                                 @elseif($detail['status'] == 'Selesai')
-                                    <span class="badge status-badge badge-secondary">Selesai</span> {{-- Desain menggunakan abu-abu --}}
+                                    <span class="badge status-badge badge-secondary text-white">Selesai</span>
                                 @else
-                                    <span class="badge status-badge badge-info">{{ $detail['status'] }}</span>
+                                    <span class="badge status-badge badge-info text-white">{{ $detail['status'] }}</span>
                                 @endif
                             </td>
                             <td>
@@ -134,7 +132,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada data pengusulan.</td>
+                            <td colspan="5" class="text-center">Belum ada data pengusulan.</td> {{-- Kolom disesuaikan --}}
                         </tr>
                         @endforelse
                     </tbody>
@@ -163,5 +161,5 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/wadir.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/direktur.css') }}"> {{-- Panggil CSS khusus Direktur --}}
 @endpush
