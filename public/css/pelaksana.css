@@ -1,0 +1,34 @@
+/* public/css/pelaksana.css */
+
+/* Styling khusus untuk card dashboard Pelaksana */
+.card.border-left-primary { border-left: .25rem solid #007bff!important; } /* Primary blue */
+.card.border-left-success { border-left: .25rem solid #28a745!important; } /* Success green */
+.card.border-left-danger { border-left: .25rem solid #dc3545!important; } /* Danger red */
+
+/* Ganti Font Awesome icons dengan Bootstrap Icons jika belum */
+/* Contoh: i.bi.bi-clipboard-check { font-size: 2rem; color: #ced4da; } */
+/* Bootstrap Icons sudah di-load secara global di main.blade.php */
+
+/* Penyesuaian untuk tabel */
+.table thead th {
+    background-color: #f8f9fc;
+    color: #858796;
+    border-bottom: 1px solid #e3e6f0;
+}
+.table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Styling untuk pagination/rows per page */
+.form-select-sm {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    padding-left: .5rem;
+    font-size: .875rem;
+    border-radius: .2rem;
+}
+.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    border-radius: .2rem;
+}

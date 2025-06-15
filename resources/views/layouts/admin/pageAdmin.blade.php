@@ -14,7 +14,7 @@
         <!-- Page Content -->
         <div id="page-content-wrapper" class="flex-grow-1">
             <!-- Navbar -->
-            @include('include.navbar')
+            @include('partials.navbar')
 
             <!-- Content Area -->
             <div class="container-fluid mt-4">

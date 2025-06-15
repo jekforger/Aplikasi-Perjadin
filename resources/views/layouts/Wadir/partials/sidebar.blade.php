@@ -42,7 +42,7 @@
         <div class="sub-menu collapse" id="submenu">
             <a href="{{ route('wadir.dashboard') }}" class="nav-link sub-nav-link"> {{-- Link ke dashboard Wadir default --}}
                 <span class="description">
-                    Wakil Direktur I (Default) {{-- Ini harus dinamis sesuai Wadir yang login --}}
+                    {{ $roleDisplayName }}
                 </span>
             </a>
             <a href="{{ route('pelaksana.dashboard') }}" class="nav-link sub-nav-link"> {{-- Link ke dashboard Pelaksana --}}

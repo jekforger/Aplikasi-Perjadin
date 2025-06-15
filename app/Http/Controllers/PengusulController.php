@@ -10,7 +10,7 @@ class PengusulController extends Controller
     // Halaman dashboard pengusul
     public function dashboard()
     {
-        return view('layouts.pengusul.dashboardPengusul');
+        return view('layouts.pengusul.dashboard');
     }
 
     public function pilih(Request $request)

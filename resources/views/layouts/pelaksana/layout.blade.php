@@ -1,4 +1,4 @@
-{{-- resources/views/wadir/layout.blade.php --}}
+{{-- resources/views/pelaksana/layout.blade.php --}}
 @extends('layouts.main')
 
 @section('sidebar')
@@ -12,9 +12,9 @@
             $roleDisplayName = $loginController->getRoleDisplayName($userRole);
         }
     @endphp
-    @include('layouts.Wadir.partials.sidebar', ['userRole' => $userRole, 'roleDisplayName' => $roleDisplayName])
+    @include('layouts.pelaksana.partials.sidebar', ['userRole' => $userRole, 'roleDisplayName' => $roleDisplayName])
 @endsection
 
 @section('content')
-    @yield('wadir_content')
+    @yield('pelaksana_content')
 @endsection

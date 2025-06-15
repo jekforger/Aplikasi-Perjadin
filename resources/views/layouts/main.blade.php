@@ -25,9 +25,19 @@
 
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     
-    @stack('styles') {{-- Untuk CSS spesifik halaman (misalnya wadir.css) --}}
+    @stack('styles') {{-- Untuk CSS spesifik halaman --}}
 </head>
-<body> {{-- Hapus d-flex flex-column min-vh-100 dari body, akan diatur di main.css --}}
+<body>
+
+    @include('partials.navbar') {{-- NAVBAR DI SINI (FIXED) --}}
+
+    @yield('sidebar') {{-- SIDEBAR DI SINI (FIXED) --}}
+
+    <div class="main-wrapper"> {{-- WRAPPER UNTUK KONTEN DI SAMPING SIDEBAR & DI BAWAH NAVBAR --}}
+        <main class="main-content-area"> {{-- Area konten utama --}}
+            @yield('content') {{-- Konten utama halaman --}}
+        </main>
+    </div>
 
     {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
     @if (session('success_message'))
@@ -36,16 +46,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
-    @yield('sidebar') {{-- Sidebar akan di-yield di sini (akan menjadi fixed) --}}
-
-    <div class="main-wrapper"> {{-- Pembungkus utama untuk navbar dan konten, akan ada margin-left --}}
-        @include('partials.navbar') {{-- Navbar Aplikasi Anda (akan diposisikan di atas content) --}}
-
-        <main class="main-content-area"> {{-- Area konten utama --}}
-            @yield('content') {{-- Konten halaman spesifik (dashboard, pengusulan, dll.) --}}
-        </main>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

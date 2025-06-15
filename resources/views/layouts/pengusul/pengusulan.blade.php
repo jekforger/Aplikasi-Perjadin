@@ -1,4 +1,4 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
 @section('content')
 <!-- Include Bootstrap CSS -->
@@ -7,11 +7,24 @@
 <!-- Include DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
-<!-- jQuery, Moment.js, dan Date Range Picker -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+      <!-- Diusulkan Kepada -->
+      <div class="form-section mb-4">
+        <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada</label>
+          <div class="d-flex align-items-end gap-2">
+            <input type="text" class="form-control" id="diusulkan_kepada" name="diusulkan_kepada" placeholder="Diusulkan Kepada" readonly required>
+            <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Pilih
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur I" href="#">Wakil Direktur I</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur II" href="#">Wakil Direktur II</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur III" href="#">Wakil Direktur III</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur IV" href="#">Wakil Direktur IV</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
 <!-- Include DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -62,6 +75,24 @@
                             </div>
                         </div>
                     </div>
+      <!-- Diusulkan Kepada -->
+      <div class="form-section mb-4">
+        <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada</label>
+          <div class="d-flex align-items-end gap-2">
+            <input type="text" class="form-control" id="diusulkan_kepada" name="diusulkan_kepada" placeholder="Diusulkan Kepada" readonly required>
+            <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Pilih
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur I" href="#">Wakil Direktur I</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur II" href="#">Wakil Direktur II</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur III" href="#">Wakil Direktur III</a></li>
+              <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur IV" href="#">Wakil Direktur IV</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
                     <!-- Surat Undangan -->
                     <div class="form-section mb-4">

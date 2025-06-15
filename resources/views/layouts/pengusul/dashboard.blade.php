@@ -1,9 +1,8 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
-@section('content')
-<div class="card-container">
-  <h2 class="page-title mb-4">Dashboard</h2>
-
+@section('pengusul_content')
+<body>
+  <div class="card-container">
   {{-- Kotak Statistik (di luar card, tapi sejajar dengan isi card) --}}
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 mb-4 px-4">
     <div class="col">
