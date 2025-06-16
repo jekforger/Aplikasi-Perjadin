@@ -44,13 +44,11 @@
     width: 100%;
 }
 
-
 /* Warna border kiri (dari desain) */
 .dashboard-card.border-left-blue { border-left: .25rem solid #4e73df!important; } /* Primary */
 .dashboard-card.border-left-green { border-left: .25rem solid #1cc88a!important; } /* Success */
 .dashboard-card.border-left-purple { border-left: .25rem solid #858796!important; } /* Warna kustom abu-abu/ungu */
 .dashboard-card.border-left-orange { border-left: .25rem solid #fd7e14!important; } /* Warna kustom oranye */
-
 
 /* Font dan Warna di dalam Card */
 .dashboard-card .info-box-label { /* Keterangan di atas angka (e.g., TOTAL PENGUSULAN) */
@@ -75,7 +73,6 @@
 .text-green { color: #1cc88a !important; }
 .text-purple { color: #858796 !important; }
 .text-orange { color: #fd7e14 !important; }
-
 
 /* === TABEL STYLING === */
 .dashboard-table-card {

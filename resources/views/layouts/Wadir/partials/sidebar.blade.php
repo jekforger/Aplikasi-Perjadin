@@ -1,6 +1,6 @@
 {{-- resources/views/wadir/partials/sidebar.blade.php --}}
 
-<div class="sidebar" id="sidebar"> {{-- Hapus class="sticky-top" jika ada --}}
+<div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <img src="{{ asset('img/polban2.png') }}" alt="Polban Logo" class="sidebar-logo">
         <div class="sidebar-title">
