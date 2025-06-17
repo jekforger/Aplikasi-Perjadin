@@ -1,6 +1,8 @@
 @extends('layouts.pengusul.pagePengusul')
 
 @section('content')
+
+{{-- ESSENTIAL STYLES FOR FORM STEPS --}}
 <style>
   .form-step {
     display: none;
@@ -8,56 +10,41 @@
   .form-step-active {
     display: block;
   }
+  .form-section .dropdown-menu {
+      position: absolute;
+      z-index: 1050;
+  }
 </style>
 
-<<<<<<< Updated upstream
-<body>
-  <div class="card-container">
-=======
-<!-- Include DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-
-<!-- jQuery, Moment.js, dan Date Range Picker -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
-<!-- Include DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-<!-- Include SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-{{-- STYLING DARI TEMPLATE SURAT TUGAS BARU --}}
+{{-- STYLING DARI TEMPLATE SURAT TUGAS BARU (Diperkuat) --}}
 <style>
     /* ========================= */
     /*    GLOBAL & LAYOUT        */
     /* ========================= */
-    .surat-tugas-body { /* Mengganti body agar tidak bentrok dengan body utama halaman */
+    .surat-tugas-body {
       font-family: 'Times New Roman', serif;
-      /* Hapus margin dan padding default dari body surat, karena akan diatur oleh .document-container */
     }
     .document-container {
-      width: 21cm;              /* Lebar A4 */
-      min-height: 29.7cm;       /* Tinggi A4 - bisa juga di-set ke auto jika konten dinamis */
+      /* Ubah width agar lebih responsif di dalam kontainer web, tapi tetap proporsional */
+      width: 100%; /* Ambil lebar penuh dari parent .card */
+      max-width: 21cm; /* Batasi maksimal selebar A4 */
+      min-height: 29.7cm; /* Tinggi A4 */
       background-color: white;
       padding-top: 2.5cm;
       padding-right: 3cm;
       padding-bottom: 2.5cm;
       padding-left: 3cm;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Diberikan oleh .card bawaan, jadi ini opsional */
       box-sizing: border-box;
       line-height: 1.5;
-      margin: 20px auto; /* Agar ada jarak jika di dalam card */
+      /* margin: 20px auto; REMOVED, parent card/form-step will handle margin */
+      margin: 0 auto; /* Tengah secara horizontal dalam parent */
+      box-shadow: none; /* Hapus shadow jika parent .card sudah ada */
     }
 
     /* ========================= */
     /*       HEADER STYLES       */
     /* ========================= */
-    .surat-tugas-header { /* Ubah nama kelas agar lebih spesifik */
+    .surat-tugas-header {
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 20px;
@@ -69,7 +56,7 @@
       height: auto;
       align-self: flex-start;
     }
-    .surat-tugas-header-text { /* Ubah nama kelas */
+    .surat-tugas-header-text {
       text-align: center;
       font-size: 10pt;
       margin-top: 10px;
@@ -93,7 +80,7 @@
       margin: 1px 0;
       line-height: 1.4;
     }
-    .surat-tugas-header-line { /* Ubah nama kelas */
+    .surat-tugas-header-line {
       border: 0;
       border-top: 1px solid #000;
       margin-top: 0;
@@ -103,15 +90,15 @@
     /* ========================= */
     /*       CONTENT STYLES      */
     /* ========================= */
-    .surat-tugas-content { /* Ubah nama kelas */
+    .surat-tugas-content {
       font-size: 11pt;
       line-height: 1.6;
     }
-    .surat-tugas-title-wrapper { /* Ubah nama kelas */
+    .surat-tugas-title-wrapper {
       text-align: center;
       margin-bottom: 10px;
     }
-    .surat-tugas-title-inner { /* Ubah nama kelas */
+    .surat-tugas-title-inner {
       display: inline-block;
       text-align: left;
     }
@@ -131,28 +118,32 @@
       margin-bottom: 10px;
       text-align: justify;
     }
-    .surat-tugas-detail-row { /* Ubah nama kelas */
-      display: flex;
+    .surat-tugas-detail-row {
+      display: flex !important; /* Pastikan selalu flex */
       margin-bottom: 4px;
     }
-    .surat-tugas-detail-label { /* Ubah nama kelas */
-      flex-basis: 150px; /* Disesuaikan agar label lebih panjang jika perlu */
-      min-width: 150px;
+    .surat-tugas-detail-label {
+      flex-basis: 150px !important; /* Paksa lebar dasar */
+      min-width: 150px !important;  /* Paksa lebar minimum */
       text-align: left;
+      color: black !important; /* Paksa warna teks hitam */
+      white-space: nowrap; /* Mencegah wrap jika label panjang */
     }
-    .surat-tugas-detail-separator { /* Ubah nama kelas */
-      flex-basis: 10px;
+    .surat-tugas-detail-separator {
+      flex-basis: 10px !important; /* Paksa lebar pemisah */
       text-align: center;
+      color: black !important; /* Paksa warna teks hitam */
     }
-    .surat-tugas-detail-value { /* Ubah nama kelas */
+    .surat-tugas-detail-value {
       flex-grow: 1;
       text-align: left;
+      color: black !important; /* Paksa warna teks hitam */
     }
 
     /* ========================= */
     /*   FOOTER‐SECTIONS (Grid)   */
     /* ========================= */
-    .surat-tugas-footer-wrapper { /* Ubah nama kelas */
+    .surat-tugas-footer-wrapper {
       display: grid;
       grid-template-columns: 1fr auto;
       grid-template-rows: auto auto auto;
@@ -160,7 +151,7 @@
       margin-top: 40px;
       width: 100%;
     }
-    .surat-tugas-date-block { /* Ubah nama kelas */
+    .surat-tugas-date-block {
       grid-column: 2;
       grid-row: 1;
       text-align: left;
@@ -170,20 +161,23 @@
       margin-bottom: 2px;
       font-size: 11pt;
       line-height: 1.2;
+      color: black !important;
     }
     .surat-tugas-date-block .ditandatangani-oleh {
       margin: 0;
       font-size: 11pt;
       line-height: 1.2;
+      color: black !important;
     }
-    .surat-tugas-tembusan-label { /* Ubah nama kelas */
+    .surat-tugas-tembusan-label {
       grid-column: 1;
       grid-row: 2;
       font-size: 10pt;
       line-height: 1.5;
       margin-top: 10px;
+      color: black !important;
     }
-    .surat-tugas-tembusan-list { /* Ubah nama kelas */
+    .surat-tugas-tembusan-list {
       grid-column: 1;
       grid-row: 3;
       font-size: 10pt;
@@ -197,8 +191,9 @@
     }
     .surat-tugas-tembusan-list li {
       margin-bottom: 2px;
+      color: black !important;
     }
-    .surat-tugas-signature-block { /* Ubah nama kelas */
+    .surat-tugas-signature-block {
       grid-column: 2;
       grid-row: 3;
       align-self: start;
@@ -208,190 +203,89 @@
     }
     .surat-tugas-signature-block p {
       margin: 0;
+      color: black !important;
     }
-    .surat-tugas-body a { /* Ubah nama kelas */
-      color: black;
+    .surat-tugas-body a {
+      color: black !important; /* Paksa warna link hitam */
       text-decoration: none;
     }
+
+    /* Style tambahan untuk tabel personel di preview surat */
+    .surat-tugas-personel-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .surat-tugas-personel-table th,
+    .surat-tugas-personel-table td {
+        border: 1px solid #000; /* Border hitam untuk tabel */
+        padding: 5px 8px;
+        text-align: left;
+        vertical-align: top;
+        font-size: 10pt; /* Ukuran font lebih kecil untuk tabel personel */
+        color: black !important;
+    }
+    .surat-tugas-personel-table th {
+        background-color: #f2f2f2;
+    }
 </style>
-{{-- AKHIR STYLING DARI TEMPLATE SURAT TUGAS BARU --}}
 
 
 <div class="card-container">
->>>>>>> Stashed changes
     <h2 class="page-title">Pengusulan</h2>
-    <div class="card">
+    <div class="card"> {{-- Ini adalah Bootstrap Card utama --}}
       <div class="label">
         <h6>*Semua form wajib di isi untuk keperluan data di dalam surat, terkecuali form "Pagu"</h6>
       </div>
 
-      {{-- Tambahkan form tag disini --}}
-      <form id="pengusulanForm" action="{{ route('pengusulan.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf {{-- CSRF Token --}}
+      <form id="pengusulanForm" action="{{ route('pengusul.store.pengusulan') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-<<<<<<< Updated upstream
         <!-- Langkah 1: Informasi Dasar Kegiatan -->
-        <div id="step-1" class="form-step form-step-active">
+        <div id="initial-form" class="form-step">
           <div class="row">
             <!-- Form Bagian Kiri -->
             <div class="col-md-6">
               <!-- Nama Kegiatan -->
             <div class="mb-3 mt-4">
-              <label for="namaKegiatan" class="form-label">Nama Kegiatan</label>
-              <textarea class="form-control" id="namaKegiatan" rows="3" placeholder="Nama Kegiatan"></textarea>
-=======
-            <div class="row">
-                <!-- Form Bagian Kiri -->
-                <div class="col-md-6">
-                    <!-- Nama Kegiatan -->
-                    <div class="mb-3 mt-4">
-                        <label for="nama_kegiatan" class="form-label">Nama Kegiatan</label>
-                        <textarea class="form-control" id="nama_kegiatan" name="nama_kegiatan" rows="3" placeholder="Nama Kegiatan" required></textarea>
-                    </div>
-
-                    <!-- Tempat Kegiatan -->
-                    <div class="mb-3">
-                        <label for="tempat_kegiatan" class="form-label">Tempat Kegiatan</label>
-                        <textarea class="form-control" id="tempat_kegiatan" name="tempat_kegiatan" rows="3" placeholder="Tempat Kegiatan" required></textarea>
-                    </div>
-
-                    <!-- Diusulkan Kepada -->
-                    <div class="form-section mb-4">
-                        <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada</label>
-                        <div class="d-flex align-items-end gap-2">
-                            <input type="text" class="form-control" id="diusulkan_kepada" name="diusulkan_kepada" placeholder="Diusulkan Kepada" readonly required>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Pilih
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur I" href="#">Wakil Direktur I</a></li>
-                                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur II" href="#">Wakil Direktur II</a></li>
-                                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur III" href="#">Wakil Direktur III</a></li>
-                                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur IV" href="#">Wakil Direktur IV</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Surat Undangan -->
-                    <div class="form-section mb-4">
-                        <label for="surat_undangan" class="form-label">Surat Undangan (Jika ada)</label>
-                        <input type="file" class="form-control" name="surat_undangan" id="surat_undangan" accept=".pdf,.jpg,.png,.doc,.docx">
-                    </div>
-
-                    <!-- Pembiayaan -->
-                    <div class="form-section mb-4">
-                        <label for="pembiayaan" class="form-label">Pembiayaan</label>
-                        <input type="hidden" name="pembiayaan" id="pembiayaan_value" value="Polban"> {{-- Default Polban --}}
-                        <div class="d-flex flex-column gap-2">
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_polban" value="Polban" checked>
-                                <label class="form-check-label" for="pembiayaan_polban">Polban</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_penyelenggara" value="Penyelenggara">
-                                <label class="form-check-label" for="pembiayaan_penyelenggara">Penyelenggara</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_polban_penyelenggara" value="Polban dan Penyelenggara">
-                                <label class="form-check-label" for="pembiayaan_polban_penyelenggara">Polban dan Penyelenggara</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Form Bagian Kanan -->
-                <div class="col-md-6">
-                    <!-- Ditugaskan Sebagai -->
-                    <div class="mb-3 mt-4">
-                        <label for="ditugaskan_sebagai" class="form-label">Ditugaskan Sebagai</label>
-                        <input type="text" class="form-control" id="ditugaskan_sebagai" name="ditugaskan_sebagai" placeholder="Ditugaskan Sebagai" required>
-                    </div>
-
-                    <!-- Tanggal Pelaksanaan -->
-                    <div class="mb-3">
-                        <label for="tanggal_pelaksanaan" class="form-label">Tanggal Pelaksanaan</label>
-                        <input type="text" id="tanggal_pelaksanaan" name="tanggal_pelaksanaan" class="form-control" placeholder="Tgl Berangkat → Tgl Pulang" readonly required>
-                    </div>
-
-                    <!-- Pagu Desentralisasi -->
-                    <div class="mb-3">
-                        <label class="form-label">Pagu</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="pagu_desentralisasi_checkbox" name="pagu_desentralisasi">
-                            <label class="form-check-label" for="pagu_desentralisasi_checkbox">
-                                Desentralisasi
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Alamat Kegiatan -->
-                    <div class="mb-3 mt-4">
-                        <label for="alamat_kegiatan" class="form-label">Alamat Kegiatan</label>
-                        <textarea class="form-control" id="alamat_kegiatan" name="alamat_kegiatan" rows="3" placeholder="Alamat Kegiatan" required></textarea>
-                    </div>
-
-                    <!-- Provinsi -->
-                    <div class="form-section mb-4">
-                        <label for="provinsi" class="form-label">Provinsi</label>
-                        <div class="d-flex align-items-end gap-2">
-                            <input type="text" class="form-control" id="provinsi" name="provinsi" placeholder="Provinsi" readonly required>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Pilih
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="Jawa Barat" href="#">Jawa Barat</a></li>
-                                    <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="Jawa Tengah" href="#">Jawa Tengah</a></li>
-                                    <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="Jawa Timur" href="#">Jawa Timur</a></li>
-                                    <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="DKI Jakarta" href="#">DKI Jakarta</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Nomor Surat Usulan -->
-                    <div class="mb-3">
-                        <label for="nomor_surat_usulan" class="form-label">Nomor Surat Usulan</label>
-                        <input type="text" class="form-control" id="nomor_surat_usulan" name="nomor_surat_usulan" placeholder="Nomor Surat Usulan" required>
-                    </div>
-                </div>
->>>>>>> Stashed changes
+              <label for="nama_kegiatan" class="form-label">Nama Kegiatan</label>
+              <textarea class="form-control" id="nama_kegiatan" name="nama_kegiatan" rows="3" placeholder="Nama Kegiatan" required>{{ old('nama_kegiatan') }}</textarea>
             </div>
 
             <!-- Tempat Kegiatan -->
             <div class="mb-3">
-              <label for="tempatKegiatan" class="form-label">Tempat Kegiatan</label>
-              <textarea class="form-control" id="tempatKegiatan" rows="3" placeholder="Tempat Kegiatan"></textarea>
+              <label for="tempat_kegiatan" class="form-label">Tempat Kegiatan</label>
+              <textarea class="form-control" id="tempat_kegiatan" name="tempat_kegiatan" rows="3" placeholder="Tempat Kegiatan" required>{{ old('tempat_kegiatan') }}</textarea>
             </div>
 
-<<<<<<< Updated upstream
             <!-- Diusulkan Kepada -->
             <div class="form-section mb-4">
-              <label for="diusulkanKepada" class="form-label">Diusulkan Kepada</label>
+              <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada</label>
               <div class="d-flex align-items-end gap-2">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="diusulkanKepada" 
-                  placeholder="Diusulkan Kepada" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="diusulkan_kepada"
+                  name="diusulkan_kepada"
+                  placeholder="Diusulkan Kepada"
                   readonly
+                  required
+                  value="{{ old('diusulkan_kepada') }}"
                 >
                 <div class="dropdown">
-                  <button 
-                    class="btn btn-secondary dropdown-toggle" 
-                    type="button" 
-                    data-bs-toggle="dropdown" 
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     Pilih
                   </button>
                   <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur I')">Wakil Direktur I</button></li>
-                    <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur II')">Wakil Direktur II</button></li>
-                    <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur III')">Wakil Direktur III</button></li>
-                    <li><button class="dropdown-item" type="button" onclick="setDiusulkan('Wakil Direktur IV')">Wakil Direktur IV</button></li>
+                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur I" href="#">Wakil Direktur I</a></li>
+                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur II" href="#">Wakil Direktur II</a></li>
+                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur III" href="#">Wakil Direktur III</a></li>
+                    <li><a class="dropdown-item pilih-option" data-target="diusulkan_kepada" data-value="Wakil Direktur IV" href="#">Wakil Direktur IV</a></li>
                   </ul>
                 </div>
               </div>
@@ -399,25 +293,26 @@
 
             <!-- Surat Undangan -->
             <div class="form-section mb-4">
-              <label class="form-label">Surat Undangan (Jika ada)</label>
-              <div class="mb-3">
-                <input type="file" class="form-control" name="surat_undangan">
-              </div>
+              <label for="surat_undangan" class="form-label">Surat Undangan (Jika ada)</label>
+              <input type="file" class="form-control" name="surat_undangan" id="surat_undangan" accept=".pdf,.jpg,.png,.doc,.docx">
+            </div>
 
-              <!-- Pembiayaan -->
-              <label for="pembiyaan" class="form-label">Pembiayaan</label>
-              <div class="radios">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Polban">
-                  <label class="form-check-label" for="inlineRadio1">Polban</label>
+            <!-- Pembiayaan -->
+            <div class="form-section mb-4">
+              <label for="pembiayaan" class="form-label">Pembiayaan</label>
+              <input type="hidden" name="pembiayaan" id="pembiayaan_value" value="{{ old('pembiayaan', 'Polban') }}">
+              <div class="d-flex flex-column gap-2">
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_polban" value="Polban" {{ old('pembiayaan', 'Polban') == 'Polban' ? 'checked' : '' }}>
+                  <label class="form-check-label" for="pembiayaan_polban">Polban</label>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Penyelenggara">
-                  <label class="form-check-label" for="inlineRadio2">Penyelenggara</label>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_penyelenggara" value="Penyelenggara" {{ old('pembiayaan') == 'Penyelenggara' ? 'checked' : '' }}>
+                  <label class="form-check-label" for="pembiayaan_penyelenggara">Penyelenggara</label>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="polban_penyelenggara">
-                  <label class="form-check-label" for="inlineRadio3">Polban dan Penyelenggara</label>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_polban_penyelenggara" value="Polban dan Penyelenggara" {{ old('pembiayaan') == 'Polban dan Penyelenggara' ? 'checked' : '' }}>
+                  <label class="form-check-label" for="pembiayaan_polban_penyelenggara">Polban dan Penyelenggara</label>
                 </div>
               </div>
             </div>
@@ -427,54 +322,73 @@
           <div class="col-md-6">
             <!-- Ditugaskan Sebagai -->
             <div class="mb-3 mt-4">
-                <label for="ditugaskanSebagai" class="form-label">Ditugaskan Sebagai</label>
-                <input type="text" class="form-control" id="ditugaskanSebagai" placeholder="Ditugaskan Sebagai">
+                <label for="ditugaskan_sebagai" class="form-label">Ditugaskan Sebagai</label>
+                <input type="text" class="form-control" id="ditugaskan_sebagai" name="ditugaskan_sebagai" placeholder="Ditugaskan Sebagai" required value="{{ old('ditugaskan_sebagai') }}">
               </div>
 
               <!-- Pilih Tanggal -->
               <div class="mb-3">
-                <label for="tanggalPelaksanaan" class="form-label">Tanggal Pelaksanaan</label>
-                <input 
-                  type="text" 
-                  id="tanggalPelaksanaan" 
-                  class="form-control" 
+                <label for="tanggal_pelaksanaan" class="form-label">Tanggal Pelaksanaan</label>
+                <input
+                  type="text"
+                  id="tanggal_pelaksanaan"
+                  name="tanggal_pelaksanaan"
+                  class="form-control"
                   placeholder="Tgl Berangkat → Tgl Pulang"
                   readonly
+                  required
+                  value="{{ old('tanggal_pelaksanaan') }}"
                 >
               </div>
 
-              <!-- Pagu -->
-              <label for="pagu" class="form-label">Pagu</label>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                  Desentralisasi
-                </label>
+              <!-- Pagu Desentralisasi -->
+              <div class="mb-3">
+                <label class="form-label">Pagu</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="1" id="pagu_desentralisasi_checkbox" name="pagu_desentralisasi" {{ old('pagu_desentralisasi') ? 'checked' : '' }}>
+                  <label class="form-check-label" for="pagu_desentralisasi_checkbox">
+                    Desentralisasi
+                  </label>
+                </div>
               </div>
+
+              <!-- Nominal Pagu (Only visible if Desentralisasi is checked) -->
+              <div class="mb-3" id="pagu_nominal_input_group" style="{{ old('pagu_desentralisasi') ? '' : 'display:none;' }}">
+                <label for="pagu_nominal" class="form-label">Nominal Pagu</label>
+                <input type="number" class="form-control" id="pagu_nominal" name="pagu_nominal" placeholder="Contoh: 1500000" value="{{ old('pagu_nominal') }}">
+              </div>
+
 
               <!-- Alamat Kegiatan -->
               <div class="mb-3 mt-4">
-                <label for="alamatKegiatan" class="form-label">Alamat Kegiatan</label>
-                <textarea class="form-control" id="alamatKegiatan" rows="3" placeholder="Alamat Kegiatan"></textarea>
+                <label for="alamat_kegiatan" class="form-label">Alamat Kegiatan</label>
+                <textarea class="form-control" id="alamat_kegiatan" name="alamat_kegiatan" rows="3" placeholder="Alamat Kegiatan" required>{{ old('alamat_kegiatan') }}</textarea>
               </div>
 
               <!-- Provinsi -->
               <div class="form-section mb-4">
-                <label for="diusulkanKepada" class="form-label">Provinsi</label>
+                <label for="provinsi" class="form-label">Provinsi</label>
                 <div class="d-flex align-items-end gap-2">
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    id="provinsi" 
-                    placeholder="Provinsi" 
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="provinsi"
+                    name="provinsi"
+                    placeholder="Provinsi"
                     readonly
+                    required
+                    value="{{ old('provinsi') }}"
                   >
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Pilih
                     </button>
                     <ul class="dropdown-menu">
-                      <li><div class="dropdown-item text-center py-2 text-muted">Memuat provinsi...</div></li>
+                      <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="Jawa Barat" href="#">Jawa Barat</a></li>
+                      <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="Jawa Tengah" href="#">Jawa Tengah</a></li>
+                      <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="Jawa Timur" href="#">Jawa Timur</a></li>
+                      <li><a class="dropdown-item pilih-option" data-target="provinsi" data-value="DKI Jakarta" href="#">DKI Jakarta</a></li>
+                      {{-- Add more provinces here --}}
                     </ul>
                   </div>
                 </div>
@@ -482,272 +396,348 @@
 
               <!-- Nomor Surat Usulan -->
               <div class="mb-3">
-                <label for="nomorSuratUsulan" class="form-label">Nomor Surat Usulan</label>
-                <input type="text" class="form-control" id="nomorSuratUsulan" placeholder="Nomor Surat Usulan">
+                <label for="nomor_surat_usulan" class="form-label">Nomor Surat Usulan</label>
+                <input type="text" class="form-control" id="nomor_surat_usulan" name="nomor_surat_usulan" placeholder="Nomor Surat Usulan" required value="{{ old('nomor_surat_usulan') }}">
               </div>
             </div>
           </div>
           <!-- Button -->
           <div class="button-next mt-3">
-            <button class="btn btn-primary" type="on-click">Selanjutnya</button>
+            <button type="button" class="btn btn-primary" id="next-to-personel">Selanjutnya</button>
           </div>
-          </div>
-=======
-    <!-- Data Pegawai and Mahasiswa Section -->
-    <div id="data-section" class="card p-4" style="display: none;">
-        <h3>Data Personel</h3>
-        <p>*Centang untuk memilih pegawai/mahasiswa yang akan ditugaskan!</p>
+        </div> <!-- End Initial Form -->
 
-        <div class="mb-3 d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="data-selection-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pilih Data
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="data-selection-dropdown">
-                        <li><a class="dropdown-item" href="#" data-value="data-pegawai">Data Pegawai</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="data-mahasiswa">Data Mahasiswa</a></li>
-                    </ul>
+        <!-- Data Pegawai and Mahasiswa Section -->
+        <div id="data-section" class="form-step">
+            <h3>Data Personel</h3>
+            <p>*Centang untuk memilih pegawai/mahasiswa yang akan ditugaskan!</p>
+
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="data-selection-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Pilih Data
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="data-selection-dropdown">
+                            <li><a class="dropdown-item" href="#" data-value="data-pegawai">Data Pegawai</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="data-mahasiswa">Data Mahasiswa</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="text" class="form-control me-2" id="search-input" placeholder="Search" style="max-width: 200px;">
+                    <button class="btn btn-primary" id="search-button">Search</button>
                 </div>
             </div>
-            <div class="d-flex align-items-center">
-                <input type="text" class="form-control me-2" id="search-input" placeholder="Search" style="max-width: 200px;">
-                <button class="btn btn-primary" id="search-button">Search</button>
-            </div>
-        </div>
 
-        {{-- TABEL PEGAWAI --}}
-        <div class="table-responsive" id="data-pegawai-table">
-            <table class="table table-striped" id="pegawaiTable">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="select-all-pegawai"></th>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>NIP</th>
-                        <th>Pangkat</th>
-                        <th>Golongan</th>
-                        <th>Jabatan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($pegawais as $index => $pegawai)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="pegawai_ids[]" value="{{ $pegawai->id }}"
-                                   class="personel-checkbox"
-                                   data-id="{{ $pegawai->id }}"
-                                   data-type="pegawai"
-                                   data-nama="{{ $pegawai->nama }}"
-                                   data-nip="{{ $pegawai->nip ?? '-' }}"
-                                   data-pangkat="{{ $pegawai->pangkat ?? '-' }}"
-                                   data-golongan="{{ $pegawai->golongan ?? '-' }}"
-                                   data-jabatan="{{ $pegawai->jabatan ?? '-' }}"
-                                   data-jurusan=""
-                                   data-prodi=""
-                                   onchange="updateSelectedPersonel(this)">
-                        </td>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $pegawai->nama }}</td>
-                        <td>{{ $pegawai->nip ?? '-'}}</td>
-                        <td>{{ $pegawai->pangkat ?? '-' }}</td>
-                        <td>{{ $pegawai->golongan ?? '-' }}</td>
-                        <td>{{ $pegawai->jabatan ?? '-' }}</td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="7" class="text-center">Tidak ada data pegawai.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        {{-- TABEL MAHASISWA --}}
-        <div class="table-responsive" id="data-mahasiswa-table" style="display: none;">
-            <table class="table table-striped" id="mahasiswaTable">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="select-all-mahasiswa"></th>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>NIM</th>
-                        <th>Jurusan</th>
-                        <th>Prodi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($mahasiswa as $index => $mhs)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="mahasiswa_ids[]" value="{{ $mhs->id }}"
-                                   class="personel-checkbox"
-                                   data-id="{{ $mhs->id }}"
-                                   data-type="mahasiswa"
-                                   data-nama="{{ $mhs->nama }}"
-                                   data-nip=""
-                                   data-pangkat=""
-                                   data-golongan=""
-                                   data-jabatan=""
-                                   data-nim="{{ $mhs->nim ?? '-' }}"
-                                   data-jurusan="{{ $mhs->jurusan ?? '-' }}"
-                                   data-prodi="{{ $mhs->prodi ?? '-' }}"
-                                   onchange="updateSelectedPersonel(this)">
-                        </td>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $mhs->nama }}</td>
-                        <td>{{ $mhs->nim ?? '-'}}</td>
-                        <td>{{ $mhs->jurusan ?? '-' }}</td>
-                        <td>{{ $mhs->prodi ?? '-' }}</td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="text-center">Tidak ada data mahasiswa.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        {{-- TABEL PERSONEL TERPILIH (gabungan dari Pegawai dan Mahasiswa) --}}
-        <div class="mt-4" id="selectedPersonelContainer" style="display: none;">
-            <h5 class="mb-3">Personel Terpilih:</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="selectedPersonelTable">
-                    <thead class="table-primary">
+            {{-- TABEL PEGAWAI --}}
+            <div class="table-responsive" id="data-pegawai-table">
+                <table class="table table-striped" id="pegawaiTable">
+                    <thead>
                         <tr>
+                            <th><input type="checkbox" id="select-all-pegawai"></th>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>NIP/NIM</th>
-                            <th>Jabatan/Jurusan</th>
-                            <th>Aksi</th>
+                            <th>NIP</th>
+                            <th>Pangkat</th>
+                            <th>Golongan</th>
+                            <th>Jabatan</th>
                         </tr>
                     </thead>
-                    <tbody id="selectedPersonelList">
-                        <!-- Daftar personel terpilih akan muncul di sini (dibuat oleh JS) -->
+                    <tbody>
+                        @forelse ($pegawais as $index => $pegawai)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="pegawai_ids[]" value="{{ $pegawai->id }}"
+                                       class="personel-checkbox"
+                                       data-id="{{ $pegawai->id }}"
+                                       data-type="pegawai"
+                                       data-nama="{{ $pegawai->nama }}"
+                                       data-nip="{{ $pegawai->nip ?? '-' }}"
+                                       data-pangkat="{{ $pegawai->pangkat ?? '-' }}"
+                                       data-golongan="{{ $pegawai->golongan ?? '-' }}"
+                                       data-jabatan="{{ $pegawai->jabatan ?? '-' }}"
+                                       data-jurusan=""
+                                       data-prodi=""
+                                       onchange="updateSelectedPersonel(this)">
+                            </td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $pegawai->nama }}</td>
+                            <td>{{ $pegawai->nip ?? '-'}}</td>
+                            <td>{{ $pegawai->pangkat ?? '-' }}</td>
+                            <td>{{ $pegawai->golongan ?? '-' }}</td>
+                            <td>{{ $pegawai->jabatan ?? '-' }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center">Tidak ada data pegawai.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <div class="button-next mt-3">
-            <button type="button" class="btn btn-primary" id="back">Kembali</button>
-            <button type="button" class="btn btn-success" id="create-task">Buat Surat Tugas</button>
-            <button type="button" class="btn btn-warning" id="save-draft">Simpan Draft</button>
-        </div>
-    </div>
-
-    <!-- Surat Tugas Section (TEMPLATE BARU DITERAPKAN DI SINI) -->
-    <div id="surat-tugas-section" class="card p-0" style="display: none;">
-        <div class="document-container surat-tugas-body">
-            <!-- =========== HEADER HALAMAN =========== -->
-            <div class="surat-tugas-header">
-              <img src="{{ asset('img/polban.png') }}" alt="POLBAN Logo" />
-              <div class="surat-tugas-header-text">
-                <h1>KEMENTERIAN PENDIDIKAN TINGGI, SAINS,<br>DAN TEKNOLOGI</h1>
-                <h2>POLITEKNIK NEGERI BANDUNG</h2>
-                <p>Jalan Gegerkalong Hilir, Desa Ciwaruga, Bandung 40012, Kotak Pos 1234,</p>
-                <p>Telepon: (022) 2013789, Faksimile: (022) 2013889</p>
-                <p>Laman: <a href="https://www.polban.ac.id" target="_blank">www.polban.ac.id</a>,
-                   Pos Elektronik: polban@polban.ac.id</p>
-              </div>
+            {{-- TABEL MAHASISWA --}}
+            <div class="table-responsive" id="data-mahasiswa-table" style="display: none;">
+                <table class="table table-striped" id="mahasiswaTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all-mahasiswa"></th>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>NIM</th>
+                            <th>Jurusan</th>
+                            <th>Prodi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($mahasiswa as $index => $mhs)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="mahasiswa_ids[]" value="{{ $mhs->id }}"
+                                       class="personel-checkbox"
+                                       data-id="{{ $mhs->id }}"
+                                       data-type="mahasiswa"
+                                       data-nama="{{ $mhs->nama }}"
+                                       data-nip=""
+                                       data-pangkat=""
+                                       data-golongan=""
+                                       data-jabatan=""
+                                       data-nim="{{ $mhs->nim ?? '-' }}"
+                                       data-jurusan="{{ $mhs->jurusan ?? '-' }}"
+                                       data-prodi="{{ $mhs->prodi ?? '-' }}"
+                                       onchange="updateSelectedPersonel(this)">
+                            </td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $mhs->nama }}</td>
+                            <td>{{ $mhs->nim ?? '-'}}</td>
+                            <td>{{ $mhs->jurusan ?? '-' }}</td>
+                            <td>{{ $mhs->prodi ?? '-' }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak ada data mahasiswa.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-            <hr class="surat-tugas-header-line" />
 
-            <!-- =========== ISI UTAMA HALAMAN =========== -->
-            <div class="surat-tugas-content">
-
-              <div class="surat-tugas-title-wrapper">
-                <div class="surat-tugas-title-inner">
-                  <h3>SURAT TUGAS</h3>
-                  <p class="nomor">Nomor: <span id="nomor_surat_display"></span></p>
+            {{-- TABEL PERSONEL TERPILIH (gabungan dari Pegawai dan Mahasiswa) --}}
+            <div class="mt-4" id="selectedPersonelContainer" style="display: none;">
+                <h5 class="mb-3">Personel Terpilih:</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="selectedPersonelTable">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>NIP/NIM</th>
+                                <th>Jabatan/Jurusan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="selectedPersonelList">
+                            <!-- Daftar personel terpilih akan muncul di sini (dibuat oleh JS) -->
+                        </tbody>
+                    </table>
                 </div>
-              </div>
-
-              <p style="margin-bottom: 10px;">
-                Direktur memberi tugas kepada:
-              </p>
-
-              <div id="daftar_personel_surat_tugas" style="margin-bottom: 15px;">
-                  {{-- Konten dinamis daftar personel akan diisi oleh JavaScript --}}
-              </div>
-
-
-              <p style="margin-top: 20px; margin-bottom: 10px;">
-                Untuk mengikuti kegiatan <span id="nama_kegiatan_display_text" class="fw-bold"></span>, diselenggarakan oleh <span id="penyelenggara_display" class="fw-bold"></span> pada:
-              </p>
-
-              <!-- Detail Kegiatan -->
-              <div class="surat-tugas-detail-row">
-                <div class="surat-tugas-detail-label">Hari/tanggal</div>
-                <div class="surat-tugas-detail-separator">:</div>
-                <div class="surat-tugas-detail-value"><span id="tanggal_pelaksanaan_display"></span></div>
-              </div>
-              <div class="surat-tugas-detail-row">
-                <div class="surat-tugas-detail-label">Tempat</div>
-                <div class="surat-tugas-detail-separator">:</div>
-                <div class="surat-tugas-detail-value">
-                  <span id="tempat_kegiatan_display"></span>
-                  <div id="alamat_kegiatan_display_detail" style="margin-left: 0;"></div>
-                </div>
-              </div>
-              <div class="surat-tugas-detail-row">
-                <div class="surat-tugas-detail-label">Kegiatan</div>
-                <div class="surat-tugas-detail-separator">:</div>
-                <div class="surat-tugas-detail-value"><span id="ditugaskan_sebagai_display"></span></div>
-              </div>
-
-
-              <p style="margin-top: 20px;">
-                Surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.
-              </p>
-
-              <!-- =========== FOOTER‐GRID (Tembusan & Signature) =========== -->
-              <div class="surat-tugas-footer-wrapper">
-                <div class="surat-tugas-date-block">
-                  <p class="date"><span id="tanggal_surat_display"></span></p>
-                  <p class="ditandatangani-oleh">Direktur,</p>
-                </div>
-                <div class="surat-tugas-tembusan-label">
-                  <p>Tembusan:</p>
-                </div>
-                <div class="surat-tugas-tembusan-list">
-                  <ol>
-                    <li>Para Wakil Direktur</li>
-                    <li>Ketua Jurusan</li>
-                  </ol>
-                </div>
-                <div class="surat-tugas-signature-block">
-                  <div style="height: 60px;"></div>
-                  <p>Maryani, S.E., M.Si., Ph.D.</p>
-                  <p>NIP 196405041990032001</p>
-                </div>
-              </div>
             </div>
-        </div>
-        {{-- Tombol Aksi untuk Surat Tugas --}}
-        <div class="p-4 d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary" id="back-to-form">Kembali</button>
-            <button type="button" class="btn btn-primary" id="submit-surat">Usulkan</button>
->>>>>>> Stashed changes
-        </div>
+
+            <div class="button-next mt-3">
+                <button type="button" class="btn btn-primary" id="back">Kembali</button>
+                <button type="button" class="btn btn-success" id="create-task">Buat Surat Tugas</button>
+                <button type="button" class="btn btn-warning" id="save-draft">Simpan Draft</button>
             </div>
-          </div>
-        </div> <!-- End Step 2 -->
+        </div> <!-- End Data Section -->
+
+        <!-- Surat Tugas Section -->
+        <div id="surat-tugas-section" class="form-step">
+            <div class="document-container surat-tugas-body">
+                <!-- =========== HEADER HALAMAN =========== -->
+                <div class="surat-tugas-header">
+                  <img src="{{ asset('img/polban.png') }}" alt="POLBAN Logo" />
+                  <div class="surat-tugas-header-text">
+                    <h1>KEMENTERIAN PENDIDIKAN TINGGI, SAINS,<br>DAN TEKNOLOGI</h1>
+                    <h2>POLITEKNIK NEGERI BANDUNG</h2>
+                    <p>Jalan Gegerkalong Hilir, Desa Ciwaruga, Bandung 40012, Kotak Pos 1234,</p>
+                    <p>Telepon: (022) 2013789, Faksimile: (022) 2013889</p>
+                    <p>Laman: <a href="https://www.polban.ac.id" target="_blank">www.polban.ac.id</a>,
+                       Pos Elektronik: polban@polban.ac.id</p>
+                  </div>
+                </div>
+                <hr class="surat-tugas-header-line" />
+
+                <!-- =========== ISI UTAMA HALAMAN =========== -->
+                <div class="surat-tugas-content">
+
+                  <div class="surat-tugas-title-wrapper">
+                    <div class="surat-tugas-title-inner">
+                      <h3>SURAT TUGAS</h3>
+                      <p class="nomor">Nomor: <span id="nomor_surat_display"></span></p>
+                    </div>
+                  </div>
+
+                  <p style="margin-bottom: 10px;">
+                    Direktur memberi tugas kepada:
+                  </p>
+
+                  <div id="daftar_personel_surat_tugas" style="margin-bottom: 15px;">
+                      {{-- Konten dinamis daftar personel akan diisi oleh JavaScript --}}
+                  </div>
+
+
+                  <p style="margin-top: 20px; margin-bottom: 10px;">
+                    Untuk mengikuti kegiatan <span id="nama_kegiatan_display_text" class="fw-bold"></span>, diselenggarakan oleh <span id="penyelenggara_display" class="fw-bold"></span> pada:
+                  </p>
+
+                  <!-- Detail Kegiatan -->
+                  <div class="surat-tugas-detail-row">
+                    <div class="surat-tugas-detail-label">Hari/tanggal</div>
+                    <div class="surat-tugas-detail-separator">:</div>
+                    <div class="surat-tugas-detail-value"><span id="tanggal_pelaksanaan_display"></span></div>
+                  </div>
+                  <div class="surat-tugas-detail-row">
+                    <div class="surat-tugas-detail-label">Tempat</div>
+                    <div class="surat-tugas-detail-separator">:</div>
+                    <div class="surat-tugas-detail-value">
+                      <span id="tempat_kegiatan_display"></span>
+                      <div id="alamat_kegiatan_display_detail" style="margin-left: 0;"></div>
+                    </div>
+                  </div>
+                  <div class="surat-tugas-detail-row">
+                    <div class="surat-tugas-detail-label">Kegiatan</div>
+                    <div class="surat-tugas-detail-separator">:</div>
+                    <div class="surat-tugas-detail-value"><span id="ditugaskan_sebagai_display"></span></div>
+                  </div>
+
+
+                  <p style="margin-top: 20px;">
+                    Surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.
+                  </p>
+
+                  <!-- =========== FOOTER‐GRID (Tembusan & Signature) =========== -->
+                  <div class="surat-tugas-footer-wrapper">
+                    <div class="surat-tugas-date-block">
+                      <p class="date"><span id="tanggal_surat_display"></span></p>
+                      <p class="ditandatangani-oleh">Direktur,</p>
+                    </div>
+                    <div class="surat-tugas-tembusan-label">
+                      <p>Tembusan:</p>
+                    </div>
+                    <div class="surat-tugas-tembusan-list">
+                      <ol>
+                        <li>Para Wakil Direktur</li>
+                        <li>Ketua Jurusan</li>
+                      </ol>
+                    </div>
+                    <div class="surat-tugas-signature-block">
+                      <div style="height: 60px;"></div>
+                      <p>Maryani, S.E., M.Si., Ph.D.</p>
+                      <p>NIP 196405041990032001</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            {{-- Tombol Aksi untuk Surat Tugas --}}
+            <div class="p-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" id="back-to-form">Kembali</button>
+                <button type="button" class="btn btn-primary" id="submit-surat">Usulkan</button>
+            </div>
+        </div> <!-- End Surat Tugas Section -->
 
       </form> {{-- End Form --}}
     </div>
   </div>
 
-<<<<<<< Updated upstream
-</body>
-=======
 @push('scripts')
 <script>
-    // Array untuk menyimpan personel terpilih (pegawai dan mahasiswa)
+    // Initial setup for form steps
+    let currentStep = 1;
+    const formSteps = document.querySelectorAll('.form-step');
+
+    function showStep(stepNumber) {
+        formSteps.forEach((step, index) => {
+            if (index + 1 === stepNumber) {
+                step.classList.add('form-step-active');
+            } else {
+                step.classList.remove('form-step-active');
+            }
+        });
+        // Ensure correct table is shown and DataTables redraws if needed
+        if (stepNumber === 2) {
+            // Restore correct table visibility
+            const selectedDropdownText = $('#data-selection-dropdown').text();
+            if (selectedDropdownText.includes('Pegawai')) {
+                $('#data-pegawai-table').show();
+                $('#data-mahasiswa-table').hide();
+            } else if (selectedDropdownText.includes('Mahasiswa')) {
+                $('#data-mahasiswa-table').show();
+                $('#data-pegawai-table').hide();
+            } else {
+                $('#data-pegawai-table').show();
+                $('#data-mahasiswa-table').hide();
+                $('#data-selection-dropdown').text('Data Pegawai');
+            }
+            if ($.fn.DataTable.isDataTable('#pegawaiTable')) $('#pegawaiTable').DataTable().columns.adjust().draw();
+            if ($.fn.DataTable.isDataTable('#mahasiswaTable')) $('#mahasiswaTable').DataTable().columns.adjust().draw();
+        }
+    }
+
+    $(document).ready(function() {
+        showStep(1);
+
+        if (!$.fn.DataTable.isDataTable('#pegawaiTable')) {
+            $('#pegawaiTable').DataTable({ paging: true, searching: true, info: true, pageLength: 5, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
+        } else {
+             $('#pegawaiTable').DataTable().columns.adjust().draw();
+        }
+
+        if (!$.fn.DataTable.isDataTable('#mahasiswaTable')) {
+            $('#mahasiswaTable').DataTable({ paging: true, searching: true, info: true, pageLength: 10, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
+        } else {
+             $('#mahasiswaTable').DataTable().columns.adjust().draw();
+        }
+
+        $('#selectedPersonelContainer').hide();
+
+        $('#pagu_nominal_input_group').toggle($('#pagu_desentralisasi_checkbox').is(':checked'));
+
+        $('input[name="pembiayaan_option"][value="{{ old('pembiayaan', 'Polban') }}"]').prop('checked', true);
+        $('#pagu_desentralisasi_checkbox').prop('checked', {{ old('pagu_desentralisasi') ? 'true' : 'false' }});
+
+        $('#pagu_nominal_input_group').toggle($('#pagu_desentralisasi_checkbox').is(':checked'));
+
+        @if ($errors->any())
+            Swal.fire({
+                icon: 'error',
+                title: 'Error Validasi!',
+                html: 'Mohon periksa kembali input Anda:<br><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
+                confirmButtonText: 'Oke'
+            });
+            showStep(1);
+        @endif
+        initializeSelectedPersonel();
+    });
+
     let selectedPersonel = [];
 
-    // Fungsi untuk mengupdate daftar personel terpilih
+    function initializeSelectedPersonel() {
+        selectedPersonel = [];
+        $('.personel-checkbox:checked').each(function() {
+            const checkbox = this;
+            const personelData = {
+                id: checkbox.dataset.id, type: checkbox.dataset.type, nama: checkbox.dataset.nama,
+                nip: checkbox.dataset.nip, pangkat: checkbox.dataset.pangkat,
+                golongan: checkbox.dataset.golongan, jabatan: checkbox.dataset.jabatan,
+                nim: checkbox.dataset.nim, jurusan: checkbox.dataset.jurusan, prodi: checkbox.dataset.prodi,
+            };
+            selectedPersonel.push(personelData);
+        });
+        renderSelectedPersonel();
+    }
+
+
     function updateSelectedPersonel(checkbox) {
         const personelId = checkbox.dataset.id;
         const type = checkbox.dataset.type;
@@ -769,7 +759,6 @@
         renderSelectedPersonel();
     }
 
-    // Fungsi untuk menampilkan daftar personel terpilih
     function renderSelectedPersonel() {
         const container = $('#selectedPersonelContainer');
         const listElement = $('#selectedPersonelList');
@@ -798,7 +787,6 @@
         }
     }
 
-    // Fungsi untuk menghapus personel dari daftar terpilih dan uncheck checkbox
     function removePersonel(personelId, type) {
         const checkbox = $(`input.personel-checkbox[data-id="${personelId}"][data-type="${type}"]`);
         if (checkbox.length) {
@@ -807,7 +795,6 @@
         }
     }
 
-    // Handle "Select All" checkbox
     $('#select-all-pegawai').on('click', function () {
         const isChecked = this.checked;
         $('input.personel-checkbox[data-type="pegawai"]').each(function() {
@@ -827,26 +814,27 @@
         });
     });
 
-    // Form navigation and actions
-    $('#pengusulan-form').on('submit', function (e) {
-        e.preventDefault();
-        $('#initial-form').hide(); $('#data-section').show();
-        renderSelectedPersonel();
-        $('#data-pegawai-table').show(); $('#data-mahasiswa-table').hide();
-        $('#data-selection-dropdown').text('Data Pegawai');
-        if ($.fn.DataTable.isDataTable('#pegawaiTable')) $('#pegawaiTable').DataTable().draw();
-        else $('#pegawaiTable').DataTable({ paging: true, searching: false, info: true, pageLength: 5, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
-        if (!$.fn.DataTable.isDataTable('#mahasiswaTable')) $('#mahasiswaTable').DataTable({ paging: true, searching: false, info: true, pageLength: 10, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
+    $('#next-to-personel').on('click', function (e) {
+        const form = document.getElementById('pengusulanForm');
+        if (!form.reportValidity()) {
+            Swal.fire('Error Validasi!', 'Mohon lengkapi semua field yang wajib diisi pada formulir pertama.', 'error');
+            return;
+        }
+        currentStep = 2;
+        showStep(currentStep);
     });
-    $('#back').on('click', () => { $('#data-section').hide(); $('#initial-form').show(); });
+
+    $('#back').on('click', () => {
+        currentStep = 1;
+        showStep(currentStep);
+    });
 
     $('#save-draft').on('click', function () {
-        // ... (logika simpan draft seperti sebelumnya, pastikan mengirim 'status_pengajuan': 'draft')
          if (selectedPersonel.length === 0) {
             Swal.fire('Peringatan!','Pilih setidaknya satu personel untuk simpan draft!','warning');
             return;
         }
-        const formData = new FormData(document.getElementById('pengusulan-form'));
+        const formData = new FormData(document.getElementById('pengusulanForm'));
         selectedPersonel.forEach(p => {
             if (p.type === 'pegawai') formData.append('pegawai_ids[]', p.id);
             else if (p.type === 'mahasiswa') formData.append('mahasiswa_ids[]', p.id);
@@ -857,11 +845,33 @@
             method: 'POST', body: formData,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
         .then(data => {
-            if (data.success) Swal.fire('Draft Disimpan!', data.message || 'Draft berhasil disimpan.','success');
-            else Swal.fire('Gagal!', data.message || 'Gagal menyimpan draft.','error');
-        }).catch(error => Swal.fire('Error!', 'Terjadi kesalahan jaringan.','error'));
+            if (data.success) {
+                Swal.fire('Draft Disimpan!', data.message || 'Draft berhasil disimpan.','success')
+                .then(() => { /* No reload for draft, stay on page, maybe clear selection */ });
+            } else {
+                Swal.fire('Gagal!', data.message || 'Gagal menyimpan draft.','error');
+            }
+        }).catch(error => {
+            console.error('Fetch Error:', error);
+            let errorMessage = 'Terjadi kesalahan jaringan.';
+            if (error.errors) {
+                errorMessage = '<strong>Kesalahan Validasi:</strong><ul>';
+                for (let key in error.errors) {
+                    errorMessage += `<li>${error.errors[key].join(', ')}</li>`;
+                }
+                errorMessage += '</ul>';
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+            Swal.fire('Error!', errorMessage,'error');
+        });
     });
 
 
@@ -874,8 +884,10 @@
             showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#data-section').hide(); $('#surat-tugas-section').show();
-                const form = $('#pengusulan-form');
+                currentStep = 3;
+                showStep(currentStep);
+                const form = $('#pengusulanForm');
+
                 $('#nomor_surat_display').text(form.find('#nomor_surat_usulan').val() ? form.find('#nomor_surat_usulan').val() + '/PL12.C01/KP/' + new Date().getFullYear() : "___/PL12.C01/KP/" + new Date().getFullYear());
                 $('#nama_kegiatan_display_text').text(form.find('#nama_kegiatan').val() || '-');
                 let tempatKegiatanVal = form.find('#tempat_kegiatan').val();
@@ -885,23 +897,54 @@
                 $('#alamat_kegiatan_display_detail').html((form.find('#alamat_kegiatan').val() || '-').replace(/\n/g, '<br>'));
                 $('#ditugaskan_sebagai_display').text(form.find('#ditugaskan_sebagai').val() || '-');
                 const today = new Date();
-                $('#tanggal_surat_display').text(`${String(today.getDate()).padStart(2, '0')} ${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][today.getMonth()]} ${today.getFullYear()}`);
+                $('#tanggal_surat_display').text(`Bandung, ${String(today.getDate()).padStart(2, '0')} ${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][today.getMonth()]} ${today.getFullYear()}`);
 
                 const daftarPersonelContainer = $('#daftar_personel_surat_tugas');
                 daftarPersonelContainer.html('');
                 if (selectedPersonel.length > 0) {
                     let personelHtml = '';
                     selectedPersonel.forEach((personel) => {
-                        personelHtml += `<div style="margin-bottom: 15px;">`;
-                        personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">Nama</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.nama || '-'}</div></div>`;
+                        personelHtml += `
+                            <div style="margin-bottom: 15px;">
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">Nama</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.nama || '-'}</div>
+                                </div>`;
                         if (personel.type === 'pegawai') {
-                            personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">NIP</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.nip || '-'}</div></div>`;
-                            personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">Pangkat/golongan</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.pangkat || '-'} / ${personel.golongan || '-'}</div></div>`;
-                            personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">Jabatan</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.jabatan || '-'}</div></div>`;
+                            personelHtml += `
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">NIP</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.nip || '-'}</div>
+                                </div>
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">Pangkat/golongan</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.pangkat || '-'} / ${personel.golongan || '-'}</div>
+                                </div>
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">Jabatan</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.jabatan || '-'}</div>
+                                </div>`;
                         } else if (personel.type === 'mahasiswa') {
-                            personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">NIM</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.nim || '-'}</div></div>`;
-                            personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">Jurusan</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.jurusan || '-'}</div></div>`;
-                            personelHtml += `<div class="surat-tugas-detail-row"><div class="surat-tugas-detail-label">Program Studi</div><div class="surat-tugas-detail-separator">:</div><div class="surat-tugas-detail-value">${personel.prodi || '-'}</div></div>`;
+                            personelHtml += `
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">NIM</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.nim || '-'}</div>
+                                </div>
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">Jurusan</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.jurusan || '-'}</div>
+                                </div>
+                                <div class="surat-tugas-detail-row">
+                                    <div class="surat-tugas-detail-label">Program Studi</div>
+                                    <div class="surat-tugas-detail-separator">:</div>
+                                    <div class="surat-tugas-detail-value">${personel.prodi || '-'}</div>
+                                </div>`;
                         }
                         personelHtml += `</div>`;
                     });
@@ -913,16 +956,15 @@
         });
     });
 
-    $('#back-to-form').on('click', () => { $('#surat-tugas-section').hide(); $('#data-section').show(); });
+    $('#back-to-form').on('click', () => { currentStep = 2; showStep(currentStep); });
 
     $('#submit-surat').on('click', function () {
-        // ... (logika submit surat seperti sebelumnya, pastikan mengirim 'status_pengajuan': 'diajukan')
          Swal.fire({
             title: 'Konfirmasi Pengusulan', text: 'Data sudah benar?', icon: 'question',
             showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
-                const formData = new FormData(document.getElementById('pengusulan-form'));
+                const formData = new FormData(document.getElementById('pengusulanForm'));
                 selectedPersonel.forEach(p => {
                     if (p.type === 'pegawai') formData.append('pegawai_ids[]', p.id);
                     else if (p.type === 'mahasiswa') formData.append('mahasiswa_ids[]', p.id);
@@ -933,7 +975,12 @@
                     method: 'POST', body: formData,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw err; });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         Swal.fire('Berhasil!', data.message || 'Surat tugas berhasil diusulkan!','success')
@@ -941,41 +988,85 @@
                     } else {
                         Swal.fire('Gagal!', data.message || 'Gagal mengusulkan.','error');
                     }
-                }).catch(error => Swal.fire('Error!', 'Terjadi kesalahan jaringan.','error'));
+                }).catch(error => {
+                    console.error('Fetch Error:', error);
+                    let errorMessage = 'Terjadi kesalahan jaringan.';
+                    if (error.errors) {
+                        errorMessage = '<strong>Kesalahan Validasi:</strong><ul>';
+                        for (let key in error.errors) {
+                            errorMessage += `<li>${error.errors[key].join(', ')}</li>`;
+                        }
+                        errorMessage += '</ul>';
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+                    Swal.fire('Error!', errorMessage,'error');
+                });
             }
         });
     });
 
-    // Dropdown and datepicker setup
     $(document).on('click', '#data-section .dropdown-item[data-value]', function (e) {
-        e.preventDefault(); const section = $(this).data('value');
+        e.preventDefault();
+        const section = $(this).data('value');
         $('#data-selection-dropdown').text($(this).text());
-        $('#data-pegawai-table, #data-mahasiswa-table').hide();
-        if (section === 'data-pegawai') { $('#data-pegawai-table').show(); if ($.fn.DataTable.isDataTable('#pegawaiTable')) $('#pegawaiTable').DataTable().columns.adjust().draw(); }
-        else if (section === 'data-mahasiswa') { $('#data-mahasiswa-table').show(); if ($.fn.DataTable.isDataTable('#mahasiswaTable')) $('#mahasiswaTable').DataTable().columns.adjust().draw(); }
-    });
-    $('#search-button').on('click', function () {
-        const searchTerm = $('#search-input').val().toLowerCase(); let tableAPI;
-        if ($('#data-pegawai-table').is(':visible')) tableAPI = $('#pegawaiTable').DataTable();
-        else if ($('#data-mahasiswa-table').is(':visible')) tableAPI = $('#mahasiswaTable').DataTable();
-        else return;
-        tableAPI.search(searchTerm).draw();
-    });
-    $('.pilih-option').on('click', function () { $('#' + $(this).data('target')).val($(this).data('value')); });
-    $('input[name="pembiayaan_option"]').on('change', function(){ $('#pembiayaan_value').val($(this).val()); });
-    $('#tanggal_pelaksanaan').daterangepicker({ autoUpdateInput: false, locale: { cancelLabel: 'Clear', format: 'DD/MM/YYYY' }})
-        .on('apply.daterangepicker', function(ev, picker) { $(this).val(picker.startDate.format('DD/MM/YYYY') + ' → ' + picker.endDate.format('DD/MM/YYYY')); })
-        .on('cancel.daterangepicker', function(ev, picker) { $(this).val(''); });
 
-    $(document).ready(function() {
-        $('#pembiayaan_value').val($('input[name="pembiayaan_option"]:checked').val());
-        $('#data-pegawai-table').show(); $('#data-mahasiswa-table').hide();
-        $('#data-selection-dropdown').text('Data Pegawai');
-        $('#pegawaiTable').DataTable({ paging: true, searching: true, info: true, pageLength: 5, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
-        $('#mahasiswaTable').DataTable({ paging: true, searching: true, info: true, pageLength: 10, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
-        $('#selectedPersonelContainer').hide();
+        $('#data-pegawai-table, #data-mahasiswa-table').hide();
+        if (section === 'data-pegawai') {
+            $('#data-pegawai-table').show();
+            if ($.fn.DataTable.isDataTable('#pegawaiTable')) {
+                $('#pegawaiTable').DataTable().columns.adjust().draw();
+            }
+        } else if (section === 'data-mahasiswa') {
+            $('#data-mahasiswa-table').show();
+             if ($.fn.DataTable.isDataTable('#mahasiswaTable')) {
+                $('#mahasiswaTable').DataTable().columns.adjust().draw();
+            }
+        }
+    });
+
+    $('#search-input').on('keyup', function () {
+        let tableAPI;
+        if ($('#data-pegawai-table').is(':visible')) {
+            tableAPI = $('#pegawaiTable').DataTable();
+        } else if ($('#data-mahasiswa-table').is(':visible')) {
+            tableAPI = $('#mahasiswaTable').DataTable();
+        } else {
+            return;
+        }
+        tableAPI.search(this.value).draw();
+    });
+
+    $('.pilih-option').on('click', function () {
+        const targetInputId = $(this).data('target');
+        const selectedValue = $(this).data('value');
+        $('#' + targetInputId).val(selectedValue);
+    });
+
+    $('input[name="pembiayaan_option"]').on('change', function(){
+        $('#pembiayaan_value').val($(this).val());
+    });
+
+    $('#pagu_desentralisasi_checkbox').on('change', function() {
+        $('#pagu_nominal_input_group').toggle(this.checked);
+        if (!this.checked) {
+            $('#pagu_nominal').val('');
+        }
+    });
+
+    $('#tanggal_pelaksanaan').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear',
+            format: 'DD/MM/YYYY'
+        }
+    })
+    .on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' → ' + picker.endDate.format('DD/MM/YYYY'));
+    })
+    .on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
     });
 </script>
 @endpush
->>>>>>> Stashed changes
 @endsection

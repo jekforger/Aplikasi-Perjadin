@@ -2,26 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pegawai;
+use App\Models\Pegawai; // Pastikan ini mengarah ke model Pegawai yang benar (setelah rename dari DataPegawai.php)
 use App\Models\Mahasiswa;
+use App\Models\SuratTugas; // Import model SuratTugas yang baru
+use App\Models\DetailPelaksanaTugas; // Import model DetailPelaksanaTugas yang baru
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log; // Untuk logging
+use Illuminate\Support\Facades\Validator; // Untuk validasi
+use Carbon\Carbon; // Untuk parsing tanggal
 
 class PengusulController extends Controller
 {
+    // Halaman dashboard pengusul
     public function dashboard()
     {
-        // Data dummy untuk dashboard pengusul, bisa diganti dengan data real nanti
-        $totalUsulan = 15;
-        $laporanSelesai = 8;
-        $laporanBelumSelesai = 5;
-        $sedangBertugas = 2;
-        $dikembalikan = 1;
+        // Untuk saat ini, dashboard pengusul masih statis
+        // Anda bisa mengisi data nyata di sini nanti setelah data pengusulan tersimpan
+        $totalUsulan = 0; // Ganti dengan query ke DB
+        $laporanSelesai = 0; // Ganti dengan query ke DB
+        $laporanBelumSelesai = 0; // Ganti dengan query ke DB
+        $sedangBertugas = 0; // Ganti dengan query ke DB
+        $dikembalikan = 0; // Ganti dengan query ke DB
 
         return view('layouts.pengusul.dashboardPengusul', compact('totalUsulan', 'laporanSelesai', 'laporanBelumSelesai', 'sedangBertugas', 'dikembalikan'));
     }
 
+    // Metode ini tampaknya adalah halaman terpisah untuk memilih pengusul,
+    // yang kemudian datanya digunakan di halaman pengusulan utama.
+    // Jika tidak lagi digunakan sebagai halaman terpisah, rute dan method ini bisa dihapus.
     public function pilih(Request $request)
     {
         $search = $request->input('search');
@@ -40,143 +48,152 @@ class PengusulController extends Controller
         return view('layouts.pengusul.dataPengusul', compact('pegawais'));
     }
 
+    // Halaman status pengusulan
     public function status()
     {
         return view('layouts.pengusul.status');
     }
 
+    // Halaman draft pengusulan
     public function draft()
     {
         return view('layouts.pengusul.draft');
     }
 
+    // Halaman riwayat pengusulan
     public function history()
     {
         return view('layouts.pengusul.history');
     }
 
-    // Halaman form pengusulan
+    // Halaman form pengusulan utama
     public function pengusulan()
     {
-        // Ambil semua data pegawai dan mahasiswa dari database
+        // Ambil semua data pegawai dari database
         $pegawais = Pegawai::all();
+
+        // Ambil semua data mahasiswa dari database
         $mahasiswa = Mahasiswa::all();
 
         // Teruskan data ke view
         return view('layouts.pengusul.pengusulan', compact('pegawais', 'mahasiswa'));
     }
 
-    // Menyimpan data pengusulan ke database
+    // Metode untuk memproses dan menyimpan data pengusulan
     public function storePengusulan(Request $request)
     {
-        // Logika validasi untuk langkah pertama form
-        $rules = [
-            'nama_kegiatan' => 'required|string|max:255',
-            'tempat_kegiatan' => 'required|string|max:255',
-            'diusulkan_kepada' => 'required|string|max:255',
-            'surat_undangan' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-            'ditugaskan_sebagai' => 'required|string|max:255',
-            'tanggal_pelaksanaan' => 'required|string', // Contoh: "01/01/2024 → 05/01/2024"
-            'alamat_kegiatan' => 'required|string|max:255',
-            'pembiayaan' => 'required|string|in:Polban,Penyelenggara,Polban dan Penyelenggara',
-            'pagu_desentralisasi' => 'nullable|boolean',
-            'pagu_nominal' => 'nullable|numeric|required_if:pagu_desentralisasi,1',
-            'provinsi' => 'required|string|max:255',
-            'nomor_surat_usulan' => 'required|string|max:255',
-            // Validasi untuk personel yang dipilih dari langkah kedua
-            'pegawai_ids' => 'nullable|array',
-            'pegawai_ids.*' => 'exists:pegawai,id', // Pastikan setiap ID pegawai ada di tabel
-            'mahasiswa_ids' => 'nullable|array',
-            'mahasiswa_ids.*' => 'exists:mahasiswa,id', // Pastikan setiap ID mahasiswa ada di tabel
-            'draft_flag' => 'nullable|boolean', // Untuk menandai apakah ini draft atau usulan final
-        ];
+        // Aturan validasi input
+        $validator = Validator::make($request->all(), [
+            'nama_kegiatan'        => 'required|string|max:255',
+            'tempat_kegiatan'      => 'required|string',
+            'diusulkan_kepada'     => 'required|string',
+            'surat_undangan'       => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Contoh: pdf,doc,docx, max 2MB
+            'ditugaskan_sebagai'   => 'required|string|max:255',
+            'tanggal_pelaksanaan'  => 'required|string', // Format "DD/MM/YYYY -> DD/MM/YYYY"
+            'alamat_kegiatan'      => 'required|string',
+            'provinsi'             => 'required|string',
+            'nomor_surat_usulan'   => 'required|string|max:255',
+            'pembiayaan'           => 'required|string|in:Polban,Penyelenggara,Polban dan Penyelenggara',
+            'pagu_desentralisasi'  => 'boolean', // Akan menerima 0 atau 1 dari checkbox
+            'pegawai_ids'          => 'nullable|array', // Array ID pegawai yang dipilih
+            'pegawai_ids.*'        => 'exists:pegawai,id', // Validasi setiap ID pegawai harus ada di tabel 'pegawai'
+            'mahasiswa_ids'        => 'nullable|array', // Array ID mahasiswa yang dipilih
+            'mahasiswa_ids.*'      => 'exists:mahasiswa,id', // Validasi setiap ID mahasiswa harus ada di tabel 'mahasiswa'
+            'status_pengajuan'     => 'required|string|in:draft,diajukan', // Status pengajuan dari frontend (Simpan Draft / Usulkan)
+        ]);
 
-        $validator = Validator::make($request->all(), $rules);
-
+        // Jika validasi gagal
         if ($validator->fails()) {
-            // Jika validasi gagal, kembalikan ke form dan berikan error
-            // Menggunakan flash session untuk menandai bahwa form pertama harus aktif
-            $request->session()->flash('initial_form_active', true);
-            return back()->withErrors($validator)->withInput();
+            Log::error('Validasi Pengusulan Gagal:', $validator->errors()->toArray());
+            // Mengembalikan respons JSON dengan error validasi
+            return response()->json(['success' => false, 'message' => 'Validasi gagal', 'errors' => $validator->errors()], 422);
         }
 
-        $data = $validator->validated();
-
-        // Handle file upload jika ada
-        if ($request->hasFile('surat_undangan')) {
-            $filePath = $request->file('surat_undangan')->store('surat_undangan', 'public');
-            $data['surat_undangan_path'] = $filePath; // Simpan path file
-        } else {
-            $data['surat_undangan_path'] = null;
-        }
-
-        // Tangani checkbox pagu_desentralisasi, pastikan bernilai boolean
-        $data['pagu_desentralisasi'] = $request->has('pagu_desentralisasi');
-
-        // Logika penyimpanan ke database (masih perlu diimplementasikan)
         try {
-            // Anda perlu membuat Model 'Pengusulan' dan migrasinya terlebih dahulu
-            // Contoh struktur minimal tabel 'pengusulan':
-            // Schema::create('pengusulan', function (Blueprint $table) {
-            //     $table->id();
-            //     $table->foreignId('user_id')->constrained('users'); // Pengusul
-            //     $table->string('nama_kegiatan');
-            //     $table->text('tempat_kegiatan');
-            //     $table->string('diusulkan_kepada');
-            //     $table->string('surat_undangan_path')->nullable();
-            //     $table->string('ditugaskan_sebagai');
-            //     $table->string('tanggal_pelaksanaan'); // 'DD/MM/YYYY → DD/MM/YYYY'
-            //     $table->text('alamat_kegiatan');
-            //     $table->string('pembiayaan');
-            //     $table->boolean('pagu_desentralisasi')->default(false);
-            //     $table->decimal('pagu_nominal', 15, 2)->nullable();
-            //     $table->string('provinsi');
-            //     $table->string('nomor_surat_usulan');
-            //     $table->json('personel_terpilih')->nullable(); // Simpan ID pegawai/mahasiswa dalam JSON
-            //     $table->string('status')->default('draft'); // 'draft', 'Menunggu Persetujuan Wakil Direktur', etc.
-            //     $table->timestamps();
-            // });
-
-            // Simulasikan penyimpanan
-            $status = $request->input('draft_flag') ? 'draft' : 'Menunggu Persetujuan Wakil Direktur';
-
-            $pengusulanData = [
-                // 'user_id' => auth()->id(), // Asumsi user yang login adalah pengusul
-                'nama_kegiatan' => $data['nama_kegiatan'],
-                'tempat_kegiatan' => $data['tempat_kegiatan'],
-                'diusulkan_kepada' => $data['diusulkan_kepada'],
-                'surat_undangan_path' => $data['surat_undangan_path'],
-                'ditugaskan_sebagai' => $data['ditugaskan_sebagai'],
-                'tanggal_pelaksanaan' => $data['tanggal_pelaksanaan'],
-                'alamat_kegiatan' => $data['alamat_kegiatan'],
-                'pembiayaan' => $data['pembiayaan'],
-                'pagu_desentralisasi' => $data['pagu_desentralisasi'],
-                'pagu_nominal' => $data['pagu_nominal'] ?? null,
-                'provinsi' => $data['provinsi'],
-                'nomor_surat_usulan' => $data['nomor_surat_usulan'],
-                'personel_terpilih' => json_encode([
-                    'pegawai' => $request->input('pegawai_ids', []),
-                    'mahasiswa' => $request->input('mahasiswa_ids', []),
-                ]),
-                'status' => $status,
-            ];
-
-            // Uncomment baris di bawah ini dan sesuaikan jika Anda sudah punya model Pengusulan
-            // \App\Models\Pengusulan::create($pengusulanData);
-
-            Log::info('Data Pengusulan Diterima & Valid (simulasi disimpan):', $pengusulanData);
-
-            return response()->json([
-                'success' => true,
-                'message' => $status === 'draft' ? 'Draft berhasil disimpan!' : 'Pengusulan berhasil diajukan!'
+            // Mengambil semua data dari request, kecuali token CSRF, opsi pembiayaan dari radio (kita pakai yang hidden input),
+            // dan array ID personel (akan di-handle terpisah).
+            $data = $request->except([
+                '_token',
+                'pembiayaan_option', // Ini adalah nama radio button group, bukan nilai yang kita simpan
+                'pegawai_ids',       // Akan disimpan di tabel pivot/detail
+                'mahasiswa_ids',     // Akan disimpan di tabel pivot/detail
+                'status_pengajuan'   // Akan digunakan untuk menentukan status awal di DB
             ]);
 
+            // Parsing tanggal_pelaksanaan dari format "DD/MM/YYYY -> DD/MM/YYYY"
+            $tanggal_parts = explode(' → ', $data['tanggal_pelaksanaan']);
+            $tanggal_berangkat = Carbon::createFromFormat('d/m/Y', $tanggal_parts[0])->format('Y-m-d');
+            $tanggal_kembali = Carbon::createFromFormat('d/m/Y', $tanggal_parts[1])->format('Y-m-d');
+
+            // Menangani upload file surat undangan (jika ada)
+            $surat_undangan_path = null;
+            if ($request->hasFile('surat_undangan')) {
+                // Simpan file di direktori storage/app/public/surat_undangan
+                $surat_undangan_path = $request->file('surat_undangan')->store('surat_undangan', 'public');
+            }
+
+            // Menentukan status awal surat tugas di database
+            // Jika dikirim dari tombol "Simpan Draft" maka status 'draft', jika dari "Usulkan" maka 'pending_wadir_review'
+            $status_surat_db = $request->input('status_pengajuan') === 'draft' ? 'draft' : 'pending_wadir_review';
+
+            // Membuat record baru di tabel 'surat_tugas'
+            $suratTugas = SuratTugas::create([
+                'user_id'                    => auth()->id(), // Mengambil ID user yang sedang login sebagai pengusul
+                'nomor_surat_usulan_jurusan' => $data['nomor_surat_usulan'],
+                // 'nomor_surat_tugas_resmi' akan diisi nanti setelah disetujui Direktur
+                'perihal_tugas'              => $data['nama_kegiatan'],
+                'kota_tujuan'                => $data['provinsi'], // Menggunakan provinsi sebagai kota_tujuan (sesuai PDM)
+                'tanggal_berangkat'          => $tanggal_berangkat,
+                'tanggal_kembali'            => $tanggal_kembali,
+                'status_surat'               => $status_surat_db,
+                'catatan_revisi'             => null, // Awalnya kosong
+                'path_file_surat_usulan'     => $surat_undangan_path,
+                'path_file_surat_tugas_final'=> null, // Awalnya kosong
+                'sumber_dana'                => $data['pembiayaan'],
+                'pagu_desentralisasi'        => $request->boolean('pagu_desentralisasi'), // Mengambil nilai boolean dari checkbox
+                'tanggal_paraf_wadir'        => null, // Awalnya kosong
+                'tanggal_persetujuan_direktur' => null, // Awalnya kosong
+                'is_surat_perintah_langsung' => false, // Default false, bisa jadi input di masa depan
+                // 'ditugaskan_sebagai' di PDM ada di DetailPelaksanaTugas, tetapi kita simpan di sini untuk kemudahan jika diperlukan di tampilan list
+                'ditugaskan_sebagai'         => $data['ditugaskan_sebagai'],
+            ]);
+
+            // Menyimpan DetailPelaksanaTugas untuk setiap personel yang dipilih
+            $pegawai_ids = $request->input('pegawai_ids', []);
+            $mahasiswa_ids = $request->input('mahasiswa_ids', []);
+            $status_sebagai_setiap_personel = $data['ditugaskan_sebagai']; // Nilai "ditugaskan sebagai" yang sama untuk semua personel
+
+            // Loop dan simpan untuk Pegawai
+            foreach ($pegawai_ids as $pegawai_id) {
+                $suratTugas->detailPelaksanaTugas()->create([
+                    'personable_id'   => $pegawai_id,
+                    'personable_type' => Pegawai::class, // Contoh: 'App\Models\Pegawai'
+                    'status_sebagai'  => $status_sebagai_setiap_personel,
+                ]);
+            }
+
+            // Loop dan simpan untuk Mahasiswa
+            foreach ($mahasiswa_ids as $mahasiswa_id) {
+                $suratTugas->detailPelaksanaTugas()->create([
+                    'personable_id'   => $mahasiswa_id,
+                    'personable_type' => Mahasiswa::class, // Contoh: 'App\Models\Mahasiswa'
+                    'status_sebagai'  => $status_sebagai_setiap_personel,
+                ]);
+            }
+
+            // Logging sukses dan mengembalikan respons JSON
+            Log::info('Pengusulan berhasil disimpan. ID Surat Tugas: ' . $suratTugas->surat_tugas_id, $suratTugas->toArray());
+            return response()->json(['success' => true, 'message' => 'Pengusulan berhasil diajukan!'], 200);
+
         } catch (\Exception $e) {
-            Log::error('Error menyimpan pengusulan: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menyimpan data.'
-            ], 500); // Kode status 500 untuk error server
+            // Logging error dan mengembalikan respons JSON error
+            Log::error('Error menyimpan pengusulan: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all(),
+                'line' => $e->getLine(), // Baris kode di mana error terjadi
+                'file' => $e->getFile()  // File di mana error terjadi
+            ]);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat menyimpan data: '.$e->getMessage()], 500);
         }
     }
 }
