@@ -10,7 +10,7 @@
 /* Bootstrap Icons sudah di-load secara global di main.blade.php */
 
 /* Penyesuaian untuk tabel */
-.table thead th {
+.table thead th { 
     background-color: #f8f9fc;
     color: #858796;
     border-bottom: 1px solid #e3e6f0;

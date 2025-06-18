@@ -29,9 +29,11 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                             <li><a class="dropdown-item" href="{{ route('user.change-password.form') }}">Change Password</a></li>
                             <li>
-                                <form id="form-logout" method="POST" action="{{ route('logout') }}">
+                                <form id="form-logout" id="logout-form" method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">Logout</button>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                    Logout
+                                </button>
                                 </form>
                             </li>
                         </ul>

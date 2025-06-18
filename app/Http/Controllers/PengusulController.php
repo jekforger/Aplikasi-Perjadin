@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class PengusulController extends Controller
@@ -10,6 +11,40 @@ class PengusulController extends Controller
     public function dashboard()
     {
         return view('layouts.pengusul.dashboard');
+    }
+
+    public function pilih(Request $request)
+    {
+        $search = $request->input('search');
+    $perPage = $request->input('per_page', 10);
+
+    $query = Pegawai::query();
+
+    if ($search) {
+        $query->where('nama', 'like', "%{$search}%")
+              ->orWhere('nip', 'like', "%{$search}%")
+              ->orWhere('jabatan', 'like', "%{$search}%");
+    }
+
+    $pegawais = $query->paginate($perPage)->withQueryString();
+
+    return view('layouts.pengusul.dataPengusul', compact('pegawais'));
+
+    }
+
+    public function status()
+    {
+        return view('layouts.pengusul.status');
+    }
+
+    public function draft()
+    {
+        return view('layouts.pengusul.draft');
+    }
+
+    public function history()
+    {
+        return view('layouts.pengusul.history');
     }
 
     // Halaman form pengusulan

@@ -1,15 +1,17 @@
 /* public/css/user.css */
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 :root {
     --sidebar-width: 260px;
     --sidebar-collapsed-width: 80px;
 }
-    
 
 /* Styling khusus untuk halaman Ubah Kata Sandi */
 .change-password-wrapper {
     position: relative;
-    padding: 2rem;
-    padding-left: var(--sidebar-width);
+    padding: 2rem 0;      /* hanya atas-bawah, kiri-kanan 0 */
     margin-top: 70px;
     transition: padding-left 0.3s ease;
 }
@@ -20,22 +22,37 @@ body.sidebar-collapsed .change-password-wrapper {
 
 /* Kontainer full responsif di dalam wrapper */
 .change-password-container {
-    width: 100%;
-    padding: 0;
+    width: 100vw;         /* Benar-benar full lebar viewport */
+    max-width: 100vw;
+    margin: 0;            /* Tidak ada margin */
+    padding: 0;           /* Tidak ada padding */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Supaya card mepet kiri */
+    min-height: 100vh;
 }
 
 /* Card tetap ada max-width agar isi form tidak terlalu panjang */
 .change-password-card {
-    width: 50%;
-    margin-left: calc(var(--sidebar-width) + 10px);
-    margin-right: auto;
+    width: 100%;
+    max-width: 600px;     /* Batas maksimal biar tidak terlalu lebar */
+    min-width: 320px;
+    margin: 0;            /* Tidak ada margin kiri */
     padding: 2.5rem;
     border-radius: 0.75rem;
     background-color: #fff;
     box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    align-self: flex-start; /* Pastikan card nempel kiri container */
 }
     
+.page-title,
+.change-password-title {
+    padding-left: 0;
+    margin-left: 0;
+    text-align: left;
+}
 
 .page-title {
     font-size: 20px;
@@ -43,7 +60,7 @@ body.sidebar-collapsed .change-password-wrapper {
     color: black;
     margin-bottom: 1.5rem;
     padding-top: 60px;
-    padding-left: calc(var(--sidebar-width) + 10px);
+    padding-left: 0;
     font-family: Poppins;
     transition: padding-left 0.3s ease;
 }
@@ -67,7 +84,7 @@ body.sidebar-collapsed .change-password-card {
     color: black; /* Warna hitam pekat */
     text-align: left; /* Sesuaikan alignment dengan desain */
     margin-bottom: 2.5rem; /* Jarak bawah judul */
-    margin-left: 20px; /* Beri jarak dari kiri agar tidak menempel */
+    margin-left: 0; /* Beri jarak dari kiri agar tidak menempel */
     margin-right: 20px;
 }
 
@@ -148,7 +165,7 @@ body.sidebar-collapsed .change-password-card {
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-size: 1.0rem;
-    width: 30%; 
+    width: 50%; 
 }
 .custom-blue-button:hover {
     background-color: #0056b3;
@@ -160,65 +177,23 @@ body.sidebar-collapsed .change-password-card {
     .change-password-wrapper {
         margin-left: 0;
         margin-top: 80px;
-        padding: 1rem;
+        padding: 1rem 0;
     }
-
     .change-password-container {
         padding: 0;
         margin: 0 auto;
-        max-width: 100%;
+        max-width: 100vw;
     }
-
     .change-password-card {
         width: 100%;
+        min-width: 0;
         margin-left: 0;
         padding: 1.5rem;
         border-radius: 0.75rem;
         box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     }
-
-    .change-password-title {
-        font-size: 20px;
-        margin-bottom: 1.5rem;
-        text-align: center;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .form-group-password {
-        width: 100%;
-    }
-
-    .input-group-password {
-        width: 100%; /* Pastikan input full width */
-    }
-
-    .custom-form-input {
-        width: 100%; /* Input isi penuh */
-        padding: 0.6rem 0.8rem;
-        font-size: 0.9rem;
-    }
-
-    .password-toggle-icon {
-        right: 0.8rem;
-        font-size: 1rem;
-    }
-
-    .custom-blue-button {
-        width: 100%; /* Tombol isi penuh */
-        font-size: 1rem;
-        padding: 0.75rem 1rem;
-        display: block;
-        margin-top: 1rem;
-    }
-
-    .page-title {
-        padding-left: 0;
-        text-align: center;
-        font-size: 1.2rem;
-        padding-top: 80px;
-    }
 }
+
 
 body {
     background-color: #f6f7fb !important; /* warna solid */

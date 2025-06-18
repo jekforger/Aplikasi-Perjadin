@@ -40,9 +40,13 @@ Route::prefix('pengusul')->name('pengusul.')->group(function () {
     Route::get('/pengusulan', [PengusulController::class, 'pengusulan'])->name('pengusulan');
     Route::post('/pengusulan', [PengusulController::class, 'storePengusulan'])->name('store.pengusulan');
     // Rute placeholder untuk menu lain di sidebar Pengusul
-    Route::get('/status', function() { return 'Halaman Status Pengusul (belum dibuat)'; })->name('status');
-    Route::get('/draft', function() { return 'Halaman Draft Pengusul (belum dibuat)'; })->name('draft');
-    Route::get('/history', function() { return 'Halaman History Pengusul (belum dibuat)'; })->name('history');
+    Route::get('/status', [PengusulController::class, 'status'])->name('status');
+    Route::get('/draft', [PengusulController::class, 'draft'])->name('draft');
+    Route::get('/history', [PengusulController::class, 'history'])->name('history');
+    Route::get('/pilihpengusul', [PengusulController::class, 'pilih'])->name('pilih');
+
+    
+    // Route::get('/history', function() { return 'Halaman History Pengusul (belum dibuat)'; })->name('history');
 });
 
 
