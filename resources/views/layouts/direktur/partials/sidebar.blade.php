@@ -24,7 +24,7 @@
             <span class="description">Persetujuan</span>
         </a>
         {{-- Histori Persetujuan Link --}}
-        <a href="#" class="nav-link {{ Request::is('direktur/histori-persetujuan*') ? 'active' : '' }}">
+        <a href="{{ route('direktur.paraf') }}" class="nav-link {{ Request::is('direktur/histori-persetujuan*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-pen"></i>
             </span>
@@ -46,7 +46,7 @@
             <div class="sub-menu collapse" id="submenu">
                 <a href="{{ route('direktur.dashboard') }}" class="nav-link sub-nav-link">
                     <span class="description">
-                        Direktur (Default)
+                        Direktur
                     </span>
                 </a>
                 <a href="{{ route('pelaksana.dashboard') }}" class="nav-link sub-nav-link">
