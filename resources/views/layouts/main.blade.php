@@ -28,6 +28,13 @@
     @stack('styles') {{-- Untuk CSS spesifik halaman --}}
 </head>
 <body>
+    {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
+    @if (session('success_message'))
+        <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
+            {{ session('success_message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     @include('partials.navbar') {{-- NAVBAR DI SINI (FIXED) --}}
 
@@ -38,14 +45,6 @@
             @yield('content') {{-- Konten utama halaman --}}
         </main>
     </div>
-
-    {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
-    @if (session('success_message'))
-        <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
-            {{ session('success_message') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
