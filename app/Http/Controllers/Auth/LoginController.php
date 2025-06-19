@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Models\User;
+use App\Models\User; // Penting: Import model User
 
 class LoginController extends Controller
 {
     // Array mapping untuk nama role agar user-friendly
+    // Inilah yang mendefinisikan role-role yang valid dan namanya di UI
     protected $roleDisplayNames = [
         'pengusul' => 'Pengusul',
         'pelaksana' => 'Pelaksana',
@@ -29,12 +30,27 @@ class LoginController extends Controller
      */
     public function getRoleDisplayName($roleKey)
     {
+        // Mengembalikan nama tampilan jika ada, jika tidak, format dari key (contoh: 'wadir_1' menjadi 'Wadir 1')
         return $this->roleDisplayNames[$roleKey] ?? ucwords(str_replace('_', ' ', $roleKey));
     }
+
+    /**
+     * Mengambil key role dari display name (jika diperlukan reverse lookup).
+     * Tidak langsung digunakan di alur login ini, tapi baik untuk ada.
+     */
+    public function getRoleKeyFromDisplayName($displayName)
+    {
+        return array_search($displayName, $this->roleDisplayNames);
+    }
+
 
     // Method untuk menampilkan halaman "Pilih Role"
     public function showSelectRoleForm()
     {
+        // Mengirim daftar role yang valid ke view (untuk dropdown)
+        // Kita tidak akan langsung mengirim $roleDisplayNames ke view,
+        // karena view select-role sudah memiliki hardcoded options.
+        // Cukup biarkan view select-role yang mengelola pilihannya.
         return view('auth.select-role');
     }
 
@@ -43,7 +59,7 @@ class LoginController extends Controller
     {
         $role = $request->query('role'); // Ambil parameter 'role' dari URL
 
-        // Daftar role yang diizinkan (pastikan sesuai dengan data di DB)
+        // Daftar role yang diizinkan diambil dari keys array roleDisplayNames
         $allowedRoles = array_keys($this->roleDisplayNames);
 
         // Validasi sederhana: pastikan role yang dipilih ada dalam daftar yang diizinkan
@@ -51,14 +67,13 @@ class LoginController extends Controller
             return redirect()->route('login.select-role')->with('error', 'Pilihan role tidak valid.');
         }
 
-        // --- INI BARIS YANG HARUS DIHILANGKAN KOMENTARNYA ---
+        // Dapatkan nama tampilan role untuk ditampilkan di UI login
         $displayName = $this->getRoleDisplayName($role);
 
-        // Kirim nilai role ke view login
-        // --- DAN PASTIKAN $displayName DIKIRIM KE VIEW DI SINI ---
+        // Kirim nilai role dan display name ke view login
         return view('auth.login', [
             'role' => $role,
-            'displayName' => $displayName // Pastikan ini ada dan variabelnya benar
+            'displayName' => $displayName // Pastikan ini ada dan variabelnya benar di view login
         ]);
     }
 
@@ -80,8 +95,8 @@ class LoginController extends Controller
             $user = Auth::user(); // Dapatkan user yang baru saja login
 
             // Validasi role: Pastikan role yang dipilih di halaman awal cocok dengan role user di database
-            $allowedRoles = array_keys($this->roleDisplayNames);
-
+            // Perlu diperiksa juga apakah role user dari DB adalah role yang diizinkan secara umum.
+            $allowedRoles = array_keys($this->roleDisplayNames); // Ambil dari daftar role yang valid
             if (!in_array($user->role, $allowedRoles)) {
                  Auth::logout();
                  $request->session()->invalidate();
@@ -103,9 +118,10 @@ class LoginController extends Controller
 
             // Jika berhasil dan role cocok, generate ulang sesi
             $request->session()->regenerate();
-            
-            $displayName = $this->getRoleDisplayName($chosenRole); // Ambil nama tampilan role yang baru login
-            $request->session()->flash('success_message', 'Selamat datang, ' . $displayName); // Kirim pesan ke sesi
+
+            // Kirim pesan sukses ke sesi untuk ditampilkan di dashboard
+            $displayName = $this->getRoleDisplayName($chosenRole);
+            $request->session()->flash('success_message', 'Selamat datang, ' . $displayName);
 
             // Redirect user ke dashboard yang sesuai dengan role-nya
             return $this->redirectToRoleDashboard($chosenRole);
@@ -121,6 +137,11 @@ class LoginController extends Controller
     protected function redirectToRoleDashboard($role)
     {
         // Sesuaikan rute dashboard untuk setiap role, termasuk Wadir I-IV
+        // Kita bisa mengelompokkan semua role Wadir karena mereka diarahkan ke dashboard yang sama.
+        if (str_starts_with($role, 'wadir_')) {
+            return redirect()->route('wadir.dashboard');
+        }
+
         switch ($role) {
             case 'pengusul':
                 return redirect()->route('pengusul.dashboard');
@@ -128,11 +149,8 @@ class LoginController extends Controller
                 return redirect()->route('pelaksana.dashboard');
             case 'bku':
                 return redirect()->route('bku.dashboard');
-            case 'wadir_1':
-            case 'wadir_2':
-            case 'wadir_3':
-            case 'wadir_4':
-                return redirect()->route('wadir.dashboard');
+            // case 'wadir': // Baris ini tidak lagi diperlukan jika menggunakan wadir_1, wadir_2, dst.
+            //    return redirect()->route('wadir.dashboard');
             case 'direktur':
                 return redirect()->route('direktur.dashboard');
             case 'sekdir':

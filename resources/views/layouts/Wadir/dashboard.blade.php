@@ -1,82 +1,78 @@
 {{-- resources/views/wadir/dashboard.blade.php --}}
-@extends('layouts.Wadir.layout')
+@extends('layouts.Wadir.layout') {{-- Mengextend layout khusus Wadir --}}
 
-@section('wadir_content')
-<div class="container-fluid dashboard-wadir-container">
-    <h1 class="dashboard-page-title mb-4">Dashboard</h1>
+@section('wadir_content') {{-- Memasukkan konten ke yield 'wadir_content' --}}
+<div class="container-fluid">
+    <h1 class="mb-4">Dashboard</h1>
 
     {{-- Kotak Info Dashboard --}}
-    <div class="row dashboard-info-boxes g-3 mb-4"> {{-- g-3 untuk gutter antara kolom --}}
-        {{-- Kotak Total Pengusulan --}}
-        <div class="col-xl-3 col-md-6 col-12"> {{-- col-12 untuk stack di mobile sangat kecil --}}
-            <div class="dashboard-card shadow h-100 py-2 border-left-blue">
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="info-box-label text-blue text-uppercase"> {{-- text-blue kustom --}}
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Total Pengusulan
                             </div>
-                            <div class="info-box-number text-gray-800">{{ $dashboardStats['total_pengusulan'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['total_pengusulan'] }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="bi bi-file-earmark-text info-box-icon text-gray-300"></i>
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Kotak Usulan Baru --}}
-        <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-green">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="info-box-label text-green text-uppercase"> {{-- text-green kustom --}}
-                                USULAN BARU
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Usulan Baru (Untuk Saya)
                             </div>
-                            <div class="info-box-number text-gray-800">{{ $dashboardStats['usulan_baru'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['usulan_baru'] }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="bi bi-plus-square info-box-icon text-gray-300"></i>
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Kotak Dalam Proses (Direktur) --}}
-        <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-purple"> {{-- Ubah warna border & teks --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="info-box-label text-purple text-uppercase">
-                                DALAM PROSES (DIREKTUR)
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Dalam Proses (Direktur)
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dalam_proses_direktur'] }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="bi bi-bar-chart-fill info-box-icon text-gray-300"></i>
+                            <i class="fas fa-spinner fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Kotak Bertugas --}}
-        <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-orange"> {{-- Ubah warna border & teks --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="info-box-label text-orange text-uppercase">
-                                BERTUGAS
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Dikembalikan / Ditolak
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['bertugas'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dikembalikan'] }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="bi bi-person-walking info-box-icon text-gray-300"></i>
+                            <i class="fas fa-undo-alt fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -84,84 +80,84 @@
         </div>
     </div>
 
-    {{-- Tabel Detail Pengusulan --}}
-    <div class="card shadow mb-4 dashboard-table-card">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center table-header-flex">
-            <h6 class="m-0 font-weight-bold text-gray-800 table-title">Detail</h6> {{-- Judul tabel diubah jadi "Detail", warna gray --}}
-            <div class="table-search-box input-group w-auto">
-                <input type="text" class="form-control form-control-sm custom-search-input" placeholder="Search...">
-                <button class="btn btn-primary btn-sm custom-search-button"><i class="fas fa-search"></i></button> {{-- Hanya icon search --}}
-            </div>
+    {{-- Tabel Detail Pengusulan untuk Review --}}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Pengusulan Menunggu Review Anda</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered dashboard-data-table" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Tanggal Pengusulan</th>
-                            <th>Tanggal Berangkat</th>
-                            <th>Nomor Surat Pengusulan</th>
-                            <th>Sumber Dana</th>
+                            <th>No</th>
+                            <th>Pengusul</th>
+                            <th>Nama Kegiatan</th>
+                            <th>Tanggal Pelaksanaan</th>
+                            <th>Pembiayaan</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($pengusulanDetails as $detail)
+                        @forelse ($suratTugasUntukReview as $index => $st)
                         <tr>
-                            <td>{{ $detail['tgl_pengusulan'] }}</td>
-                            <td>{{ $detail['tgl_berangkat'] }}</td>
-                            <td>{{ $detail['nomor_surat_pengusulan'] }}</td>
-                            <td>{{ $detail['sumber_dana'] }}</td>
+                            <td>{{ $loop->iteration + ($suratTugasUntukReview->currentPage() - 1) * $suratTugasUntukReview->perPage() }}</td>
+                            <td>{{ $st->pengusul->name ?? 'N/A' }}</td>
+                            <td>{{ $st->perihal_tugas }}</td>
+                            <td>{{ $st->tanggal_berangkat->format('d/m/Y') }} → {{ $st->tanggal_kembali->format('d/m/Y') }}</td>
+                            <td>{{ $st->sumber_dana }}</td>
                             <td>
-                                @if($detail['status'] == 'Pending')
-                                    <span class="badge status-badge badge-warning text-dark">Pending</span>
-                                @elseif($detail['status'] == 'Disetujui')
-                                    <span class="badge status-badge badge-success">Disetujui</span>
-                                @elseif($detail['status'] == 'Ditolak')
-                                    <span class="badge status-badge badge-danger">Ditolak</span>
-                                @elseif($detail['status'] == 'Selesai')
-                                    <span class="badge status-badge badge-secondary">Selesai</span> {{-- Desain menggunakan abu-abu --}}
-                                @else
-                                    <span class="badge status-badge badge-info">{{ $detail['status'] }}</span>
-                                @endif
+                                @php
+                                    $badgeClass = '';
+                                    switch ($st->status_surat) {
+                                        case 'pending_wadir_review': $badgeClass = 'bg-warning text-dark'; break;
+                                        case 'reverted_by_wadir': $badgeClass = 'bg-info text-dark'; break;
+                                        case 'reverted_by_direktur': $badgeClass = 'bg-danger'; break;
+                                        default: $badgeClass = 'bg-secondary'; break;
+                                    }
+                                @endphp
+                                <span class="badge {{ $badgeClass }}">{{ str_replace('_', ' ', Str::title($st->status_surat)) }}</span>
                             </td>
                             <td>
-                                <button class="btn btn-info btn-sm custom-view-button">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
+                                <a href="{{ route('wadir.review.surat_tugas', $st->surat_tugas_id) }}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> Review
+                                </a>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada data pengusulan.</td>
+                            <td colspan="7" class="text-center">Tidak ada pengusulan baru yang menunggu review Anda.</td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
-            </div>
-            {{-- Bagian pagination/rows per page --}}
-            <div class="d-flex justify-content-between align-items-center mt-3 table-pagination-controls">
-                <div>
-                    Rows per page: 
-                    <select class="form-select form-select-sm d-inline-block w-auto custom-pagination-select">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                </div>
-                <div>
-                    <span class="me-2">1 - 10 of {{ count($pengusulanDetails) }}</span>
-                    <button class="btn btn-outline-secondary btn-sm custom-pagination-button"><i class="bi bi-chevron-left"></i></button>
-                    <button class="btn btn-outline-secondary btn-sm custom-pagination-button"><i class="bi bi-chevron-right"></i></button>
+                <div class="d-flex justify-content-end mt-3">
+                    {{ $suratTugasUntukReview->links() }}
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 @endsection
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/wadir.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCXdJf3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
+
+@push('scripts')
+    {{-- Inisialisasi DataTables (opsional, karena paginasi Laravel sudah dipakai) --}}
+    {{-- <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "paging": false, // Karena Laravel pagination
+                "info": false,
+                "searching": true,
+                "ordering": true
+            });
+        });
+    </script> --}}
 @endpush

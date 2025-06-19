@@ -1,4 +1,4 @@
-@extends('layouts.authMain')
+@extends('layouts.authMain') {{-- Pastikan ini meng-extend layout yang benar --}}
 
 @section('content')
 <div class="login-full-page-wrapper">
@@ -13,25 +13,29 @@
 
                 <h3 class="role-select-title">Pilih Role</h3>
 
-                @if (session('error'))
+                {{-- Global alerts akan di-handle oleh layouts.authMain.blade.php --}}
+                {{-- Anda bisa menghapus @if (session('error')) di sini jika sudah ada di authMain --}}
+                {{-- @if (session('error'))
                     <div class="alert alert-danger" role="alert">
                         {{ session('error') }}
                     </div>
-                @endif
+                @endif --}}
 
                 <form method="GET" action="{{ route('login.form') }}">
                     <div class="mb-4">
-                        <label for="role_select" class="form-label">Pilih Role</label>
+                        <label for="role_select" class="form-label visually-hidden">Pilih Role</label>
                         <div class="select-wrapper">
                             <select class="form-select form-select-lg custom-select-role @error('role') is-invalid @enderror" id="role_select" name="role" required>
                                 <option value="" disabled selected>Pilih Role</option>
                                 <option value="pengusul">Pengusul</option>
                                 <option value="pelaksana">Pelaksana</option>
                                 <option value="bku">Badan Keuangan Umum (BKU)</option>
+                                {{-- UBAH BAGIAN INI --}}
                                 <option value="wadir_1">Wakil Direktur I</option>
                                 <option value="wadir_2">Wakil Direktur II</option>
                                 <option value="wadir_3">Wakil Direktur III</option>
                                 <option value="wadir_4">Wakil Direktur IV</option>
+                                {{-- AKHIR UBAH BAGIAN INI --}}
                                 <option value="direktur">Direktur</option>
                                 <option value="sekdir">Sekretaris Direktur</option>
                                 <option value="admin">Admin</option>
@@ -56,7 +60,7 @@
         </div>
 
         {{-- Right Panel (Illustration) - Hidden on mobile --}}
-        <div class="col-lg-8 align-items-center justify-content-center right-panel"> 
+        <div class="col-lg-8 d-none d-lg-flex align-items-center justify-content-center right-panel"> 
             <img src="{{ asset('img/login.png') }}" alt="Login Illustration" class="img-fluid illustration-img">
         </div>
     </div>
