@@ -17,7 +17,7 @@
             <span class="description">Dashboard</span>
         </a>
         {{-- Persetujuan Link --}}
-        <a href="#" class="nav-link {{ Request::is('wadir/persetujuan*') ? 'active' : '' }}">
+        <a href="{{ route('wadir.persetujuan') }}" class="nav-link {{ Request::is('wadir/persetujuan*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>

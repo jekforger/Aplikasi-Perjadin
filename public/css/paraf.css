@@ -1,19 +1,28 @@
 /* public/css/paraf.css */
-
-/* Styling umum untuk container halaman Paraf */
-.paraf-page-container {
-    /* Padding sudah di main-content-area, tapi bisa disesuaikan */
-    padding: 0 20px;
+* {
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Styling untuk judul halaman "Paraf" */
-.paraf-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 2rem;
-    text-align: left;
-    padding-top: 5px;
+:root {
+    --sidebar-width: 120px;
+    --sidebar-collapsed-width: 0px;
+}
+
+.paraf-container {
+    margin-left: var(--sidebar-width, 260px); /* default full sidebar */
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    padding: 2rem 2rem;
+}
+
+body.sidebar-collapsed .paraf-container {
+    margin-left: var(--sidebar-collapsed-width) !important;
+}
+
+.paraf-page-title {
+    font-weight: 600;
+    font-size: 40px;
+    margin-top: 50px;
 }
 
 /* === Styling untuk tampilan Default: Belum ada dokumen === */

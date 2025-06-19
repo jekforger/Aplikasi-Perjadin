@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Aplikasi SPPD Polban') }}</title>
+    <title>@yield('title', 'Aplikasi Surat Tugas')</title>
 
     {{-- Favicon --}}
-    <link rel="icon" href="{{ asset('images/polban_logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/polban2.png') }}" type="image/png">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -28,6 +28,13 @@
     @stack('styles') {{-- Untuk CSS spesifik halaman --}}
 </head>
 <body>
+    {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
+    @if (session('success_message'))
+        <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
+            {{ session('success_message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     @include('partials.navbar') {{-- NAVBAR DI SINI (FIXED) --}}
 
@@ -38,14 +45,6 @@
             @yield('content') {{-- Konten utama halaman --}}
         </main>
     </div>
-
-    {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
-    @if (session('success_message'))
-        <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
-            {{ session('success_message') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

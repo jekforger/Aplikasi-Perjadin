@@ -1,258 +1,68 @@
-/* public/css/wadir.css */
-
-/* === DASHBOARD GLOBAL STYLING === */
-.dashboard-wadir-container {
-    /* padding sudah di main.content-area, tapi bisa ditambahkan jika perlu batas lebih jauh */
-    padding-left: 20px;
-    padding-right: 20px;
+:root {
+    --sidebar-width: 120px;
+    --sidebar-collapsed-width: 0px;
 }
 
-.dashboard-page-title { /* Styling untuk h1 Dashboard */
-    font-size: 1.8rem; /* Ukuran judul Dashboard */
-    font-weight: 700;
-    color: #333; /* Warna hitam pekat */
-    margin-bottom: 1.5rem; /* Jarak bawah judul (lebih rapat) */
-    padding-top: 0; /* Pastikan tidak ada padding tambahan */
+.dashboard-container {
+    margin-left: var(--sidebar-width, 260px); /* default full sidebar */
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    padding: 2rem 2rem;
 }
 
-/* === INFO BOXES STYLING === */
-.dashboard-info-boxes {
-    margin-left: -7.5px; /* Sesuaikan untuk gutter 15px (g-3) */
-    margin-right: -7.5px;
-    margin-bottom: 2.5rem; /* Jarak bawah setelah kotak info */
-}
-
-.dashboard-info-boxes .col-xl-3,
-.dashboard-info-boxes .col-md-6,
-.dashboard-info-boxes .col-12 { /* Pastikan semua breakpoint kolom */
-    padding-left: 7.5px; /* Sesuaikan gutter */
-    padding-right: 7.5px; /* Sesuaikan gutter */
-    margin-bottom: 0; /* Hapus margin-bottom bawaan kolom */
+body.sidebar-collapsed .dashboard-container {
+    margin-left: var(--sidebar-collapsed-width) !important;
 }
 
 .dashboard-card {
-    border-radius: 0.5rem;
-    border: none;
-    box-shadow: 0 0.1rem 0.5rem rgba(0, 0, 0, 0.1) !important; /* Shadow lebih halus */
-    min-height: 100px; /* Tinggi minimum card */
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 1rem; /* Padding internal card yang lebih presisi, menggantikan py-2 */
-}
-.dashboard-card .card-body {
-    padding: 0 !important; /* Hapus padding bawaan card-body */
-    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease-in-out;
+    min-height: 170px;
 }
 
-/* Warna border kiri (dari desain) */
-.dashboard-card.border-left-blue { border-left: .25rem solid #4e73df!important; } /* Primary */
-.dashboard-card.border-left-green { border-left: .25rem solid #1cc88a!important; } /* Success */
-.dashboard-card.border-left-purple { border-left: .25rem solid #858796!important; } /* Warna kustom abu-abu/ungu */
-.dashboard-card.border-left-orange { border-left: .25rem solid #fd7e14!important; } /* Warna kustom oranye */
-
-/* Font dan Warna di dalam Card */
-.dashboard-card .info-box-label { /* Keterangan di atas angka (e.g., TOTAL PENGUSULAN) */
-    font-size: .7rem;
-    font-weight: 400; /* Lebih tipis seperti desain */
-    color: #6c757d; /* Warna abu-abu yang lebih sesuai */
-    margin-bottom: .25rem;
-    text-transform: uppercase;
-}
-.dashboard-card .info-box-number { /* Angka di dalam card */
-    font-size: 1.75rem;
-    font-weight: 700; /* Tetap tebal */
-    color: #212529; /* Warna hitam pekat */
-}
-.dashboard-card .col-auto i.info-box-icon { /* Icon di dalam card */
-    font-size: 2.25rem; /* Ukuran icon */
-    color: #dee2e6; /* Warna icon (abu-abu sangat terang) */
+.dashboard-page-title {
+    font-weight: 600;
+    font-size: 40px;
+    margin-top: 50px;
 }
 
-/* Warna teks spesifik di card body untuk label */
-.text-blue { color: #4e73df !important; }
-.text-green { color: #1cc88a !important; }
-.text-purple { color: #858796 !important; }
-.text-orange { color: #fd7e14 !important; }
-
-/* === TABEL STYLING === */
-.dashboard-table-card {
-    border-radius: 0.5rem;
-    border: none;
-    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+.dashboard-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-.dashboard-table-card .card-header {
-    background-color: #f8f9fc;
-    border-bottom: 1px solid #e3e6f0;
-    padding: 0.75rem 1.25rem; /* Padding lebih rapat */
+.dashboard-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
 }
 
-.table-title { /* Judul "Detail" */
-    font-size: 1rem;
+.dashboard-count {
+    font-size: 20px;
     font-weight: 700;
-    color: #212529; /* Hitam pekat */
-    text-transform: none; /* Hapus uppercase */
+    color: #000;
+    margin-bottom: 8px;
 }
 
-.table-header-flex { /* Untuk d-flex justify-content-between align-items-center */
-    flex-wrap: wrap;
-    gap: 0.5rem;
+.dashboard-icon {
+    font-size: 28px;
 }
 
-.table-search-box {
-    display: flex;
-    align-items: center;
-    /* margin-left: auto; */ /* Dorong ke kanan, jika tidak menggunakan w-auto */
-}
-.table-search-box .custom-search-input { /* Input search */
-    width: 150px; /* Lebar input search */
-    border-radius: 0.25rem; /* Lebih kecil radiusnya */
-    height: calc(1.5em + .5rem + 2px);
-    padding: .25rem .75rem; /* Padding standar form-control-sm */
-    font-size: .875rem;
-    border: 1px solid #ced4da; /* Pastikan border ada */
-}
-.table-search-box .custom-search-button { /* Tombol search */
-    border-radius: 0.25rem; /* Lebih kecil radiusnya */
-    padding: .25rem .75rem;
-    font-size: .875rem;
-    background-color: #007bff; /* Warna biru Bootstrap primary */
-    border-color: #007bff;
-    color: white;
-}
-.table-search-box .custom-search-button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+.dashboard-detail-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 24px;
 }
 
-
-.dashboard-data-table thead th {
-    background-color: #f8f9fc;
-    color: #858796;
-    border-bottom: 1px solid #e3e6f0;
-    font-weight: 600;
-    font-size: 0.8rem; /* Ukuran font header lebih kecil */
-    vertical-align: middle;
-    padding: 0.75rem;
-    text-transform: none; /* Pastikan tidak uppercase */
-}
-.dashboard-data-table tbody tr td {
-    font-size: 0.85rem;
-    color: #5a5c69;
-    vertical-align: middle;
-    padding: 0.75rem;
-}
-.dashboard-data-table tbody tr:last-child td {
-    border-bottom: 0;
-}
-
-/* Styling Badge Status di Tabel */
-.status-badge { /* Kelas baru untuk badge agar lebih presisi */
-    padding: .25em .4em; /* Padding lebih kecil */
-    font-size: .75rem; /* Ukuran font */
-    font-weight: 600;
-    border-radius: .25rem; /* Radius lebih kecil */
-}
-.badge.bg-warning.text-dark { background-color: #f6c23e!important; color: #212529 !important; } /* Text dark for warning */
-.badge.bg-success { background-color: #1cc88a!important; }
-.badge.bg-danger { background-color: #e74a3b!important; }
-.badge.bg-secondary { background-color: #858796!important; } /* Abu-abu untuk Selesai */
-.badge.bg-info { background-color: #36b9cc!important; } /* Default blue (jika belum didefinisikan) */
-
-
-/* Tombol Aksi di Tabel */
-.custom-view-button { /* Kelas baru untuk tombol View */
-    background-color: #007bff; /* Warna biru */
-    border-color: #007bff;
-    font-size: 0.75rem; /* Ukuran lebih kecil */
-    padding: 0.2rem 0.4rem; /* Padding lebih kecil */
-    border-radius: 0.25rem; /* Radius lebih kecil */
-}
-.custom-view-button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* Pagination Controls */
-.table-pagination-controls {
-    font-size: 0.8rem; /* Lebih kecil */
-    color: #5a5c69;
-}
-.table-pagination-controls .custom-pagination-select {
-    width: auto !important;
-    min-width: 60px;
-    font-size: 0.8rem;
-    height: calc(1.5em + .5rem + 2px);
-    padding: .25rem .5rem;
-}
-.table-pagination-controls .custom-pagination-button {
-    font-size: 0.8rem;
-    padding: .25rem .5rem;
-}
-
-
-/* === RESPONSIVE ADJUSTMENTS === */
-@media (max-width: 767.98px) { /* Mobile view */
-    .dashboard-wadir-container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    .dashboard-page-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-    .dashboard-info-boxes .col-md-6,
-    .dashboard-info-boxes .col-12 { /* Semua kolom di mobile */
-        padding-left: 5px;
-        padding-right: 5px;
-        margin-bottom: 10px;
-    }
-    .dashboard-card {
-        min-height: 80px;
-        padding: 0.5rem 0.75rem;
-    }
-    .dashboard-card .info-box-label {
-        font-size: .6rem;
-    }
-    .dashboard-card .info-box-number {
-        font-size: 1.25rem;
-    }
-    .dashboard-card .col-auto i.info-box-icon {
-        font-size: 1.5rem;
-    }
-
-    .dashboard-table-card .card-header {
-        flex-direction: column; /* Stack header elements */
-        align-items: flex-start;
-        padding: 0.75rem; /* Padding mobile */
-    }
-    .table-title {
-        margin-bottom: 0.5rem;
-    }
-    .dashboard-table-card .table-search-box {
-        width: 100%;
-        margin-top: 5px;
-        justify-content: flex-start; /* Posisi search di kiri bawah judul tabel di mobile */
-    }
-    .table-search-box .custom-search-input {
-        width: 100px; /* Sesuaikan lebar input search di mobile */
-        font-size: .75rem;
-    }
-    .table-search-box .custom-search-button {
-        font-size: .75rem;
-    }
-    .dashboard-data-table thead th,
-    .dashboard-data-table tbody td {
-        font-size: 0.7rem; /* Font lebih kecil untuk tabel di mobile */
-        padding: 0.4rem; /* Padding lebih kecil */
-    }
-    .table-pagination-controls {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    .table-pagination-controls .custom-pagination-select,
-    .table-pagination-controls .custom-pagination-button {
-        font-size: 0.75rem;
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin-left: 0 !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }

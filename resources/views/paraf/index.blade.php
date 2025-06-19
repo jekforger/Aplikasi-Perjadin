@@ -1,6 +1,7 @@
 {{-- resources/views/paraf/index.blade.php --}}
 @extends('layouts.main')
 
+@section('title', 'Paraf')
 {{-- Menyertakan sidebar yang sesuai --}}
 @section('sidebar')
     @php
@@ -34,68 +35,12 @@
 @endsection
 
 @section('content')
-<div class="container-fluid paraf-page-container">
-    <h1 class="page-title paraf-title mb-4">Paraf</h1>
+<div class="paraf-container px-4 py-3">
+    <h1 class="paraf-page-title mb-4">Paraf</h1>
 
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show global-alert-app-top" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show global-alert-app-top" role="alert">
-            Terjadi kesalahan validasi. Mohon periksa kembali input Anda.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if (!$hasDocuments)
-    {{-- Tampilan Default: Belum ada dokumen --}}
-    <div class="paraf-no-document-card card shadow mb-4">
-        <div class="card-body text-center py-5">
-            <img src="{{ asset('img/no-data.png') }}" alt="Upload Icon" class="paraf-no-document-icon mb-3"> {{-- Icon dari public/img/ --}}
-            <p class="paraf-no-document-text mb-2">Belum ada file</p>
-            <a href="#" class="paraf-upload-link" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload File</a> {{-- Link memicu modal --}}
-        </div>
+    <div class="p-4 shadow-sm bg-white rounded">
+        <h5 class="mb-3">Detail</h5>
     </div>
-    @else
-    {{-- Tampilan Dokumen yang Sudah Diupload (Grid Card) --}}
-    <div class="row paraf-documents-grid g-4"> {{-- Grid untuk card dokumen --}}
-        @foreach ($documents as $doc)
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12"> {{-- Kolom responsif untuk setiap card --}}
-            <div class="document-card card shadow h-100">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
-                    <img src="{{ asset('img/document_icon.png') }}" alt="Document Icon" class="document-card-icon mb-3"> {{-- Icon dokumen --}}
-                    <h5 class="document-card-title mb-1">{{ $doc['file_name'] }}</h5>
-                    <p class="document-card-info mb-1">Diunggah: {{ $doc['uploaded_at'] }}</p>
-                    <p class="document-card-info mb-3">Oleh: {{ $doc['uploaded_by'] }}</p>
-                    <span class="badge document-status-badge 
-                        @if($doc['status'] == 'Menunggu Paraf') bg-warning text-dark
-                        @elseif($doc['status'] == 'Sudah Diparaf') bg-success
-                        @elseif($doc['status'] == 'Ditolak') bg-danger
-                        @else bg-secondary @endif">
-                        {{ $doc['status'] }}
-                    </span>
-                    <div class="document-actions mt-3">
-                        <button class="btn btn-primary btn-sm me-2">Lihat</button>
-                        @if($doc['status'] == 'Menunggu Paraf')
-                            <button class="btn btn-success btn-sm">Paraf</button>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
-    @endif
-
 </div>
 
 {{-- Modal Upload File (DITAMBAHKAN DI SINI) --}}

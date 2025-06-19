@@ -62,6 +62,7 @@ Route::prefix('bku')->name('bku.')->group(function () {
 Route::prefix('wadir')->name('wadir.')->group(function () {
     Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard');
     Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
+    Route::get('/persetujuan', [WadirController::class, 'persetujuan'])->name('persetujuan');
 });
 Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard');
