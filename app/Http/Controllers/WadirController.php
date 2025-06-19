@@ -55,4 +55,9 @@ class WadirController extends Controller
 
         return view('layouts.Wadir.dashboard', compact('dashboardStats', 'pengusulanDetails', 'roleDisplayName'));
     }
+
+    public function persetujuan()
+    {
+        return view ('layouts.Wadir.persetujuan');
+    }
 }

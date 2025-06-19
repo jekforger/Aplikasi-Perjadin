@@ -1,6 +1,7 @@
 {{-- resources/views/user/change-password.blade.php --}}
 @extends('layouts.main') {{-- Mengextend layout utama aplikasi --}}
 
+@section('title', 'Ubah Password')
 {{-- Sertakan sidebar di sini --}}
 @section('sidebar')
     {{-- Ambil userRole dan roleDisplayName langsung di sini --}}
@@ -40,7 +41,7 @@
 
 @section('content')
 <div class="container-fluid px-0 change-password-container">
-    <h1 class="page-title change-password-title mb-4">Change Password</h1>
+    <h1 class="page-title change-password-title mb-4">Ubah Password</h1>
 
     <div class="card shadow mb-4 change-password-card">
         <div class="card-body">

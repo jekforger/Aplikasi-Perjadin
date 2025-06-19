@@ -1,167 +1,48 @@
-{{-- resources/views/wadir/dashboard.blade.php --}}
 @extends('layouts.Wadir.layout')
 
+@section('title', 'Dashboard')
 @section('wadir_content')
-<div class="container-fluid dashboard-wadir-container">
+<div class="dashboard-container px-4 py-3">
     <h1 class="dashboard-page-title mb-4">Dashboard</h1>
 
-    {{-- Kotak Info Dashboard --}}
-    <div class="row dashboard-info-boxes g-3 mb-4"> {{-- g-3 untuk gutter antara kolom --}}
-        {{-- Kotak Total Pengusulan --}}
-        <div class="col-xl-3 col-md-6 col-12"> {{-- col-12 untuk stack di mobile sangat kecil --}}
-            <div class="dashboard-card shadow h-100 py-2 border-left-blue">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="info-box-label text-blue text-uppercase"> {{-- text-blue kustom --}}
-                                Total Pengusulan
-                            </div>
-                            <div class="info-box-number text-gray-800">{{ $dashboardStats['total_pengusulan'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bi bi-file-earmark-text info-box-icon text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Total Pengusulan</p>
+                <h5 class="fw-bold mb-2">0</h5>
+                <i class="bi bi-file-earmark-text fs-4 text-primary"></i>
             </div>
         </div>
-
-        {{-- Kotak Usulan Baru --}}
-        <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-green">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="info-box-label text-green text-uppercase"> {{-- text-green kustom --}}
-                                USULAN BARU
-                            </div>
-                            <div class="info-box-number text-gray-800">{{ $dashboardStats['usulan_baru'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bi bi-plus-square info-box-icon text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Usulan Baru</p>
+                <h5 class="fw-bold mb-2">0</h5>
+                <i class="bi bi-plus fs-4 text-success"></i>
             </div>
         </div>
-
-        {{-- Kotak Dalam Proses (Direktur) --}}
-        <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-purple"> {{-- Ubah warna border & teks --}}
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="info-box-label text-purple text-uppercase">
-                                DALAM PROSES (DIREKTUR)
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dalam_proses_direktur'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bi bi-bar-chart-fill info-box-icon text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Dalam Proses<br>(Direktur)</p>
+                <h5 class="fw-bold mb-2">0</h5>
+                <i class="bi bi-bar-chart-line fs-4 text-warning"></i>
             </div>
         </div>
-
-        {{-- Kotak Bertugas --}}
-        <div class="col-xl-3 col-md-6 col-12">
-            <div class="dashboard-card shadow h-100 py-2 border-left-orange"> {{-- Ubah warna border & teks --}}
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="info-box-label text-orange text-uppercase">
-                                BERTUGAS
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['bertugas'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bi bi-person-walking info-box-icon text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Bertugas</p>
+                <h5 class="fw-bold mb-2">0</h5>
+                <i class="bi bi-people fs-4 text-info"></i>
             </div>
         </div>
     </div>
 
-    {{-- Tabel Detail Pengusulan --}}
-    <div class="card shadow mb-4 dashboard-table-card">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center table-header-flex">
-            <h6 class="m-0 font-weight-bold text-gray-800 table-title">Detail</h6> {{-- Judul tabel diubah jadi "Detail", warna gray --}}
-            <div class="table-search-box input-group w-auto">
-                <input type="text" class="form-control form-control-sm custom-search-input" placeholder="Search...">
-                <button class="btn btn-primary btn-sm custom-search-button"><i class="fas fa-search"></i></button> {{-- Hanya icon search --}}
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered dashboard-data-table" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Tanggal Pengusulan</th>
-                            <th>Tanggal Berangkat</th>
-                            <th>Nomor Surat Pengusulan</th>
-                            <th>Sumber Dana</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($pengusulanDetails as $detail)
-                        <tr>
-                            <td>{{ $detail['tgl_pengusulan'] }}</td>
-                            <td>{{ $detail['tgl_berangkat'] }}</td>
-                            <td>{{ $detail['nomor_surat_pengusulan'] }}</td>
-                            <td>{{ $detail['sumber_dana'] }}</td>
-                            <td>
-                                @if($detail['status'] == 'Pending')
-                                    <span class="badge status-badge badge-warning text-dark">Pending</span>
-                                @elseif($detail['status'] == 'Disetujui')
-                                    <span class="badge status-badge badge-success">Disetujui</span>
-                                @elseif($detail['status'] == 'Ditolak')
-                                    <span class="badge status-badge badge-danger">Ditolak</span>
-                                @elseif($detail['status'] == 'Selesai')
-                                    <span class="badge status-badge badge-secondary">Selesai</span> {{-- Desain menggunakan abu-abu --}}
-                                @else
-                                    <span class="badge status-badge badge-info">{{ $detail['status'] }}</span>
-                                @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-info btn-sm custom-view-button">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center">Belum ada data pengusulan.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            {{-- Bagian pagination/rows per page --}}
-            <div class="d-flex justify-content-between align-items-center mt-3 table-pagination-controls">
-                <div>
-                    Rows per page: 
-                    <select class="form-select form-select-sm d-inline-block w-auto custom-pagination-select">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                </div>
-                <div>
-                    <span class="me-2">1 - 10 of {{ count($pengusulanDetails) }}</span>
-                    <button class="btn btn-outline-secondary btn-sm custom-pagination-button"><i class="bi bi-chevron-left"></i></button>
-                    <button class="btn btn-outline-secondary btn-sm custom-pagination-button"><i class="bi bi-chevron-right"></i></button>
-                </div>
-            </div>
-        </div>
+    <div class="p-4 shadow-sm bg-white rounded text-left">
+        <h5 class="mb-3">Detail</h5>
     </div>
-
 </div>
 @endsection
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/wadir.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endpush

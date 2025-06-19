@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\pengusulanController; // Anda mungkin tidak menggunakan ini jika pengusulanController sudah direname/digabung
+use App\Http\Controllers\pengusulanController;
 use App\Http\Controllers\MenuPengusulanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PengusulController;
@@ -12,6 +12,7 @@ use App\Http\Controllers\WadirController;
 use App\Http\Controllers\PelaksanaController;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ParafController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -28,6 +29,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('user.change-password.form');
     Route::post('/change-password', [UserController::class, 'changePassword'])->name('user.change-password');
+    Route::post('/paraf/upload', [ParafController::class, 'uploadDocument'])->name('paraf.upload');
 });
 
 
@@ -56,12 +58,15 @@ Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
 Route::prefix('bku')->name('bku.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
 });
-// Rute untuk semua Wakil Direktur (I-IV) mengarah ke dashboard Wadir
+// Rute untuk role Wadir (tambahan link Paraf)
 Route::prefix('wadir')->name('wadir.')->group(function () {
-    Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke WadirController
+    Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard');
+    Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
+    Route::get('/persetujuan', [WadirController::class, 'persetujuan'])->name('persetujuan');
 });
 Route::prefix('direktur')->name('direktur.')->group(function () {
-    Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke DirekturController
+    Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard');
+    Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
 });
 Route::prefix('sekdir')->name('sekdir.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard Sekretaris Direktur (belum dibuat)'; })->name('dashboard');

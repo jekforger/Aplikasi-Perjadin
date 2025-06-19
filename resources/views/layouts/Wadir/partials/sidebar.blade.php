@@ -17,14 +17,14 @@
             <span class="description">Dashboard</span>
         </a>
         {{-- Persetujuan Link --}}
-        <a href="#" class="nav-link {{ Request::is('wadir/persetujuan*') ? 'active' : '' }}">
+        <a href="{{ route('wadir.persetujuan') }}" class="nav-link {{ Request::is('wadir/persetujuan*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>
             <span class="description">Persetujuan</span>
         </a>
         {{-- Paraf Link --}}
-        <a href="#" class="nav-link {{ Request::is('wadir/paraf*') ? 'active' : '' }}">
+        <a href="{{ route('wadir.paraf') }}" class="nav-link {{ Request::is('wadir/paraf*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-pen"></i>
             </span>

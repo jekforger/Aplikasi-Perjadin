@@ -29,12 +29,10 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                             <li><a class="dropdown-item" href="{{ route('user.change-password.form') }}">Change Password</a></li>
                             <li>
-                                <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                                    @csrf
+                                @csrf
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
                                     Logout
                                 </button>
-                                </form>
                             </li>
                         </ul>
                     </div>
@@ -45,3 +43,7 @@
         </div>
     </div>
 </nav>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
