@@ -46,12 +46,21 @@ Route::prefix('bku')->name('bku.')->group(function () {
 
 // --- Rute untuk Wakil Direktur (I-IV) ---
 Route::prefix('wadir')->name('wadir.')->group(function () {
-    // Tambahkan middleware 'auth' dan 'role' di sini nanti
-    // ->middleware('auth', 'role:wadir_1,wadir_2,wadir_3,wadir_4')
     Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard');
-    // Rute baru untuk detail review surat tugas
+
+    // Rute baru untuk daftar Persetujuan
+    Route::get('/persetujuan', [WadirController::class, 'persetujuan'])->name('persetujuan');
+    // Rute baru untuk daftar Paraf
+    Route::get('/paraf', [WadirController::class, 'paraf'])->name('paraf');
+
+    // Rute untuk Halaman Upload Paraf
+    Route::get('/paraf', [WadirController::class, 'paraf'])->name('paraf'); // GET untuk menampilkan form/preview
+    Route::post('/paraf/upload', [WadirController::class, 'uploadParaf'])->name('paraf.upload'); // POST untuk proses upload
+    Route::post('/paraf/delete', [WadirController::class, 'deleteParaf'])->name('paraf.delete'); // POST untuk proses hapus
+    
+    // Rute untuk detail review surat tugas
     Route::get('/surat-tugas/{id}/review', [WadirController::class, 'reviewSuratTugas'])->name('review.surat_tugas');
-    // Rute baru untuk memproses keputusan Wadir (Setujui/Tolak/Revisi)
+    // Rute untuk memproses keputusan Wadir
     Route::post('/surat-tugas/{id}/process-review', [WadirController::class, 'processSuratTugasReview'])->name('process.review.surat_tugas');
 });
 
@@ -71,4 +80,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('pegawai', DataPegawaiController::class);
     Route::get('/datamahasiswa', [DataMahasiswaController::class, 'index'])->name('datamahasiswa');
     Route::resource('mahasiswa', DataMahasiswaController::class);
+});
+
+// Anda bisa membuat Controller terpisah untuk User Profile/Settings
+Route::middleware('auth')->group(function () {
+    // Rute untuk halaman Ganti Password
+    Route::get('/user/change-password', function () {
+        return view('user.change-password'); // Nanti Anda perlu membuat view ini
+    })->name('user.change-password.form');
+
+    // Contoh rute lain untuk profile jika ada
+    Route::get('/user/profile', function () {
+        return view('user.profile');
+    })->name('user.profile');
 });

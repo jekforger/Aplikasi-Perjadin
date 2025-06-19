@@ -86,7 +86,7 @@ class PengusulController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_kegiatan'        => 'required|string|max:255',
             'tempat_kegiatan'      => 'required|string',
-            'diusulkan_kepada'     => 'required|string',
+            'diusulkan_kepada'     => 'required|string', // Pastikan ini required
             'surat_undangan'       => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Contoh: pdf,doc,docx, max 2MB
             'ditugaskan_sebagai'   => 'required|string|max:255',
             'tanggal_pelaksanaan'  => 'required|string', // Format "DD/MM/YYYY -> DD/MM/YYYY"
@@ -110,8 +110,8 @@ class PengusulController extends Controller
         }
 
         try {
-            // Mengambil semua data dari request, kecuali token CSRF, opsi pembiayaan dari radio (kita pakai yang hidden input),
-            // dan array ID personel (akan di-handle terpisah).
+            // Mengambil semua data dari request, kecuali token CSRF, opsi pembiayaan, dan ID personel
+            // Pastikan 'diusulkan_kepada' dan 'ditugaskan_sebagai' TIDAK DIKECUALIKAN
             $data = $request->except([
                 '_token',
                 'pembiayaan_option', // Ini adalah nama radio button group, bukan nilai yang kita simpan
@@ -138,24 +138,26 @@ class PengusulController extends Controller
 
             // Membuat record baru di tabel 'surat_tugas'
             $suratTugas = SuratTugas::create([
-                'user_id'                    => auth()->id(), // Mengambil ID user yang sedang login sebagai pengusul
+'user_id'                    => auth()->id(),
                 'nomor_surat_usulan_jurusan' => $data['nomor_surat_usulan'],
-                // 'nomor_surat_tugas_resmi' akan diisi nanti setelah disetujui Direktur
+                'diusulkan_kepada'           => $data['diusulkan_kepada'],
                 'perihal_tugas'              => $data['nama_kegiatan'],
-                'kota_tujuan'                => $data['provinsi'], // Menggunakan provinsi sebagai kota_tujuan (sesuai PDM)
+                'tempat_kegiatan'            => $data['tempat_kegiatan'], // <-- PASTIKAN INI ADA
+                'alamat_kegiatan'            => $data['alamat_kegiatan'], // <-- PASTIKAN INI ADA
+                'kota_tujuan'                => $data['provinsi'],
                 'tanggal_berangkat'          => $tanggal_berangkat,
                 'tanggal_kembali'            => $tanggal_kembali,
                 'status_surat'               => $status_surat_db,
-                'catatan_revisi'             => null, // Awalnya kosong
+                'catatan_revisi'             => null,
                 'path_file_surat_usulan'     => $surat_undangan_path,
-                'path_file_surat_tugas_final'=> null, // Awalnya kosong
+                'path_file_surat_tugas_final'=> null,
                 'sumber_dana'                => $data['pembiayaan'],
-                'pagu_desentralisasi'        => $request->boolean('pagu_desentralisasi'), // Mengambil nilai boolean dari checkbox
-                'tanggal_paraf_wadir'        => null, // Awalnya kosong
-                'tanggal_persetujuan_direktur' => null, // Awalnya kosong
-                'is_surat_perintah_langsung' => false, // Default false, bisa jadi input di masa depan
-                // 'ditugaskan_sebagai' di PDM ada di DetailPelaksanaTugas, tetapi kita simpan di sini untuk kemudahan jika diperlukan di tampilan list
+                'pagu_desentralisasi'        => $request->boolean('pagu_desentralisasi'),
+                'tanggal_paraf_wadir'        => null,
+                'tanggal_persetujuan_direktur' => null,
+                'is_surat_perintah_langsung' => false,
                 'ditugaskan_sebagai'         => $data['ditugaskan_sebagai'],
+                // 'wadir_approver_id' dan 'direktur_approver_id' akan diisi di tahap persetujuan
             ]);
 
             // Menyimpan DetailPelaksanaTugas untuk setiap personel yang dipilih

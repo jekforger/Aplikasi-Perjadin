@@ -91,6 +91,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PegawaiSeeder::class,
             MahasiswaSeeder::class,
+            WadirDashboardSeeder::class,
         ]);
     }
 }

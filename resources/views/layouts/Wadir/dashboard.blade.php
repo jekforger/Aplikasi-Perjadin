@@ -1,93 +1,66 @@
 {{-- resources/views/wadir/dashboard.blade.php --}}
-@extends('layouts.Wadir.layout') {{-- Mengextend layout khusus Wadir --}}
+@extends('layouts.Wadir.layout')
 
-@section('wadir_content') {{-- Memasukkan konten ke yield 'wadir_content' --}}
-<div class="container-fluid">
-    <h1 class="mb-4">Dashboard</h1>
+@section('title', 'Dashboard')
+@section('wadir_content')
+<div class="dashboard-container px-4 py-3">
+    <h1 class="dashboard-page-title mb-4">Dashboard</h1>
 
-    {{-- Kotak Info Dashboard --}}
-    <div class="row">
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Pengusulan
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['total_pengusulan'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+    {{-- Kotak Statistik --}}
+    <div class="row g-3 mb-4">
+        {{-- Total Pengusulan --}}
+        <div class="col-6 col-md-3">
+            <div class="dashboard-card">
+                <p class="dashboard-title">Total Pengusulan</p>
+                <h5 class="dashboard-count">{{ $dashboardStats['total_pengusulan'] }}</h5>
+                <i class="bi bi-file-earmark-text dashboard-icon text-primary"></i>
             </div>
         </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Usulan Baru (Untuk Saya)
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['usulan_baru'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        {{-- Usulan Baru --}}
+        <div class="col-6 col-md-3">
+            <div class="dashboard-card">
+                <p class="dashboard-title">Usulan Baru</p>
+                <h5 class="dashboard-count">{{ $dashboardStats['usulan_baru'] }}</h5>
+                <i class="bi bi-plus dashboard-icon text-success"></i>
             </div>
         </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Dalam Proses (Direktur)
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dalam_proses_direktur'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-spinner fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        {{-- Dalam Proses (Direktur) --}}
+        <div class="col-6 col-md-3">
+            <div class="dashboard-card">
+                <p class="dashboard-title">Dalam Proses<br>(Direktur)</p>
+                <h5 class="dashboard-count">{{ $dashboardStats['dalam_proses_direktur'] }}</h5>
+                <i class="bi bi-bar-chart-line dashboard-icon text-warning"></i>
             </div>
         </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Dikembalikan / Ditolak
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dashboardStats['dikembalikan'] }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-undo-alt fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+        {{-- Bertugas --}}
+        <div class="col-6 col-md-3">
+            <div class="dashboard-card">
+                <p class="dashboard-title">Bertugas</p>
+                <h5 class="dashboard-count">{{ $dashboardStats['bertugas'] }}</h5>
+                <i class="bi bi-people dashboard-icon text-info"></i>
+            </div>
+        </div>
+        {{-- Dikembalikan / Ditolak (Tambahan) --}}
+        {{-- Jika Anda ingin ini juga muncul sebagai kartu, tambahkan div ini --}}
+        <div class="col-6 col-md-3">
+            <div class="dashboard-card">
+                <p class="dashboard-title">Dikembalikan/<br>Ditolak</p>
+                <h5 class="dashboard-count">{{ $dashboardStats['dikembalikan_ditolak'] }}</h5>
+                <i class="bi bi-x-circle dashboard-icon text-danger"></i>
             </div>
         </div>
     </div>
 
-    {{-- Tabel Detail Pengusulan untuk Review --}}
+    {{-- HAPUS TABEL "Daftar Pengusulan Menunggu Review Anda" DARI SINI --}}
+    {{-- Ini adalah blok yang akan dihapus dari dashboard.blade.php --}}
+    {{--
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Daftar Pengusulan Menunggu Review Anda</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -138,26 +111,99 @@
             </div>
         </div>
     </div>
+    --}}
+
+
+    {{-- Tabel "Detail" (SESUAI SCREENSHOT ANDA) --}}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Detail</h6>
+        </div>
+        <div class="card-body">
+            {{-- Search Bar --}}
+            <div class="d-flex justify-content-end mb-3">
+                <form action="{{ route('wadir.dashboard') }}" method="GET" class="d-flex">
+                    <input type="text" name="search_all" class="form-control me-2" placeholder="Search" value="{{ request('search_all') }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
+                </form>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal Pengusulan</th>
+                            <th>Tanggal Berangkat</th>
+                            <th>Nomor Surat Pengusulan</th>
+                            <th>Sumber Dana</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($allSuratTugas as $index => $st)
+                        <tr>
+                            <td>{{ $loop->iteration + ($allSuratTugas->currentPage() - 1) * $allSuratTugas->perPage() }}</td>
+                            <td>{{ $st->created_at->format('d F Y') }}</td>
+                            <td>{{ $st->tanggal_berangkat->format('d F Y') }}</td>
+                            <td>{{ $st->nomor_surat_usulan_jurusan }}</td>
+                            <td>{{ $st->sumber_dana }}</td>
+                            <td>
+                                @php
+                                    $badgeClass = '';
+                                    switch ($st->status_surat) {
+                                        case 'draft': $badgeClass = 'bg-secondary'; break;
+                                        case 'pending_wadir_review': $badgeClass = 'bg-warning text-dark'; break;
+                                        case 'approved_by_wadir': $badgeClass = 'bg-info'; break;
+                                        case 'rejected_by_wadir': $badgeClass = 'bg-danger'; break;
+                                        case 'reverted_by_wadir': $badgeClass = 'bg-info text-dark'; break;
+                                        case 'approved_by_direktur': $badgeClass = 'bg-success'; break;
+                                        case 'rejected_by_direktur': $badgeClass = 'bg-danger'; break;
+                                        case 'reverted_by_direktur': $badgeClass = 'bg-warning text-dark'; break;
+                                        case 'diterbitkan': $badgeClass = 'bg-primary'; break;
+                                        default: $badgeClass = 'bg-light text-dark'; break;
+                                    }
+                                @endphp
+                                <span class="badge {{ $badgeClass }}">{{ str_replace('_', ' ', Str::title($st->status_surat)) }}</span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak ada data pengusulan.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Pagination dan Rows per page --}}
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="d-flex align-items-center">
+                    <span class="me-2 text-muted">Rows per page:</span>
+                    <form action="{{ route('wadir.dashboard') }}" method="GET" id="perPageForm">
+                        <select name="per_page" class="form-select form-select-sm" onchange="this.form.submit()">
+                            @foreach([5, 10, 25, 50] as $size)
+                                <option value="{{ $size }}" {{ request('per_page', 10) == $size ? 'selected' : '' }}>{{ $size }}</option>
+                            @endforeach
+                        </select>
+                        <input type="hidden" name="search_all" value="{{ request('search_all') }}">
+                    </form>
+                </div>
+                <div>
+                    <span class="me-2 text-muted">Showing {{ $allSuratTugas->firstItem() ?? 0 }} to {{ $allSuratTugas->lastItem() ?? 0 }} of {{ $allSuratTugas->total() }} entries</span>
+                    {{ $allSuratTugas->links('pagination::bootstrap-4') }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/wadir.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCXdJf3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-@endpush
-
-@push('scripts')
-    {{-- Inisialisasi DataTables (opsional, karena paginasi Laravel sudah dipakai) --}}
-    {{-- <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable({
-                "paging": false, // Karena Laravel pagination
-                "info": false,
-                "searching": true,
-                "ordering": true
-            });
-        });
-    </script> --}}
+    {{-- Tidak perlu CSS lagi di sini, sudah di layouts/Wadir/layout.blade.php atau di wadir.css --}}
 @endpush
