@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('layouts.authMain') {{-- Pastikan ini meng-extend layout yang benar --}}
 
 @section('content')
 <div class="login-full-page-wrapper">
@@ -13,11 +13,13 @@
 
                 <h3 class="role-select-title">Pilih Role</h3>
 
-                @if (session('error'))
+                {{-- Global alerts akan di-handle oleh layouts.authMain.blade.php --}}
+                {{-- Anda bisa menghapus @if (session('error')) di sini jika sudah ada di authMain --}}
+                {{-- @if (session('error'))
                     <div class="alert alert-danger" role="alert">
                         {{ session('error') }}
                     </div>
-                @endif
+                @endif --}}
 
                 <form method="GET" action="{{ route('login.form') }}">
                     <div class="mb-4">
@@ -28,8 +30,14 @@
                                 <option value="pengusul">Pengusul</option>
                                 <option value="pelaksana">Pelaksana</option>
                                 <option value="bku">Badan Keuangan Umum (BKU)</option>
-                                <option value="wadir">Wakil Direktur</option>
+                                {{-- UBAH BAGIAN INI --}}
+                                <option value="wadir_1">Wakil Direktur I</option>
+                                <option value="wadir_2">Wakil Direktur II</option>
+                                <option value="wadir_3">Wakil Direktur III</option>
+                                <option value="wadir_4">Wakil Direktur IV</option>
+                                {{-- AKHIR UBAH BAGIAN INI --}}
                                 <option value="direktur">Direktur</option>
+                                <option value="sekdir">Sekretaris Direktur</option>
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
@@ -52,7 +60,7 @@
         </div>
 
         {{-- Right Panel (Illustration) - Hidden on mobile --}}
-        <div class="col-lg-8 d-none d-lg-flex align-items-center justify-content-center right-panel">
+        <div class="col-lg-8 d-none d-lg-flex align-items-center justify-content-center right-panel"> 
             <img src="{{ asset('img/login.png') }}" alt="Login Illustration" class="img-fluid illustration-img">
         </div>
     </div>

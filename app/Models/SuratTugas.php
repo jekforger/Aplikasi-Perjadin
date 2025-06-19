@@ -14,6 +14,7 @@ class SuratTugas extends Model
 
     protected $fillable = [
         'user_id',
+        'diusulkan_kepada',
         'nomor_surat_usulan_jurusan',
         'nomor_surat_tugas_resmi',
         'perihal_tugas',
