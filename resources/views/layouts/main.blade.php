@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Aplikasi SPPD Polban') }}</title>
+    <title>@yield('title', 'Aplikasi Surat Tugas')</title>
 
-    <link rel="icon" href="{{ asset('img/polban2.png') }}" type="image/png"> {{-- Favicon --}}
+    {{-- Favicon --}}
+    <link rel="icon" href="{{ asset('img/polban2.png') }}" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -32,34 +33,47 @@
     @stack('styles') {{-- Untuk CSS spesifik halaman anak --}}
 </head>
 <body>
-    {{-- Global Success/Error Alert for App Layout (after login) --}}
+    {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
     @if (session('success_message'))
         <div class="alert alert-success alert-dismissible fade show global-alert-app-top" role="alert">
             {{ session('success_message') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show global-alert-app-top" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
-    {{-- Wrapper utama untuk sidebar dan konten, dan toggle button --}}
-    <div class="d-flex" id="wrapper">
-        {{-- Sidebar (akan di-yield oleh layout anak, misal layouts.Wadir.layout) --}}
-        @yield('sidebar')
+    @include('partials.navbar') {{-- NAVBAR DI SINI (FIXED) --}}
+
+    @yield('sidebar') {{-- SIDEBAR DI SINI (FIXED) --}}
+
+    <div class="main-wrapper"> {{-- WRAPPER UNTUK KONTEN DI SAMPING SIDEBAR & DI BAWAH NAVBAR --}}
+        <main class="main-content-area"> {{-- Area konten utama --}}
+            @yield('content') {{-- Konten utama halaman --}}
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
         {{-- Page Content Wrapper (konten utama yang bergeser) --}}
         <div id="page-content-wrapper" class="flex-grow-1">
             <!-- Navbar -->
             @include('include.navbar')
 
-            <!-- Content Area (dengan padding) -->
-            <main class="py-4">
-                @yield('content')
-            </main>
+    {{-- Modal Konfirmasi Logout --}}
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin keluar dari aplikasi?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmLogoutBtn">Logout</button>
+                </div>
+            </div>
         </div>
     </div>
 

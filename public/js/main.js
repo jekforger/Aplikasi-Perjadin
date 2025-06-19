@@ -1,4 +1,4 @@
-// public/js/app.js
+// public/js/main.js
 
 document.addEventListener('DOMContentLoaded', function() {
     // === Sidebar Toggle Logic ===

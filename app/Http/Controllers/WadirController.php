@@ -187,4 +187,9 @@ class WadirController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat memproses keputusan: ' . $e->getMessage())->withInput();
         }
     }
+
+    public function persetujuan()
+    {
+        return view ('layouts.Wadir.persetujuan');
+    }
 }

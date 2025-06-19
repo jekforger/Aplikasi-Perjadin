@@ -16,15 +16,15 @@
             </span>
             <span class="description">Dashboard</span>
         </a>
-        {{-- Persetujuan Link (Untuk nanti) --}}
-        <a href="#" class="nav-link {{ Request::routeIs('wadir.persetujuan*') ? 'active' : '' }}">
+        {{-- Persetujuan Link --}}
+        <a href="{{ route('wadir.persetujuan') }}" class="nav-link {{ Request::is('wadir/persetujuan*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>
             <span class="description">Persetujuan</span>
         </a>
-        {{-- Paraf Link (Untuk nanti) --}}
-        <a href="#" class="nav-link {{ Request::routeIs('wadir.paraf*') ? 'active' : '' }}">
+        {{-- Paraf Link --}}
+        <a href="{{ route('wadir.paraf') }}" class="nav-link {{ Request::is('wadir/paraf*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-pen"></i>
             </span>

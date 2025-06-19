@@ -1,0 +1,168 @@
+/* public/css/paraf.css */
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --sidebar-width: 120px;
+    --sidebar-collapsed-width: 0px;
+}
+
+.paraf-container {
+    margin-left: var(--sidebar-width, 260px); /* default full sidebar */
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    padding: 2rem 2rem;
+}
+
+body.sidebar-collapsed .paraf-container {
+    margin-left: var(--sidebar-collapsed-width) !important;
+}
+
+.paraf-page-title {
+    font-weight: 600;
+    font-size: 40px;
+    margin-top: 50px;
+}
+
+/* === Styling untuk tampilan Default: Belum ada dokumen === */
+.paraf-no-document-card {
+    max-width: 500px; /* Batasi lebar card */
+    width: 100%;
+    margin: 50px auto; /* Pusatkan horizontal dan beri margin atas */
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    border: none;
+    background-color: #fff;
+    padding: 2.5rem; /* Padding internal card */
+}
+.paraf-no-document-card .card-body {
+    padding: 0 !important;
+}
+
+.paraf-no-document-icon {
+    width: 80px; /* Ukuran ikon gambar */
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem auto; /* Pusatkan ikon dan beri margin bawah */
+}
+
+.paraf-no-document-text {
+    font-size: 1.1rem;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 0.5rem; /* Jarak bawah teks */
+}
+
+.paraf-upload-link {
+    font-size: 1rem;
+    color: #007bff; /* Warna biru primary */
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.paraf-upload-link:hover {
+    color: #0056b3;
+}
+
+
+/* === Styling untuk tampilan Dokumen yang Sudah Diupload (Grid Card) === */
+.paraf-documents-grid {
+    /* Gutter sudah di handle g-4 */
+}
+
+.document-card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 0.75rem rgba(0, 0, 0, 0.08);
+    border: none;
+    background-color: #fff;
+    padding: 1.5rem; /* Padding internal card dokumen */
+    height: 100%; /* Agar semua card di baris yang sama punya tinggi sama */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.document-card-icon {
+    width: 60px; /* Ukuran ikon dokumen */
+    height: auto;
+    margin-bottom: 0.75rem;
+}
+
+.document-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    word-break: break-all; /* Jika nama file terlalu panjang */
+    margin-bottom: 0.25rem;
+}
+
+.document-card-info {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.document-status-badge {
+    padding: .3em .5em;
+    font-size: .7rem;
+    font-weight: 600;
+    border-radius: .25rem;
+    margin-top: 0.5rem; /* Jarak dari info terakhir */
+}
+.document-status-badge.bg-warning.text-dark { background-color: #f6c23e!important; color: #212529 !important; }
+.document-status-badge.bg-success { background-color: #1cc88a!important; }
+.document-status-badge.bg-danger { background-color: #e74a3b!important; }
+.document-status-badge.bg-secondary { background-color: #858796!important; color: white !important; }
+
+
+.document-actions .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+.document-actions .btn-primary { background-color: #007bff; border-color: #007bff; }
+.document-actions .btn-success { background-color: #28a745; border-color: #28a745; }
+
+
+/* === Responsive adjustments === */
+@media (max-width: 767.98px) {
+    .paraf-page-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .paraf-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .paraf-no-document-card {
+        margin-top: 30px;
+        padding: 1.5rem;
+    }
+    .paraf-no-document-icon {
+        width: 60px;
+    }
+    .paraf-no-document-text {
+        font-size: 1rem;
+    }
+    .paraf-upload-link {
+        font-size: 0.9rem;
+    }
+    
+    .document-card {
+        padding: 1rem;
+    }
+    .document-card-icon {
+        width: 50px;
+    }
+    .document-card-title {
+        font-size: 0.9rem;
+    }
+    .document-card-info,
+    .document-status-badge {
+        font-size: 0.7rem;
+    }
+}
