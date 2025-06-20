@@ -38,16 +38,63 @@
     </div>
   </div>
 
-  {{-- Card Detail --}}
-  <div class="card">
-    <div class="card-body px-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <h2 class="h4 font-weight-bold mb-2">Detail Pengusulan Saya</h2>
-          <p class="text-muted">Ini Dashboard Pengusul</p>
-        </div>
+  {{-- Card Detail Pengusulan Terbaru --}}
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Pengusulan Terbaru Saya</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal Pengusulan</th>
+                    <th>Nama Kegiatan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($latestPengusulan as $index => $st)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $st->created_at->format('d M Y') }}</td>
+                    <td>{{ $st->perihal_tugas }}</td>
+                    <td>
+                        @php
+                            $badgeClass = '';
+                            switch ($st->status_surat) {
+                                case 'draft': $badgeClass = 'bg-secondary'; break;
+                                case 'pending_wadir_review': $badgeClass = 'bg-warning text-dark'; break;
+                                case 'approved_by_wadir': $badgeClass = 'bg-info'; break;
+                                case 'rejected_by_wadir': $badgeClass = 'bg-danger'; break;
+                                case 'reverted_by_wadir': $badgeClass = 'bg-info text-dark'; break;
+                                case 'approved_by_direktur': $badgeClass = 'bg-success'; break;
+                                case 'rejected_by_direktur': $badgeClass = 'bg-danger'; break;
+                                case 'reverted_by_direktur': $badgeClass = 'bg-warning text-dark'; break;
+                                case 'diterbitkan': $badgeClass = 'bg-primary'; break;
+                                case 'laporan_selesai': $badgeClass = 'bg-success'; break;
+                                default: $badgeClass = 'bg-light text-dark'; break;
+                            }
+                        @endphp
+                        <span class="badge {{ $badgeClass }}">{{ str_replace('_', ' ', Str::title($st->status_surat)) }}</span>
+                    </td>
+                    <td>
+                        {{-- Aksi View / Edit --}}
+                        <a href="#" class="btn btn-sm btn-outline-info">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" class="text-center">Belum ada pengusulan terbaru.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
       </div>
-      {{-- Di sini nanti bisa ditambahkan tabel atau list pengusulan terbaru dari pengusul yang login --}}
     </div>
   </div>
 </div>

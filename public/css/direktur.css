@@ -1,0 +1,197 @@
+/* public/css/direktur.css */
+
+/* Definisikan variabel warna jika belum ada di tempat lain (misal di app.css/main.css) */
+:root {
+    --color-blue: #007bff;
+    --color-green: #28a745;
+    --color-purple: #6f42c1; /* Contoh warna baru */
+    --color-orange: #fd7e14;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-dark-gray: #343a40;
+}
+
+/* === DASHBOARD GLOBAL STYLING === */
+.dashboard-direktur-container { /* Kontainer utama dashboard Direktur */
+    /* Padding sudah di main.content-area, tapi bisa ditambahkan jika perlu batas lebih jauh */
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.dashboard-page-title { /* Styling untuk h1 Dashboard */
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-top: 0;
+}
+
+/* === INFO BOXES STYLING === */
+.dashboard-info-boxes .col-xl-3,
+.dashboard-info-boxes .col-md-6,
+.dashboard-info-boxes .col-12 {
+    /* Padding/margin sudah di Bootstrap g-3, sesuaikan jika perlu di sini */
+}
+
+.dashboard-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease-in-out;
+    min-height: 170px;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.dashboard-card .info-box-label { /* Label di kartu */
+    font-size: 0.75rem; /* Lebih kecil */
+    font-weight: 700;
+    color: #666; /* Warna default */
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+.dashboard-card .h5 { /* Angka di kartu */
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+.dashboard-card .info-box-icon { /* Icon di kartu */
+    font-size: 2.5rem; /* Lebih besar */
+    color: #ccc; /* Warna default */
+}
+
+
+/* Warna border kiri kustom Direktur */
+.dashboard-card.border-left-blue { border-left: .25rem solid var(--color-blue)!important; }
+.dashboard-card.border-left-green { border-left: .25rem solid var(--color-green)!important; }
+.dashboard-card.border-left-purple { border-left: .25rem solid var(--color-purple)!important; }
+.dashboard-card.border-left-orange { border-left: .25rem solid var(--color-orange)!important; }
+
+/* Warna teks spesifik di card body untuk label */
+.dashboard-card .text-blue { color: var(--color-blue) !important; }
+.dashboard-card .text-green { color: var(--color-green) !important; }
+.dashboard-card .text-purple { color: var(--color-purple) !important; }
+.dashboard-card .text-orange { color: var(--color-orange) !important; }
+.dashboard-card .text-gray-800 { color: #5a5c69 !important; } /* Re-override jika perlu */
+.dashboard-card .text-gray-300 { color: #dddfeb !important; } /* Re-override jika perlu */
+
+
+/* === TABEL STYLING === */
+.dashboard-table-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    /* padding sudah di .card-body */
+}
+
+.table-header-flex { /* Untuk d-flex justify-content-between di header card tabel */
+    /* ... */
+}
+
+.table-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.table-search-box .form-control {
+    border-radius: .25rem;
+}
+.table-search-box .btn {
+    border-radius: .25rem;
+}
+
+.dashboard-data-table th, .dashboard-data-table td {
+    vertical-align: middle;
+}
+.dashboard-data-table thead th {
+    background-color: #f8f9fc;
+    color: #858796;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: 1px solid #e3e6f0;
+}
+.dashboard-data-table tbody td {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+
+/* Badge Status Khusus Direktur */
+.status-badge {
+    padding: .35em .65em;
+    border-radius: .25rem;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    display: inline-block;
+}
+.status-badge.bg-info { background-color: var(--color-info, #17a2b8) !important; color: #fff; } /* Disetujui Wadir */
+.status-badge.bg-danger { background-color: var(--color-danger, #dc3545) !important; color: #fff; } /* Ditolak */
+.status-badge.bg-warning { background-color: var(--color-warning, #ffc107) !important; color: #000; } /* Dikembalikan/Sedang Diproses */
+.status-badge.bg-success { background-color: var(--color-green, #28a745) !important; color: #fff; } /* Diterbitkan/Selesai */
+.status-badge.bg-secondary { background-color: var(--color-dark-gray, #6c757d) !important; color: #fff; } /* Default/Selesai */
+
+.custom-view-button {
+    font-size: 0.75rem;
+    padding: .25rem .5rem;
+    border-radius: .2rem;
+}
+
+
+/* === PAGINATION CONTROLS === */
+.table-pagination-controls .custom-pagination-select {
+    font-size: 0.8rem;
+    padding: .25rem .5rem;
+}
+.table-pagination-controls .custom-pagination-button {
+    font-size: 0.8rem;
+    padding: .25rem .5rem;
+    border-radius: .2rem;
+}
+.table-pagination-controls .pagination { /* Override Bootstrap pagination jika perlu */
+    margin-bottom: 0;
+}
+
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 767.98px) { /* Mobile view */
+    .dashboard-direktur-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .dashboard-page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .dashboard-info-boxes .col-6, .dashboard-info-boxes .col-md-3 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .dashboard-card {
+        padding: 15px 10px;
+        min-height: 120px;
+    }
+    .dashboard-card .h5 {
+        font-size: 1.2rem;
+    }
+    .dashboard-card .info-box-icon {
+        font-size: 2rem;
+    }
+    .table-search-box {
+        width: 100% !important;
+        margin-bottom: 1rem;
+    }
+    .table-search-box .form-control, .table-search-box .btn {
+        font-size: 0.8rem;
+        padding: .375rem .75rem;
+    }
+}
