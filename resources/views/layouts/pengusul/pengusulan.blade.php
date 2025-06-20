@@ -235,7 +235,6 @@
     <h2 class="page-title">Pengusulan</h2>
     <div class="card"> {{-- Ini adalah Bootstrap Card utama --}}
       <div class="label">
-        <h6>*Semua form wajib di isi untuk keperluan data di dalam surat, terkecuali form "Pagu"</h6>
       </div>
 
       <form id="pengusulanForm" action="{{ route('pengusul.store.pengusulan') }}" method="POST" enctype="multipart/form-data">
@@ -248,19 +247,19 @@
             <div class="col-md-6">
               <!-- Nama Kegiatan -->
             <div class="mb-3 mt-4">
-              <label for="nama_kegiatan" class="form-label">Nama Kegiatan</label>
+              <label for="nama_kegiatan" class="form-label">Nama Kegiatan *</label>
               <textarea class="form-control" id="nama_kegiatan" name="nama_kegiatan" rows="3" placeholder="Nama Kegiatan" required>{{ old('nama_kegiatan') }}</textarea>
             </div>
 
             <!-- Tempat Kegiatan -->
             <div class="mb-3">
-              <label for="tempat_kegiatan" class="form-label">Tempat Kegiatan</label>
+              <label for="tempat_kegiatan" class="form-label">Tempat Kegiatan *</label>
               <textarea class="form-control" id="tempat_kegiatan" name="tempat_kegiatan" rows="3" placeholder="Tempat Kegiatan" required>{{ old('tempat_kegiatan') }}</textarea>
             </div>
 
             <!-- Diusulkan Kepada -->
             <div class="form-section mb-4">
-              <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada</label>
+              <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada *</label>
               <div class="d-flex align-items-end gap-2">
                 <input
                   type="text"
@@ -299,7 +298,7 @@
 
             <!-- Pembiayaan -->
             <div class="form-section mb-4">
-              <label for="pembiayaan" class="form-label">Pembiayaan</label>
+              <label for="pembiayaan" class="form-label">Pembiayaan *</label>
               <input type="hidden" name="pembiayaan" id="pembiayaan_value" value="{{ old('pembiayaan', 'Polban') }}">
               <div class="d-flex flex-column gap-2">
                 <div class="form-check">
@@ -322,13 +321,13 @@
           <div class="col-md-6">
             <!-- Ditugaskan Sebagai -->
             <div class="mb-3 mt-4">
-                <label for="ditugaskan_sebagai" class="form-label">Ditugaskan Sebagai</label>
+                <label for="ditugaskan_sebagai" class="form-label">Ditugaskan Sebagai *</label>
                 <input type="text" class="form-control" id="ditugaskan_sebagai" name="ditugaskan_sebagai" placeholder="Ditugaskan Sebagai" required value="{{ old('ditugaskan_sebagai') }}">
               </div>
 
               <!-- Pilih Tanggal -->
               <div class="mb-3">
-                <label for="tanggal_pelaksanaan" class="form-label">Tanggal Pelaksanaan</label>
+                <label for="tanggal_pelaksanaan" class="form-label">Tanggal Pelaksanaan *</label>
                 <input
                   type="text"
                   id="tanggal_pelaksanaan"
@@ -361,13 +360,13 @@
 
               <!-- Alamat Kegiatan -->
               <div class="mb-3 mt-4">
-                <label for="alamat_kegiatan" class="form-label">Alamat Kegiatan</label>
+                <label for="alamat_kegiatan" class="form-label">Alamat Kegiatan *</label>
                 <textarea class="form-control" id="alamat_kegiatan" name="alamat_kegiatan" rows="3" placeholder="Alamat Kegiatan" required>{{ old('alamat_kegiatan') }}</textarea>
               </div>
 
               <!-- Provinsi -->
               <div class="form-section mb-4">
-                <label for="provinsi" class="form-label">Provinsi</label>
+                <label for="provinsi" class="form-label">Provinsi *</label>
                 <div class="d-flex align-items-end gap-2">
                   <input
                     type="text"
@@ -396,7 +395,7 @@
 
               <!-- Nomor Surat Usulan -->
               <div class="mb-3">
-                <label for="nomor_surat_usulan" class="form-label">Nomor Surat Usulan</label>
+                <label for="nomor_surat_usulan" class="form-label">Nomor Surat Usulan *</label>
                 <input type="text" class="form-control" id="nomor_surat_usulan" name="nomor_surat_usulan" placeholder="Nomor Surat Usulan" required value="{{ old('nomor_surat_usulan') }}">
               </div>
             </div>
