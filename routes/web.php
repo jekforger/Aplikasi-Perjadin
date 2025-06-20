@@ -36,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
 
 // --- Rute untuk Role Pengusul (Sudah Pernah Dibahas, Kita Pakai Lagi) ---
 // Nantinya akan ada middleware 'auth' dan 'role' di grup ini
-Route::prefix('pengusul')->name('pengusul.')->group(function () {
+Route::prefix('pengusul')->name('pengusul.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [PengusulController::class, 'dashboard'])->name('dashboard');
     Route::get('/pengusulan', [PengusulController::class, 'pengusulan'])->name('pengusulan');
     Route::post('/pengusulan', [PengusulController::class, 'storePengusulan'])->name('store.pengusulan');
@@ -53,27 +53,27 @@ Route::prefix('pengusul')->name('pengusul.')->group(function () {
 
 // --- Rute Placeholder untuk Role Lain (akan dikembangkan nanti) ---
 // Ini hanya untuk memastikan link redirect di LoginController tidak error "route not defined"
-Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
+Route::prefix('pelaksana')->name('pelaksana.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [PelaksanaController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke PelaksanaController
 });
-Route::prefix('bku')->name('bku.')->group(function () {
+Route::prefix('bku')->name('bku.')->middleware('auth')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
 });
 // Rute untuk role Wadir (tambahan link Paraf)
-Route::prefix('wadir')->name('wadir.')->group(function () {
+Route::prefix('wadir')->name('wadir.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [WadirController::class, 'dashboard'])->name('dashboard');
     Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
     Route::get('/persetujuan', [WadirController::class, 'persetujuan'])->name('persetujuan');
 });
-Route::prefix('direktur')->name('direktur.')->group(function () {
+Route::prefix('direktur')->name('direktur.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard');
     Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
 });
-Route::prefix('sekdir')->name('sekdir.')->group(function () {
+Route::prefix('sekdir')->name('sekdir.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [SekdirController::class, 'dashboard'])->name('dashboard');
     Route::get('/nomorsurat', [SekdirController::class, 'nomorsurat'])->name('nomorsurat');
 });
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/datapegawai', [DataPegawaiController::class, 'index'])->name('datapegawai');
     Route::resource('pegawai', DataPegawaiController::class);

@@ -60,6 +60,13 @@ class LoginController extends Controller
             'role' => $role,
             'displayName' => $displayName // Pastikan ini ada dan variabelnya benar
         ]);
+
+        if (auth()->check()) {
+            return redirect()->route($this->redirectToRole(auth()->user()->role));
+        }
+    
+        $role = $request->query('role');
+        return view('auth.login', compact('role'));
     }
 
     // Method untuk memproses login form
