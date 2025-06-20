@@ -13,6 +13,7 @@ use App\Http\Controllers\PelaksanaController;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ParafController;
+use App\Http\Controllers\SekdirController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -69,7 +70,8 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
 });
 Route::prefix('sekdir')->name('sekdir.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard Sekretaris Direktur (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [SekdirController::class, 'dashboard'])->name('dashboard');
+    Route::get('/nomorsurat', [SekdirController::class, 'nomorsurat'])->name('nomorsurat');
 });
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
