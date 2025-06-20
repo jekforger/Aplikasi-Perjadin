@@ -10,28 +10,28 @@
     </div>
     <nav class="nav flex-column">
         {{-- Dashboard Link --}}
-        <a href="{{ route('direktur.dashboard') }}" class="nav-link {{ Request::is('direktur/dashboard*') ? 'active' : '' }}">
+        <a href="{{ route('direktur.dashboard') }}" class="nav-link {{ Request::routeIs('direktur.dashboard') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-columns-gap"></i>
             </span>
             <span class="description">Dashboard</span>
         </a>
         {{-- Persetujuan Direktur Link --}}
-        <a href="#" class="nav-link {{ Request::is('direktur/persetujuan*') ? 'active' : '' }}">
+        <a href="{{ route('direktur.persetujuan') }}" class="nav-link {{ Request::routeIs('direktur.persetujuan') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>
             <span class="description">Persetujuan</span>
         </a>
-        {{-- Histori Persetujuan Link --}}
-        <a href="{{ route('direktur.paraf') }}" class="nav-link {{ Request::is('direktur/histori-persetujuan*') ? 'active' : '' }}">
+        {{-- Tanda Tangan/Paraf Direktur Link --}}
+        <a href="{{ route('direktur.paraf') }}" class="nav-link {{ Request::routeIs('direktur.paraf') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-pen"></i>
             </span>
             <span class="description">Tanda Tangan</span>
         </a>
         
-        {{-- Ganti Role Link (dengan Submenu) - DIREKTUR BISA GANTI ROLE KE PELAKSANA --}}
+        {{-- Ganti Role Link (dengan Submenu) --}}
         @php
             $rolesWithSwitch = ['wadir_1', 'wadir_2', 'wadir_3', 'wadir_4', 'direktur'];
         @endphp

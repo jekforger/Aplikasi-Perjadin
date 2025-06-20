@@ -10,27 +10,27 @@
     </div>
     <nav class="nav flex-column">
         {{-- Dashboard Link --}}
-        <a href="{{ route('wadir.dashboard') }}" class="nav-link {{ Request::is('wadir/dashboard*') ? 'active' : '' }}">
+        <a href="{{ route('wadir.dashboard') }}" class="nav-link {{ Request::routeIs('wadir.dashboard') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-columns-gap"></i>
             </span>
             <span class="description">Dashboard</span>
         </a>
-        {{-- Persetujuan Link --}}
-        <a href="{{ route('wadir.persetujuan') }}" class="nav-link {{ Request::is('wadir/persetujuan*') ? 'active' : '' }}">
+        {{-- Persetujuan Link (mengarah ke halaman persetujuan) --}}
+        <a href="{{ route('wadir.persetujuan') }}" class="nav-link {{ Request::routeIs('wadir.persetujuan') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>
             <span class="description">Persetujuan</span>
         </a>
-        {{-- Paraf Link --}}
-        <a href="{{ route('wadir.paraf') }}" class="nav-link {{ Request::is('wadir/paraf*') ? 'active' : '' }}">
+        {{-- Paraf Link (sekarang akan redirect ke halaman persetujuan dengan filter paraf) --}}
+        <a href="{{ route('wadir.paraf') }}" class="nav-link {{ Request::routeIs('wadir.paraf') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-pen"></i>
             </span>
             <span class="description">Paraf</span>
         </a>
-        
+
         {{-- Ganti Role Link (dengan Submenu) --}}
         <a href="#submenu" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu">
             <span class="icon">
@@ -40,12 +40,12 @@
         </a>
 
         <div class="sub-menu collapse" id="submenu">
-            <a href="{{ route('wadir.dashboard') }}" class="nav-link sub-nav-link"> {{-- Link ke dashboard Wadir default --}}
+            <a href="{{ route('wadir.dashboard') }}" class="nav-link sub-nav-link">
                 <span class="description">
-                    {{ $roleDisplayName }}
+                    Wakil Direktur I
                 </span>
             </a>
-            <a href="{{ route('pelaksana.dashboard') }}" class="nav-link sub-nav-link"> {{-- Link ke dashboard Pelaksana --}}
+            <a href="{{ route('pelaksana.dashboard') }}" class="nav-link sub-nav-link">
                 <span class="description">
                     Pelaksana
                 </span>

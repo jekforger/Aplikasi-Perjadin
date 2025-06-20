@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User; // Pastikan User Model diimport
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,57 +13,78 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::create([
-    'name' => 'Fahrizal Mudzaqi M',
-    'email' => 'fahrizal.mudzaqi.tif22@polban.ac.id',
-    'password' => bcrypt('pengusul123'),
-    'role' => 'pengusul',
-    ]);
+        // --- User Roles for Testing ---
+        // Menggunakan email dan password yang sederhana untuk kemudahan pengujian.
+        // Anda bisa mengubahnya sesuai kebutuhan.
+        User::create([
+            'name' => 'Fahrizal Mudzaqi M',
+            'email' => 'pengusul@polban.ac.id',
+            'password' => bcrypt('password'), // Password: password
+            'role' => 'pengusul',
+        ]);
 
-    \App\Models\User::create([
-        'name' => 'Faras Rama Mahadika',
-        'email' => 'faras@polban.ac.id',
-        'password' => bcrypt('wadir1123'),
-        'role' => 'wadir_1',
-    ]);
+        User::create([
+            'name' => 'Faras Rama Mahadika',
+            'email' => 'wadir1@polban.ac.id',
+            'password' => bcrypt('password'), // Password: password
+            'role' => 'wadir_1',
+        ]);
 
-    \App\Models\User::create([
-        'name' => 'Angeline Putri',
-        'email' => 'angeline@polban.ac.id',
-        'password' => bcrypt('wadir123'),
-        'role' => 'wadir',
-    ]);
+        User::create([
+            'name' => 'Budi Santoso',
+            'email' => 'wadir2@polban.ac.id',
+            'password' => bcrypt('password'),
+            'role' => 'wadir_2',
+        ]);
 
-    \App\Models\User::create([
-        'name' => 'Naufal Syafiq S',
-        'email' => 'naufal.syafiq.tif22@polban.ac.id',
-        'password' => bcrypt('direktur123'),
-        'role' => 'direktur',
-    ]);
+        User::create([
+            'name' => 'Citra Dewi',
+            'email' => 'wadir3@polban.ac.id',
+            'password' => bcrypt('password'),
+            'role' => 'wadir_3',
+        ]);
 
-    \App\Models\User::create([
-        'name' => 'Muhammad Syaifullah',
-        'email' => 'syaifullah@polban.ac.id',
-        'password' => bcrypt('direktur123'),
-        'role' => 'bku',
-    ]);
+        User::create([
+            'name' => 'Dewi Anggraini',
+            'email' => 'wadir4@polban.ac.id',
+            'password' => bcrypt('password'),
+            'role' => 'wadir_4',
+        ]);
 
-    \App\Models\User::create([
-        'name' => 'Adrian Eka',
-        'email' => 'adrian@polban.ac.id',
-        'password' => bcrypt('direktur123'),
-        'role' => 'admin',
-    ]);
+        User::create([
+            'name' => 'Naufal Syafiq S',
+            'email' => 'direktur@polban.ac.id',
+            'password' => bcrypt('password'), // Password: password
+            'role' => 'direktur',
+        ]);
 
-    \App\Models\User::create([
-        'name' => 'Ahmad Fauzy',
-        'email' => 'fauzy@polban.ac.id',
-        'password' => bcrypt('direktur123'),
-        'role' => 'pelaksana',
-    ]);
+        User::create([
+            'name' => 'Muhammad Syaifullah',
+            'email' => 'bku@polban.ac.id',
+            'password' => bcrypt('password'), // Password: password
+            'role' => 'bku',
+        ]);
+
+        User::create([
+            'name' => 'Adrian Eka',
+            'email' => 'admin@polban.ac.id',
+            'password' => bcrypt('password'), // Password: password
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Ahmad Fauzy',
+            'email' => 'pelaksana@polban.ac.id',
+            'password' => bcrypt('password'), // Password: password
+            'role' => 'pelaksana',
+        ]);
+
+        // --- Panggil seeder-seeder lainnya ---
+        // Penting: Pastikan urutannya benar (user, pegawai, mahasiswa sebelum WadirDashboardSeeder)
         $this->call([
             PegawaiSeeder::class,
             MahasiswaSeeder::class,
+            WadirDashboardSeeder::class, // Ini yang akan mengisi data Surat Tugas dan bergantung pada user, pegawai, mahasiswa
         ]);
     }
 }

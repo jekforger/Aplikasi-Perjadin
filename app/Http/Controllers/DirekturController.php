@@ -4,51 +4,74 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Auth\LoginController;
-use Faker\Factory as Faker;
+use App\Models\SuratTugas;
+use App\Models\User;
+use Carbon\Carbon;
 
 class DirekturController extends Controller
 {
-    /**
-     * Menampilkan halaman dashboard untuk Direktur.
-     */
-    public function dashboard()
-    {
-        $faker = Faker::create('id_ID');
+    protected $loginController;
 
-        // Data Dummy untuk Kotak Dashboard Direktur
+    public function __construct(LoginController $loginController)
+    {
+        $this->loginController = $loginController;
+    }
+
+    private function getLoggedInDirekturDisplayName()
+    {
+        if (Auth::check() && Auth::user()->role === 'direktur') {
+            return $this->loginController->getRoleDisplayName('direktur');
+        }
+        return null;
+    }
+
+    public function dashboard(Request $request)
+    {
+        $direkturDisplayName = $this->getLoggedInDirekturDisplayName();
+
+        if (is_null($direkturDisplayName)) {
+            Log::warning("Akses Direktur Dashboard oleh non-Direktur role: " . (Auth::check() ? Auth::user()->role : 'Guest'));
+            abort(403, 'Akses Ditolak: Anda bukan Direktur yang valid.');
+        }
+
+        $totalPengusulan = SuratTugas::count();
+        $dalamProsesWadir = SuratTugas::whereIn('status_surat', ['pending_wadir_review', 'reverted_by_wadir'])->count();
+        $dalamProsesBku = 0; // Placeholder, implementasikan nanti
+        $bertugas = SuratTugas::where('status_surat', 'diterbitkan')
+                                ->whereDate('tanggal_berangkat', '<=', Carbon::today())
+                                ->whereDate('tanggal_kembali', '>=', Carbon::today())
+                                ->count();
+        
         $dashboardStats = [
-            'total_pengusulan' => $faker->numberBetween(200, 1000), // Angka random
-            'dalam_proses_wadir' => $faker->numberBetween(10, 50), // Angka random
-            'dalam_proses_bku' => $faker->numberBetween(5, 25), // Angka random
-            'bertugas' => $faker->numberBetween(0, 10), // Angka random
+            'total_pengusulan' => $totalPengusulan,
+            'dalam_proses_wadir' => $dalamProsesWadir,
+            'dalam_proses_bku' => $dalamProsesBku,
+            'bertugas' => $bertugas,
         ];
 
-        // Data Dummy untuk Tabel Detail Pengusulan (untuk Direktur)
-        $pengusulanDetails = [];
-        $statuses = ['Disetujui Wadir', 'Ditolak Wadir', 'Sedang Diproses', 'Selesai']; // Status khusus Direktur
-        $sumberDanaOptions = ['RM', 'PNBP', 'DIPA', 'Mandiri'];
-        $nomorSuratPrefixes = ['625/KO/RT.01.00/', '625/KU/SK.02.01/', '625/PU/SP.03.02/'];
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
 
-        for ($i = 1; $i <= 10; $i++) { // Membuat 10 data dummy
-            $tanggalBerangkat = $faker->dateTimeBetween('-2 months', '-1 week');
+        $pengusulanDetails = SuratTugas::whereIn('status_surat', [
+                                            'approved_by_wadir',
+                                            'rejected_by_direktur',
+                                            'reverted_by_direktur',
+                                            'diterbitkan'
+                                        ])
+                                        ->when($search, function ($query) use ($search) {
+                                            return $query->where('perihal_tugas', 'like', "%{$search}%")
+                                                        ->orWhere('nomor_surat_usulan_jurusan', 'like', "%{$search}%")
+                                                        ->orWhere('nomor_surat_tugas_resmi', 'like', "%{$search}%");
+                                        })
+                                        ->orderBy('updated_at', 'desc')
+                                        ->paginate($perPage)
+                                        ->appends(['search' => $search, 'per_page' => $perPage]);
 
-            $pengusulanDetails[] = [
-                'no' => $i,
-                'tgl_berangkat' => $tanggalBerangkat->format('d M Y'),
-                'nomor_surat' => $faker->randomElement($nomorSuratPrefixes) . $faker->year(), // Nomor Surat
-                'sumber_dana' => $faker->randomElement($sumberDanaOptions),
-                'status' => $faker->randomElement($statuses),
-            ];
-        }
-
-        $roleDisplayName = 'Direktur';
-        $userRole = null;
-        if (\Auth::check()) {
-            $userRole = \Auth::user()->role;
-            $loginController = new LoginController();
-            $roleDisplayName = $loginController->getRoleDisplayName($userRole);
-        }
+        $roleDisplayName = $direkturDisplayName;
+        $userRole = Auth::user()->role;
 
         return view('layouts.direktur.dashboard', compact('dashboardStats', 'pengusulanDetails', 'roleDisplayName', 'userRole'));
     }

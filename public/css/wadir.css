@@ -1,68 +1,41 @@
 :root {
-    --sidebar-width: 120px;
-    --sidebar-collapsed-width: 0px;
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 0px;
+  --transition-time: 0.3s;
 }
 
+/* 1. Container flex */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* 2. Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  transition: width var(--transition-time);
+}
+
+/* 3. Content */
 .dashboard-container {
-    margin-left: var(--sidebar-width, 260px); /* default full sidebar */
-    transition: margin-left 0.3s ease;
-    min-height: 100vh;
-    padding: 2rem 2rem;
+  flex: 1;
+  padding: 2rem;
+  overflow-x: hidden;
+  transition: padding var(--transition-time);
 }
 
+/* 4. Saat collapsed */
+body.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapsed-width) !important;
+}
 body.sidebar-collapsed .dashboard-container {
-    margin-left: var(--sidebar-collapsed-width) !important;
+  padding-left: 1rem;
 }
 
-.dashboard-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px 16px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: 0.3s ease-in-out;
-    min-height: 170px;
-}
-
-.dashboard-page-title {
-    font-weight: 600;
-    font-size: 40px;
-    margin-top: 50px;
-}
-
-.dashboard-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-}
-
-.dashboard-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
-}
-
-.dashboard-count {
-    font-size: 20px;
-    font-weight: 700;
-    color: #000;
-    margin-bottom: 8px;
-}
-
-.dashboard-icon {
-    font-size: 28px;
-}
-
-.dashboard-detail-card {
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    padding: 24px;
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-    .dashboard-container {
-        margin-left: 0 !important;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+  .sidebar { width: 0 !important; }
+  .dashboard-container { padding: 1rem !important; }
 }

@@ -9,7 +9,13 @@ class Mahasiswa extends Model
 {
     use HasFactory;
 
-    protected $table = 'mahasiswa';
+    protected $table = 'mahasiswa'; // Pastikan ini ada
 
     protected $fillable = ['nama', 'nim', 'jurusan', 'prodi'];
+
+    // Relasi polimorfik ke DetailPelaksanaTugas
+    public function detailPelaksanaTugas()
+    {
+        return $this->morphMany(DetailPelaksanaTugas::class, 'personable');
+    }
 }

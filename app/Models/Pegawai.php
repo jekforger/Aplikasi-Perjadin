@@ -2,18 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pegawai extends Model
 {
-    protected $table = 'pegawai'; // nama tabel yang benar
+    use HasFactory;
+
+    protected $table = 'pegawai'; // Pastikan ini ada
 
     protected $fillable = [
         'nama',
         'nip',
         'pangkat',
         'golongan',
-        'jabatan',
-        // kolom lain sesuai tabel
+        'jabatan'
     ];
+
+    // Relasi polimorfik ke DetailPelaksanaTugas
+    public function detailPelaksanaTugas()
+    {
+        return $this->morphMany(DetailPelaksanaTugas::class, 'personable');
+    }
 }
