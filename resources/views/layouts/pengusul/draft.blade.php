@@ -1,6 +1,6 @@
 @extends('layouts.pengusul.pagePengusul')
 
-@section('content')
+@section('pengusul_content')
 <div class="card-container">
     <h2 class="page-title mb-4">Draft Surat Tugas</h2>
 

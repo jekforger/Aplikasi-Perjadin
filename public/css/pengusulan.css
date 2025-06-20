@@ -49,10 +49,230 @@
     }
   }
   
-
-
   .page-title {
     margin: 0 0 15px 20px;
     color: black;
     font-size: 1.5rem;
   }
+
+
+/*STYLE GENERATE SURAT TUGAS*/
+  .form-step {
+    display: none;
+  }
+  .form-step-active {
+    display: block;
+  }
+  .form-section .dropdown-menu {
+      position: absolute;
+      z-index: 1050;
+  }
+
+  .surat-tugas-body {
+    font-family: 'Times New Roman', serif;
+  }
+  .document-container {
+    /* Ubah width agar lebih responsif di dalam kontainer web, tapi tetap proporsional */
+    width: 100%; /* Ambil lebar penuh dari parent .card */
+    max-width: 21cm; /* Batasi maksimal selebar A4 */
+    min-height: 29.7cm; /* Tinggi A4 */
+    background-color: white;
+    padding-top: 2.5cm;
+    padding-right: 3cm;
+    padding-bottom: 2.5cm;
+    padding-left: 3cm;
+    box-sizing: border-box;
+    line-height: 1.5;
+    /* margin: 20px auto; REMOVED, parent card/form-step will handle margin */
+    margin: 0 auto; /* Tengah secara horizontal dalam parent */
+    box-shadow: none; /* Hapus shadow jika parent .card sudah ada */
+  }
+
+  /* ========================= */
+  /*       HEADER STYLES       */
+  /* ========================= */
+  .surat-tugas-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .surat-tugas-header img {
+    width: 80px;
+    height: auto;
+    align-self: flex-start;
+  }
+  .surat-tugas-header-text {
+    text-align: center;
+    font-size: 10pt;
+    margin-top: 10px;
+  }
+  .surat-tugas-header-text h1 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .surat-tugas-header-text h2 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 3px 0 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .surat-tugas-header-text p {
+    font-size: 9.5pt;
+    margin: 1px 0;
+    line-height: 1.4;
+  }
+  .surat-tugas-header-line {
+    border: 0;
+    border-top: 1px solid #000;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  /* ========================= */
+  /*       CONTENT STYLES      */
+  /* ========================= */
+  .surat-tugas-content {
+    font-size: 11pt;
+    line-height: 1.6;
+  }
+  .surat-tugas-title-wrapper {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .surat-tugas-title-inner {
+    display: inline-block;
+    text-align: left;
+  }
+  .surat-tugas-title-inner h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .surat-tugas-title-inner .nomor {
+    font-size: 11pt;
+    margin: 2px 0 0;
+    line-height: 1.2;
+  }
+  .surat-tugas-content p {
+    margin-bottom: 10px;
+    text-align: justify;
+  }
+  .surat-tugas-detail-row {
+    display: flex !important; /* Pastikan selalu flex */
+    margin-bottom: 4px;
+  }
+  .surat-tugas-detail-label {
+    flex-basis: 150px !important; /* Paksa lebar dasar */
+    min-width: 150px !important;  /* Paksa lebar minimum */
+    text-align: left;
+    color: black !important; /* Paksa warna teks hitam */
+    white-space: nowrap; /* Mencegah wrap jika label panjang */
+  }
+  .surat-tugas-detail-separator {
+    flex-basis: 10px !important; /* Paksa lebar pemisah */
+    text-align: center;
+    color: black !important; /* Paksa warna teks hitam */
+  }
+  .surat-tugas-detail-value {
+    flex-grow: 1;
+    text-align: left;
+    color: black !important; /* Paksa warna teks hitam */
+  }
+
+  /* ========================= */
+  /*   FOOTER‐SECTIONS (Grid)   */
+  /* ========================= */
+  .surat-tugas-footer-wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    column-gap: 20px;
+    margin-top: 40px;
+    width: 100%;
+  }
+  .surat-tugas-date-block {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+  }
+  .surat-tugas-date-block .date {
+    margin: 0;
+    margin-bottom: 2px;
+    font-size: 11pt;
+    line-height: 1.2;
+    color: black !important;
+  }
+  .surat-tugas-date-block .ditandatangani-oleh {
+    margin: 0;
+    font-size: 11pt;
+    line-height: 1.2;
+    color: black !important;
+  }
+  .surat-tugas-tembusan-label {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 10pt;
+    line-height: 1.5;
+    margin-top: 10px;
+    color: black !important;
+  }
+  .surat-tugas-tembusan-list {
+    grid-column: 1;
+    grid-row: 3;
+    font-size: 10pt;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .surat-tugas-tembusan-list ol {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: decimal;
+  }
+  .surat-tugas-tembusan-list li {
+    margin-bottom: 2px;
+    color: black !important;
+  }
+  .surat-tugas-signature-block {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    font-size: 11pt;
+    line-height: 1.5;
+    text-align: left;
+  }
+  .surat-tugas-signature-block p {
+    margin: 0;
+    color: black !important;
+  }
+  .surat-tugas-body a {
+    color: black !important; /* Paksa warna link hitam */
+    text-decoration: none;
+  }
+
+  /* Style tambahan untuk tabel personel di preview surat */
+  .surat-tugas-personel-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+  }
+  .surat-tugas-personel-table th,
+  .surat-tugas-personel-table td {
+      border: 1px solid #000; /* Border hitam untuk tabel */
+      padding: 5px 8px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 10pt; /* Ukuran font lebih kecil untuk tabel personel */
+      color: black !important;
+  }
+  .surat-tugas-personel-table th {
+      background-color: #f2f2f2;
+  }
+
