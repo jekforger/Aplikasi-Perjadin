@@ -379,8 +379,6 @@
                     <div class="surat-tugas-detail-separator">:</div>
                     <div class="surat-tugas-detail-value"><span id="ditugaskan_sebagai_display"></span></div>
                   </div>
-
-
                   <p style="margin-top: 20px;">
                     Surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.
                   </p>
