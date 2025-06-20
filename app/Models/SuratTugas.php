@@ -14,15 +14,17 @@ class SuratTugas extends Model
 
     protected $fillable = [
         'user_id',
-        'diusulkan_kepada',
         'nomor_surat_usulan_jurusan',
+        'diusulkan_kepada',
         'nomor_surat_tugas_resmi',
         'perihal_tugas',
+        'tempat_kegiatan', // <-- TAMBAHKAN INI
+        'alamat_kegiatan', // <-- TAMBAHKAN INI
         'kota_tujuan',
         'tanggal_berangkat',
         'tanggal_kembali',
         'status_surat',
-        'catatan_revisi', // Kolom untuk catatan revisi umum
+        'catatan_revisi',
         'path_file_surat_usulan',
         'path_file_surat_tugas_final',
         'sumber_dana',
@@ -30,7 +32,9 @@ class SuratTugas extends Model
         'tanggal_paraf_wadir',
         'tanggal_persetujuan_direktur',
         'is_surat_perintah_langsung',
-        'ditugaskan_sebagai', // Menambahkan ini dari form pengusulan
+        'ditugaskan_sebagai',
+        'wadir_approver_id',
+        'direktur_approver_id',
     ];
 
     protected $casts = [

@@ -1,0 +1,354 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #F5F6FA;
+}
+
+/* === GLOBAL ALERT FOR APP LAYOUT === */
+.global-alert-app-top {
+    position: fixed;
+    top: calc(var(--navbar-height) + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1060;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 270px; 
+    z-index: 1001;
+    background: transparent;
+    color: #2A2D7C;
+    border: none;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    padding: 0;
+}
+
+/* Untuk state collapsed */
+.sidebar.collapsed ~ .toggle-btn {
+    left: 90px; /* Di luar sidebar collapsed (80px + 10px margin) */
+}
+
+.toggle-btn:hover {
+    color: #1a1c5a;
+}
+
+.toggle-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    padding: 20px 0;
+    background-color: #FFFFFF; /* Warna putih */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Shadow untuk depth */
+    transition: all 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+    min-height: 100vh;
+  }
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .description,
+.sidebar.collapsed .sidebar-title,
+.sidebar.collapsed .app-name,
+.sidebar.collapsed .institution-name {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 15px;
+    margin-bottom: 10px;
+}
+
+.sidebar-logo {
+    width: 40px;
+    height: auto;
+}
+
+.sidebar-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-name {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.institution-name {
+    font-size: 14px;
+    color: #666;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    color: black;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #2A2D7C;
+    color: white;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar .nav-link:focus {
+    background-color: #2A2D7C;
+    color: white;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+}
+
+.sidebar .description {
+    font-size: 17px;
+}
+
+.sidebar .icon {
+    font-size: 25px;
+}
+
+/* === NAVBAR STYLING (FIXED AT TOP) === */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 999; /* harus lebih kecil dari sidebar jika sidebar fixed */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.navbar .dropdown-toggle::after { margin-left: 0.5rem; }
+.user-info { font-family: 'Poppins', sans-serif; }
+
+.navbar .dropdown-toggle::after { margin-left: 0.5rem; }
+
+.navbar .dropdown-toggle::after {
+    display: none; /* Menyembunyikan tanda panah default Bootstrap */
+}
+
+/* User Info in Navbar Dropdown Toggle */
+.user-profile-toggle {
+    padding: 0.5rem 0.75rem;
+}
+
+.user-info-text {
+    margin-left: 0.5rem;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.user-role-display {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.user-profile-toggle .bi-chevron-down {
+    font-size: 1rem;
+    color: black;
+}
+
+.navbar-profile-chevron {
+    position: absolute; 
+    right: 0.2rem; 
+    top: 50%; 
+    transform: translateY(-50%);
+    font-size: 0.8rem; 
+}
+
+/* === MAIN WRAPPER (FOR CONTENT AREA) === */
+.main-wrapper {
+    margin-left: var(--sidebar-width); /* Konten dimulai setelah sidebar */
+    padding-top: var(--navbar-height); /* Konten dimulai di bawah navbar */
+    transition: margin-left 0.3s ease;
+    min-height: 100vh; /* Memastikan area utama mengisi tinggi penuh */
+    display: flex; /* Enable flex for content distribution */
+    flex-direction: column; /* Stack content vertically */
+    width: calc(100% - var(--sidebar-width)); /* Lebar dihitung untuk mengisi sisa ruang */
+    border: 1px dashed purple; /* DEBUG: Border Main Wrapper */
+}
+
+.sidebar.collapsed ~ .main-wrapper {
+    margin-left: var(--sidebar-collapsed-width); /* Adjust margin when sidebar collapses */
+    width: calc(100% - var(--sidebar-collapsed-width)); /* Adjust width when sidebar collapses */
+}
+
+/* === MAIN CONTENT AREA === */
+.main-content-area {
+    flex-grow: 1; /* Konten tumbuh untuk mengisi sisa ruang di main-wrapper */
+    padding: 20px; /* Padding internal untuk konten */
+    border: 1px dashed orange; /* DEBUG: Border Main Content Area */
+}
+
+/* Penyesuaian posisi alert saat sidebar collapse (berada di tengah main-wrapper) */
+.sidebar.collapsed ~ .main-wrapper .global-alert-app-top {
+    left: calc(var(--sidebar-collapsed-width) + (100% - var(--sidebar-collapsed-width)) / 2);
+    transform: translateX(-50%);
+}
+.main-wrapper:not(.sidebar.collapsed) .global-alert-app-top {
+    left: calc(var(--sidebar-width) + (100% - var(--sidebar-width)) / 2);
+    transform: translateX(-50%);
+}
+
+/* === CARD CONTAINER === */
+.card-container {
+    position: relative;
+    padding: var(--card-padding);
+    transition: all 0.3s ease;
+    min-height: calc(100vh - var(--navbar-height));
+}
+
+/* === GENERIC CARD STYLE === */
+.card {
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    min-height: 100px;
+    background: white;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    padding: 25px;
+    box-sizing: border-box;
+    margin: 10px auto;
+}
+
+/* Other styling from pengusulan.blade.php */
+.page-title {
+    margin: 0 0 15px 20px;
+    color: black;
+    font-size: 1.5rem;
+}
+.flatpickr-day { height: 40px; line-height: 40px; width: 40px; font-size: 15px; border-radius: 6px; }
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.inRange { background: #2684FF; color: white; border: none; }
+.flatpickr-day.weekend { color: #d33; }
+.flatpickr-calendar { border-radius: 10px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); }
+.label { color: rgba(0, 0, 0, 0.50); font-family: Poppins; font-size: 15px; font-style: italic; font-weight: 300; line-height: 150% }
+
+
+/* === RESPONSIVE ADJUSTMENTS === */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        left: -250px;
+        top: 0;
+        height: 100vh;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .toggle-btn {
+        left: 20px !important;
+        top: 15px;
+    }
+
+    .sidebar.active ~ .toggle-btn {
+        left: calc(var(--sidebar-width) + 20px);
+    }
+
+    .sidebar.collapsed.active ~ .toggle-btn {
+        left: calc(var(--sidebar-collapsed-width) + 10px);
+    }
+
+    .main-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-top: var(--navbar-height); /* Padding untuk navbar */
+    }
+
+    .navbar {
+        left: 0 !important;
+        width: 100%;
+        z-index: 1050;
+    }
+
+    .main-content-area {
+        padding: 15px;
+        min-height: calc(100vh - var(--navbar-height));
+    }
+    
+    .card-container {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .card {
+        width: calc(100% - 20px);
+        padding: 15px;
+        min-height: 550px;
+        margin: 5px auto;
+    }
+
+    .global-alert-app-top {
+        top: calc(var(--navbar-height) + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 992px) { /* Tablet view (lebih lebar dari mobile phone) */
+    .card-container {
+        margin-left: var(--sidebar-collapsed-width);
+        padding: 15px;
+    }
+    .card {
+        width: calc(100% - 30px);
+        padding: 20px;
+        min-height: 600px;
+    }
+}
+
+@media (min-width: 1600px) { /* Large screens */
+    .card {
+        max-width: 1300px;
+    }
+}

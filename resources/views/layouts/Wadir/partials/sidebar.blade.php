@@ -16,15 +16,15 @@
             </span>
             <span class="description">Dashboard</span>
         </a>
-        {{-- Persetujuan Link (Untuk nanti) --}}
-        <a href="#" class="nav-link {{ Request::routeIs('wadir.persetujuan*') ? 'active' : '' }}">
+        {{-- Persetujuan Link (mengarah ke halaman persetujuan) --}}
+        <a href="{{ route('wadir.persetujuan') }}" class="nav-link {{ Request::routeIs('wadir.persetujuan') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>
             <span class="description">Persetujuan</span>
         </a>
-        {{-- Paraf Link (Untuk nanti) --}}
-        <a href="#" class="nav-link {{ Request::routeIs('wadir.paraf*') ? 'active' : '' }}">
+        {{-- Paraf Link (sekarang akan redirect ke halaman persetujuan dengan filter paraf) --}}
+        <a href="{{ route('wadir.paraf') }}" class="nav-link {{ Request::routeIs('wadir.paraf') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-pen"></i>
             </span>
@@ -40,7 +40,6 @@
         </a>
 
         <div class="sub-menu collapse" id="submenu">
-            {{-- Menggunakan route('wadir.dashboard') untuk semua wadir karena mereka difilter di controller --}}
             <a href="{{ route('wadir.dashboard') }}" class="nav-link sub-nav-link">
                 <span class="description">
                     Wakil Direktur I
@@ -51,16 +50,10 @@
                     Pelaksana
                 </span>
             </a>
-            {{-- Tambahkan link untuk Wadir II, III, IV di sini juga jika diperlukan --}}
-            {{-- <a href="{{ route('wadir.dashboard') }}" class="nav-link sub-nav-link">
-                <span class="description">Wakil Direktur II</span>
-            </a> --}}
         </div>
     </nav>
 </div>
 
-{{-- Tombol toggle sidebar untuk layout utama (jika belum di main.blade.php) --}}
-{{-- Biasanya, tombol ini diletakkan di main.blade.php jika sidebar fixed --}}
 <button id="toggle-btn" class="toggle-btn">
     <i class="bi bi-list"></i>
 </button>

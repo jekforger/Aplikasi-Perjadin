@@ -13,7 +13,6 @@ use Carbon\Carbon;
 
 class WadirController extends Controller
 {
-    // Instance LoginController untuk mengakses helper roles
     protected $loginController;
 
     public function __construct(LoginController $loginController)
@@ -21,117 +20,242 @@ class WadirController extends Controller
         $this->loginController = $loginController;
     }
 
-    /**
-     * Helper untuk mendapatkan display name Wadir dari role key.
-     * Contoh: 'wadir_1' -> 'Wakil Direktur I'
-     */
     private function getLoggedInWadirDisplayName()
     {
-        $userRole = Auth::user()->role;
-        // Hanya proses jika role adalah salah satu Wadir
-        if (str_starts_with($userRole, 'wadir_')) {
-            return $this->loginController->getRoleDisplayName($userRole);
+        if (Auth::check() && Auth::user()->role) {
+            $userRole = Auth::user()->role;
+            if (str_starts_with($userRole, 'wadir_')) {
+                return $this->loginController->getRoleDisplayName($userRole);
+            }
         }
-        return null; // Bukan role Wadir spesifik
+        return null;
     }
 
-    /**
-     * Menampilkan halaman dashboard untuk Wakil Direktur.
-     */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $wadirDisplayName = $this->getLoggedInWadirDisplayName();
 
         if (is_null($wadirDisplayName)) {
-            // Ini bisa jadi error atau redirect ke halaman unauthorized
-            // Untuk saat ini, kita bisa log dan tampilkan pesan error
             Log::warning("Akses Wadir Dashboard oleh non-Wadir role: " . (Auth::check() ? Auth::user()->role : 'Guest'));
-            abort(403, 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.');
+            abort(403, 'Akses Ditolak: Anda bukan Wakil Direktur yang valid untuk mengakses dashboard ini.');
         }
 
-        // Ambil data surat tugas yang perlu direview oleh Wadir yang sedang login
-        $suratTugasQuery = SuratTugas::where('diusulkan_kepada', $wadirDisplayName) // FILTER UTAMA
-                                        ->whereIn('status_surat', ['pending_wadir_review', 'reverted_by_wadir', 'reverted_by_direktur'])
-                                        ->with(['pengusul', 'detailPelaksanaTugas.personable'])
-                                        ->orderBy('created_at', 'desc');
-
-        $suratTugasUntukReview = $suratTugasQuery->paginate(10);
-
-        // Ambil statistik nyata dari database (difilter untuk Wadir yang login)
+        // --- Statistik Dashboard ---
         $totalPengusulanWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)->count();
         $usulanBaruWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
                                     ->where('status_surat', 'pending_wadir_review')->count();
         $dalamProsesDirekturWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
                                             ->where('status_surat', 'approved_by_wadir')->count();
-        $dikembalikanWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
+        $bertugas = SuratTugas::where('status_surat', 'diterbitkan')
+                                ->whereDate('tanggal_berangkat', '<=', Carbon::today())
+                                ->whereDate('tanggal_kembali', '>=', Carbon::today())
+                                ->count();
+        $dikembalikanDitolak = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
                                         ->whereIn('status_surat', ['reverted_by_wadir', 'rejected_by_wadir', 'reverted_by_direktur', 'rejected_by_direktur'])->count();
-
-        // Statistik 'bertugas' mungkin tidak spesifik Wadir, tapi pengusulan secara umum
-        // Jika perlu spesifik Wadir, perlu kolom tambahan di surat_tugas atau melalui relasi.
-        $sedangBertugas = SuratTugas::where('status_surat', 'diterbitkan')
-                                    ->whereDate('tanggal_berangkat', '<=', Carbon::today())
-                                    ->whereDate('tanggal_kembali', '>=', Carbon::today())
-                                    ->count();
-
 
         $dashboardStats = [
             'total_pengusulan' => $totalPengusulanWadir,
             'usulan_baru' => $usulanBaruWadir,
             'dalam_proses_direktur' => $dalamProsesDirekturWadir,
-            'bertugas' => $sedangBertugas, // Ini masih global, perlu disesuaikan jika ingin hanya yang diusulkan ke Wadir ini
-            'dikembalikan' => $dikembalikanWadir,
+            'bertugas' => $bertugas,
+            'dikembalikan_ditolak' => $dikembalikanDitolak,
         ];
 
-        $roleDisplayName = $wadirDisplayName; // Sudah didapatkan di awal fungsi
+        // --- Data untuk Tabel "Detail" (Bawah dashboard) ---
+        $search = $request->input('search_all');
+        $perPage = $request->input('per_page', 10);
 
-        // Teruskan data surat tugas dan statistik ke view
-        return view('layouts.Wadir.dashboard', compact('dashboardStats', 'suratTugasUntukReview', 'roleDisplayName'));
+        $allSuratTugas = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
+                                ->when($search, function ($query) use ($search) {
+                                    return $query->where('perihal_tugas', 'like', "%{$search}%")
+                                                ->orWhere('nomor_surat_usulan_jurusan', 'like', "%{$search}%");
+                                })
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($perPage)
+                                ->appends(['search_all' => $search, 'per_page' => $perPage]);
+
+        $roleDisplayName = $wadirDisplayName;
+
+        // Pada dashboard, tabel untuk review terpisah akan dihapus, jadi hanya perlu allSuratTugas
+        return view('layouts.Wadir.dashboard', compact('dashboardStats', 'allSuratTugas', 'roleDisplayName', 'search'));
     }
 
     /**
-     * Menampilkan halaman detail untuk review Surat Tugas oleh Wakil Direktur.
+     * Menampilkan halaman daftar pengajuan yang menunggu persetujuan Wadir.
+     * Halaman ini sekarang juga akan menampilkan daftar yang sudah diparaf.
+     * @param Request $request Untuk filter dan paginasi
      */
-    public function reviewSuratTugas($id)
+    public function persetujuan(Request $request)
     {
         $wadirDisplayName = $this->getLoggedInWadirDisplayName();
-
         if (is_null($wadirDisplayName)) {
             abort(403, 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.');
         }
 
-        // Temukan Surat Tugas berdasarkan ID DAN diusulkan kepada Wadir yang login
-        $suratTugas = SuratTugas::where('surat_tugas_id', $id)
-                                ->where('diusulkan_kepada', $wadirDisplayName) // FILTER UTAMA
+        $filterStatus = $request->input('status', 'pending'); // Filter default: pending
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+
+        $query = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
                                 ->with(['pengusul', 'detailPelaksanaTugas.personable'])
-                                ->firstOrFail(); // Gunakan firstOrFail untuk 404 jika tidak ditemukan atau tidak sesuai Wadir
+                                ->when($search, function ($q) use ($search) {
+                                    return $q->where('perihal_tugas', 'like', "%{$search}%")
+                                             ->orWhere('nomor_surat_usulan_jurusan', 'like', "%{$search}%")
+                                             ->orWhere('nomor_surat_tugas_resmi', 'like', "%{$search}%");
+                                });
 
-        return view('layouts.Wadir.reviewSuratTugas', compact('suratTugas'));
+        switch ($filterStatus) {
+            case 'pending':
+                $query->whereIn('status_surat', ['pending_wadir_review', 'reverted_by_wadir', 'reverted_by_direktur']);
+                break;
+            case 'paraf':
+                $query->whereIn('status_surat', ['approved_by_wadir', 'approved_by_direktur', 'diterbitkan']);
+                break;
+            case 'ditolak':
+                $query->whereIn('status_surat', ['rejected_by_wadir', 'rejected_by_direktur']);
+                break;
+            default: // all
+                // Tidak perlu filter status tambahan, ambil semua yang terkait dengan Wadir ini
+                break;
+        }
+
+        $suratTugasList = $query->orderBy('updated_at', 'desc')
+                                ->paginate($perPage)
+                                ->appends(['search' => $search, 'per_page' => $perPage, 'status' => $filterStatus]);
+
+        return view('layouts.Wadir.persetujuan', compact('suratTugasList', 'search', 'filterStatus'));
     }
 
     /**
-     * Memproses keputusan Wakil Direktur terhadap Surat Tugas.
+     * Metode ini sekarang akan menjadi placeholder atau diarahkan ke persetujuan.
      */
-    public function processSuratTugasReview(Request $request, $id)
+    public function paraf(Request $request)
     {
         $wadirDisplayName = $this->getLoggedInWadirDisplayName();
-
         if (is_null($wadirDisplayName)) {
             abort(403, 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.');
         }
 
-        // Validasi input
+        // Ambil user yang sedang login
+        $user = Auth::user();
+        // Cek apakah user sudah punya file paraf
+        $currentParafPath = $user->para_file_path; // Asumsi ada kolom 'para_file_path' di tabel users
+
+        return view('layouts.Wadir.uploadParaf', compact('currentParafPath')); // Ganti nama view menjadi uploadParaf
+    }
+
+    /**
+     * Memproses upload file paraf digital untuk Wadir.
+     * Ini memerlukan kolom 'para_file_path' di tabel 'users'.
+     * @param Request $request
+     */
+    public function uploadParaf(Request $request)
+    {
+        $wadirDisplayName = $this->getLoggedInWadirDisplayName();
+        if (is_null($wadirDisplayName)) {
+            return response()->json(['success' => false, 'message' => 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'paraf_file' => 'required|file|mimes:pdf,png,jpg,jpeg|max:1024', // Max 1MB
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validasi gagal.', 'errors' => $validator->errors()], 422);
+        }
+
+        $user = Auth::user();
+
+        try {
+            // Hapus file paraf lama jika ada
+            if ($user->para_file_path) {
+                Storage::disk('public')->delete($user->para_file_path);
+            }
+
+            // Simpan file baru
+            $filePath = $request->file('paraf_file')->store('paraf_wadir', 'public');
+
+            // Update path di kolom user
+            $user->para_file_path = $filePath;
+            $user->save();
+
+            Log::info("Wadir (ID: {$user->id}, Role: {$user->role}) berhasil mengunggah file paraf: {$filePath}");
+
+            return response()->json(['success' => true, 'message' => 'File paraf berhasil diunggah.', 'filePath' => Storage::url($filePath)]);
+
+        } catch (\Exception $e) {
+            Log::error('Error mengunggah file paraf oleh Wadir: '.$e->getMessage(), [
+                'user_id' => $user->id,
+                'user_role' => $user->role,
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat mengunggah file: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteParaf(Request $request)
+    {
+        $wadirDisplayName = $this->getLoggedInWadirDisplayName();
+        if (is_null($wadirDisplayName)) {
+            return response()->json(['success' => false, 'message' => 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.'], 403);
+        }
+
+        $user = Auth::user();
+
+        try {
+            if ($user->para_file_path && Storage::disk('public')->exists($user->para_file_path)) {
+                Storage::disk('public')->delete($user->para_file_path);
+                $user->para_file_path = null; // Set path menjadi null di database
+                $user->save();
+                Log::info("Wadir (ID: {$user->id}, Role: {$user->role}) berhasil menghapus file paraf.");
+                return response()->json(['success' => true, 'message' => 'File paraf berhasil dihapus.']);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Tidak ada file paraf untuk dihapus.'], 404);
+
+        } catch (\Exception $e) {
+            Log::error('Error menghapus file paraf oleh Wadir: '.$e->getMessage(), [
+                'user_id' => $user->id,
+                'user_role' => $user->role,
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat menghapus file: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+    public function reviewSuratTugas($id)
+{
+    $wadirDisplayName = $this->getLoggedInWadirDisplayName();
+    if (is_null($wadirDisplayName)) { abort(403, 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.'); }
+
+    // Tambahkan with('wadirApprover') agar relasi para_file_path bisa diakses di view
+    $suratTugas = SuratTugas::where('surat_tugas_id', $id)
+                            ->where('diusulkan_kepada', $wadirDisplayName)
+                            ->with(['pengusul', 'detailPelaksanaTugas.personable', 'wadirApprover']) // <-- TAMBAHKAN wadirApprover
+                            ->firstOrFail();
+
+    return view('layouts.Wadir.reviewSuratTugas', compact('suratTugas'));
+}
+
+
+        public function processSuratTugasReview(Request $request, $id)
+    {
+        $wadirDisplayName = $this->getLoggedInWadirDisplayName();
+        if (is_null($wadirDisplayName)) { abort(403, 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.'); }
+
         $validator = Validator::make($request->all(), [
             'action' => 'required|string|in:approve,reject,revert',
             'catatan_revisi' => 'nullable|string|max:1000',
+            'updated_sumber_dana' => 'nullable|string|in:RM,PNBP,Polban,Penyelenggara,Polban dan Penyelenggara', // Validasi untuk sumber dana baru
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        // Temukan Surat Tugas berdasarkan ID DAN diusulkan kepada Wadir yang login
         $suratTugas = SuratTugas::where('surat_tugas_id', $id)
-                                ->where('diusulkan_kepada', $wadirDisplayName) // FILTER UTAMA
+                                ->where('diusulkan_kepada', $wadirDisplayName)
                                 ->firstOrFail();
 
         \DB::beginTransaction();
@@ -139,6 +263,12 @@ class WadirController extends Controller
         try {
             $action = $request->input('action');
             $catatanRevisi = $request->input('catatan_revisi');
+            $updatedSumberDana = $request->input('updated_sumber_dana'); // Ambil sumber dana yang diupdate
+
+            // Jika sumber dana diupdate dari modal, terapkan perubahannya
+            if ($updatedSumberDana) {
+                $suratTugas->sumber_dana = $updatedSumberDana;
+            }
 
             switch ($action) {
                 case 'approve':
@@ -159,30 +289,19 @@ class WadirController extends Controller
                     $suratTugas->wadir_approver_id = Auth::id();
                     $message = 'Surat tugas berhasil dikembalikan untuk revisi.';
                     break;
-                default:
-                    throw new \Exception('Aksi tidak valid.');
             }
 
             $suratTugas->save();
-
             \DB::commit();
 
-            Log::info("Wadir (ID: ".Auth::id().", Role: ".Auth::user()->role.") memproses Surat Tugas ID {$id} dengan aksi '{$action}'. Status baru: {$suratTugas->status_surat}");
+            Log::info("Wadir (ID: ".Auth::id().") memproses Surat Tugas ID {$id} dengan aksi '{$action}'. Status baru: {$suratTugas->status_surat}. Sumber dana baru: {$updatedSumberDana}");
 
-            // TODO: Kirim notifikasi email/in-app sesuai alur
-            // Jika disetujui -> ke Direktur
-            // Jika ditolak/revisi -> ke Pengusul
-
-            return redirect()->route('wadir.dashboard')->with('success_message', $message);
+            return redirect()->route('wadir.persetujuan')->with('success_message', $message);
 
         } catch (\Exception $e) {
             \DB::rollBack();
             Log::error('Error memproses review Surat Tugas oleh Wadir: '.$e->getMessage(), [
-                'surat_tugas_id' => $id,
-                'user_id' => Auth::id(),
-                'user_role' => Auth::user()->role,
-                'request_data' => $request->all(),
-                'trace' => $e->getTraceAsString(),
+                'surat_tugas_id' => $id, 'user_id' => Auth::id(), 'request_data' => $request->all(), 'trace' => $e->getTraceAsString(),
             ]);
             return back()->with('error', 'Terjadi kesalahan saat memproses keputusan: ' . $e->getMessage())->withInput();
         }
