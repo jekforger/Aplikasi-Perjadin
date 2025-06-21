@@ -5,7 +5,7 @@
     <h2 class="page-title">Pengusulan</h2>
     <div class="card"> {{-- Ini adalah Bootstrap Card utama --}}
       <div class="label">
-      </div>
+    </div>
 
       <form id="pengusulanForm" action="{{ route('pengusul.store.pengusulan') }}" method="POST" enctype="multipart/form-data">
         @csrf
