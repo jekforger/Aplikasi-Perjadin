@@ -1,25 +1,59 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Fungsi untuk dropdown Diusulkan Kepada
+    // =============================
+    // Fungsi untuk dropdown (jika masih dipakai)
+    // =============================
     window.setDiusulkan = function(value) {
-        document.getElementById('DiusulkanKepada').value = value;
-        return false; // Mencegah default behavior
+        const input = document.getElementById('diusulkan_kepada');
+        if (input) input.value = value;
+        return false;
     };
 
-    // Fungsi untuk dropdown Pembiayaan
     window.setPembiayaan = function(value) {
-        document.getElementById('SumberDana').value = value;
+        const input = document.getElementById('SumberDana');
+        if (input) input.value = value;
         return false;
     };
 
-    // Fungsi untuk dropdown Provinsi
     window.setProvinsi = function(value) {
-        document.getElementById('Provinsi').value = value;
+        const input = document.getElementById('provinsi');
+        if (input) input.value = value;
         return false;
     };
 
-    // Fungsi untuk dropdown Pagu
     window.setPagu = function(value) {
-        document.getElementById('Pagu').value = value;
+        const input = document.getElementById('Pagu');
+        if (input) input.value = value;
         return false;
     };
+
+    // =============================
+    // Load Provinsi dari API EMSIFA
+    // =============================
+    fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
+        .then(response => response.json())
+        .then(data => {
+            const provinsiSelect = document.getElementById('provinsi');
+            if (!provinsiSelect) return;
+
+            // Kosongkan dulu
+            provinsiSelect.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+
+            // Ambil nilai old dari Blade melalui atribut data-old
+            const oldProvinsi = provinsiSelect.getAttribute('data-old');
+
+            data.forEach(function (provinsi) {
+                const option = document.createElement('option');
+                option.value = provinsi.name;
+                option.textContent = provinsi.name;
+
+                if (oldProvinsi === provinsi.name) {
+                    option.selected = true;
+                }
+
+                provinsiSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Gagal memuat daftar provinsi:', error);
+        });
 });

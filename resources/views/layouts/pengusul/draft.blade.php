@@ -1,20 +1,15 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
+@section('title', 'Draft')
 @section('content')
-<body>
-  <div class="card-container">
+<div class="pengusul-container px-4 py-3">
+    <h1 class="pengusul-page-title mb-4">Draft</h1>
 
-    <h2 class="page-title mb-4">Draft Surat Tugas</h2>
-
-    {{-- Baris search dan tombol tambah data --}}
-    <div class="card">
-      <div class="table-responsive p-3">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            Ini Halaman Draft Surat Tugas Pengusul
-      </div>
+    <div class="p-4 shadow-sm bg-white rounded">
     </div>
-
-  </div>
-</body>
+</div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pengusulan.css') }}">
+@endpush

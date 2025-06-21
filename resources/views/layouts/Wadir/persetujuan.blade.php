@@ -1,7 +1,7 @@
 @extends('layouts.Wadir.layout')
 
 @section('title', 'Persetujuan')
-@section('content')
+@section('wadir_content')
 <div class="persetujuan-container px-4 py-3">
     <h1 class="persetujuan-page-title mb-4">Persetujuan</h1>
 

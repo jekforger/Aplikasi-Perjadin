@@ -1,4 +1,4 @@
-{{-- resources/views/wadir/layout.blade.php --}}
+{{-- resources/views/pengusul/layout.blade.php --}}
 @extends('layouts.main')
 
 @section('sidebar')
