@@ -82,6 +82,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
 });
 
+Route::get('/draft-surat-tugas/create/step-1', [DraftSuratTugasController::class, 'createStep1'])->name('draft-surat-tugas.create.step.1');
+Route::post('/draft-surat-tugas/save/step-1', [DraftSuratTugasController::class, 'saveStep1'])->name('draft-surat-tugas.save.step.1');
+
+Route::get('/draft-surat-tugas/create/step-2', [DraftSuratTugasController::class, 'createStep2'])->name('draft-surat-tugas.create.step.2');
+Route::post('/draft-surat-tugas/save/step-2', [DraftSuratTugasController::class, 'saveStep2'])->name('draft-surat-tugas.save.step.2');
+
 // Route::get('/', function () {
 //     return view('auth/login');
 // });

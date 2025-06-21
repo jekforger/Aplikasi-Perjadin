@@ -24,6 +24,11 @@ body.sidebar-collapsed .pengusul-container {
   margin-top: 50px;
 }
 
+#provinsi-dropdown {
+  max-height: 330px; /* cukup untuk sekitar 10 item */
+  overflow-y: auto;
+}
+
 @media (max-width: 768px) {
   .pengusul-container {
       margin-left: 0 !important;
