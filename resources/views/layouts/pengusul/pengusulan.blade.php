@@ -389,10 +389,10 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/pengusulan.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="{{ asset('js/pengusulan.js') }}"></script>
 @endpush
