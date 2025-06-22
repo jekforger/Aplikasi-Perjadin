@@ -156,10 +156,9 @@
             </div>
         </div>
     </div>
-
 </div>
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/direktur.css') }}"> {{-- Panggil CSS khusus Direktur --}}
+    <link rel="stylesheet" href="{{ asset('css/direktur.css') }}">
 @endpush

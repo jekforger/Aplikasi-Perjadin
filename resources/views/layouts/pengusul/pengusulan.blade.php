@@ -176,7 +176,7 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pengusulan.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/container.css') }}">
 @endpush
 
 @push('scripts')

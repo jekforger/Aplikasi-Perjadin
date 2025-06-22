@@ -23,29 +23,13 @@ class PengusulController extends Controller
         $userId = Auth::id(); // Dapatkan ID user pengusul yang login
 
         // Ambil statistik nyata dari database untuk pengusul yang login
-        $totalUsulan = SuratTugas::where('user_id', $userId)->count();
-        $laporanSelesai = SuratTugas::where('user_id', $userId)
-                                    ->where('status_surat', 'laporan_selesai')->count(); // Perlu status 'laporan_selesai'
-        $laporanBelumSelesai = SuratTugas::where('user_id', $userId)
-                                         ->where('status_surat', 'approved_by_direktur')->count(); // Atau status lain sebelum laporan selesai
-        $sedangBertugas = SuratTugas::where('user_id', $userId)
-                                    ->where('status_surat', 'diterbitkan')
-                                    ->whereDate('tanggal_berangkat', '<=', Carbon::today())
-                                    ->whereDate('tanggal_kembali', '>=', Carbon::today())
-                                    ->count();
-        $dikembalikan = SuratTugas::where('user_id', $userId)
-                                  ->whereIn('status_surat', ['rejected_by_wadir', 'reverted_by_wadir', 'rejected_by_direktur', 'reverted_by_direktur'])->count();
-
-        // Data untuk tabel ringkasan di dashboard (misal: 5 pengajuan terbaru)
-        $latestPengusulan = SuratTugas::where('user_id', $userId)
-                                      ->orderBy('created_at', 'desc')
-                                      ->take(5) // Ambil 5 terbaru
-                                      ->get();
+        
 
 
-        return view('layouts.pengusul.dashboardPengusul', compact(
-            'totalUsulan', 'laporanSelesai', 'laporanBelumSelesai', 'sedangBertugas', 'dikembalikan', 'latestPengusulan'
-        ));
+        // return view('layouts.pengusul.dashboardPengusul', compact(
+        //     'totalUsulan', 'laporanSelesai', 'laporanBelumSelesai', 'sedangBertugas', 'dikembalikan', 'latestPengusulan'
+        // ));
+        return view('layouts.pengusul.dashboard');
     }
 
     public function pilih(Request $request)

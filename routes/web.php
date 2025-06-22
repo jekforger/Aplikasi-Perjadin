@@ -14,6 +14,7 @@ use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ParafController;
 use App\Http\Controllers\SekdirController;
+use App\Http\Controllers\BkuController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -57,7 +58,9 @@ Route::prefix('pelaksana')->name('pelaksana.')->middleware('auth')->group(functi
     Route::get('/dashboard', [PelaksanaController::class, 'dashboard'])->name('dashboard'); // Diarahkan ke PelaksanaController
 });
 Route::prefix('bku')->name('bku.')->middleware('auth')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [BkuController::class, 'dashboard'])->name('dashboard');
+    Route::get('/bukti', [BkuController::class, 'bukti'])->name('bukti');
+    Route::get('/laporan', [BkuController::class, 'laporan'])->name('laporan');
 });
 // Rute untuk role Wadir (tambahan link Paraf)
 Route::prefix('wadir')->name('wadir.')->middleware('auth')->group(function () {
