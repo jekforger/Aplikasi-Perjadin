@@ -9,19 +9,22 @@
         <form id="pengusulanForm" action="{{ route('pengusul.store.pengusulan') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <div id="step-1-form" class="form-step active-step">
+            <!-- Langkah 1: Informasi Dasar Kegiatan -->
+            <div id="initial-form" class="form-step">
                 <div class="row">
+                    <!-- Form Bagian Kiri -->
                     <div class="col-md-6">
+                        <!-- Nama Kegiatan -->
                         <div class="mb-3 mt-4">
                             <label for="nama_kegiatan" class="form-label">Nama Kegiatan *</label>
                             <textarea class="form-control" id="nama_kegiatan" name="nama_kegiatan" rows="3" placeholder="Nama Kegiatan" required>{{ old('nama_kegiatan') }}</textarea>
                         </div>
-
+                        <!-- Tempat Kegiatan -->
                         <div class="mb-3">
                             <label for="tempat_kegiatan" class="form-label">Tempat Kegiatan *</label>
                             <textarea class="form-control" id="tempat_kegiatan" name="tempat_kegiatan" rows="3" placeholder="Tempat Kegiatan" required>{{ old('tempat_kegiatan') }}</textarea>
                         </div>
-
+                        <!-- Diusulkan Kepada -->
                         <div class="form-section mb-4">
                             <label for="diusulkan_kepada" class="form-label">Diusulkan Kepada *</label>
                             <div class="d-flex align-items-end gap-2">
@@ -36,12 +39,7 @@
                                     value="{{ old('diusulkan_kepada') }}"
                                 >
                                 <div class="dropdown">
-                                    <button
-                                        class="btn btn-secondary dropdown-toggle"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                    >
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Pilih
                                     </button>
                                     <ul class="dropdown-menu">
@@ -53,16 +51,16 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- Surat Undangan -->
                         <div class="form-section mb-4">
                             <label for="surat_undangan" class="form-label">Surat Undangan (Jika ada)</label>
-                            <input type="file" class="form-control w-100" name="surat_undangan" id="surat_undangan" accept=".pdf,.jpg,.png,.doc,.docx">
+                            <input type="file" class="form-control" name="surat_undangan" id="surat_undangan" accept=".pdf,.jpg,.png,.doc,.docx">
                         </div>
-
-                        <div class="form-section mb-4">
+                        <!-- Pembiayaan -->
+                        <div class="form-section mb-4 row">
                             <label for="pembiayaan" class="form-label">Pembiayaan *</label>
                             <input type="hidden" name="pembiayaan" id="pembiayaan_value" value="{{ old('pembiayaan', 'Polban') }}">
-                            <div class="d-flex flex-row gap-3 flex-wrap">
+                            <div class="d-flex flex-column gap-2">
                                 <div class="form-check">
                                     <input type="radio" class="form-check-input" name="pembiayaan_option" id="pembiayaan_polban" value="Polban" {{ old('pembiayaan', 'Polban') == 'Polban' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="pembiayaan_polban">Polban</label>
@@ -78,85 +76,86 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Form Bagian Kanan -->
                     <div class="col-md-6">
+                        <!-- Ditugaskan Sebagai -->
                         <div class="mb-3 mt-4">
                             <label for="ditugaskan_sebagai" class="form-label">Ditugaskan Sebagai *</label>
                             <input type="text" class="form-control" id="ditugaskan_sebagai" name="ditugaskan_sebagai" placeholder="Ditugaskan Sebagai" required value="{{ old('ditugaskan_sebagai') }}">
                         </div>
-
+                        <!-- Pilih Tanggal -->
                         <div class="mb-3">
                             <label for="tanggal_pelaksanaan" class="form-label">Tanggal Pelaksanaan *</label>
                             <input
-                            type="text" {{-- Changed to text for Flatpickr --}}
-                            id="tanggal_pelaksanaan"
-                            name="tanggal_pelaksanaan"
-                            class="form-control"
-                            placeholder="Tgl Berangkat → Tgl Pulang"
-                            readonly
-                            required
-                            value="{{ old('tanggal_pelaksanaan') }}"
+                                type="text"
+                                id="tanggal_pelaksanaan"
+                                name="tanggal_pelaksanaan"
+                                class="form-control"
+                                placeholder="Tgl Berangkat → Tgl Pulang"
+                                readonly
+                                required
+                                value="{{ old('tanggal_pelaksanaan') }}"
                             >
                         </div>
-
+                        <!-- Pagu Desentralisasi -->
                         <div class="mb-3">
                             <label class="form-label">Pagu</label>
                             <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="pagu_desentralisasi_checkbox" name="pagu_desentralisasi" {{ old('pagu_desentralisasi') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pagu_desentralisasi_checkbox">
-                                Desentralisasi
-                            </label>
+                                <input class="form-check-input" type="checkbox" value="1" id="pagu_desentralisasi_checkbox" name="pagu_desentralisasi" {{ old('pagu_desentralisasi') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="pagu_desentralisasi_checkbox">
+                                    Desentralisasi
+                                </label>
                             </div>
                         </div>
-
+                        <!-- Nominal Pagu (Only visible if Desentralisasi is checked) -->
                         <div class="mb-3" id="pagu_nominal_input_group" style="{{ old('pagu_desentralisasi') ? '' : 'display:none;' }}">
                             <label for="pagu_nominal" class="form-label">Nominal Pagu</label>
                             <input type="number" class="form-control" id="pagu_nominal" name="pagu_nominal" placeholder="Contoh: 1500000" value="{{ old('pagu_nominal') }}">
                         </div>
-
+                        <!-- Alamat Kegiatan -->
                         <div class="mb-3 mt-4">
                             <label for="alamat_kegiatan" class="form-label">Alamat Kegiatan *</label>
                             <textarea class="form-control" id="alamat_kegiatan" name="alamat_kegiatan" rows="3" placeholder="Alamat Kegiatan" required>{{ old('alamat_kegiatan') }}</textarea>
                         </div>
-                        
+                        <!-- Provinsi -->
                         <div class="form-section mb-4">
                             <label for="provinsi" class="form-label">Provinsi *</label>
                             <div class="d-flex align-items-end gap-2">
                                 <input
-                                type="text"
-                                class="form-control"
-                                id="provinsi"
-                                name="provinsi"
-                                placeholder="Provinsi"
-                                readonly
-                                required
-                                value="{{ old('provinsi') }}"
-                                data-old="{{ old('provinsi') }}"
+                                    type="text"
+                                    class="form-control"
+                                    id="provinsi"
+                                    name="provinsi"
+                                    placeholder="Provinsi"
+                                    readonly
+                                    required
+                                    value="{{ old('provinsi') }}"
                                 >
                                 <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Pilih
-                                </button>
-                                <ul class="dropdown-menu" id="provinsi-dropdown"></ul>
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Pilih
+                                    </button>
+                                    <ul class="dropdown-menu" id="provinsi-dropdown"></ul>
                                 </div>
                             </div>
                         </div>
-
+                        <!-- Nomor Surat Usulan -->
                         <div class="mb-3">
                             <label for="nomor_surat_usulan" class="form-label">Nomor Surat Usulan *</label>
                             <input type="text" class="form-control" id="nomor_surat_usulan" name="nomor_surat_usulan" placeholder="Nomor Surat Usulan" required value="{{ old('nomor_surat_usulan') }}">
                         </div>
                     </div>
                 </div>
-                <div class="text-start mt-4">
-                    <button type="button" class="btn btn-primary" id="next-step-1">Selanjutnya</button>
+                <!-- Button -->
+                <div class="button-next mt-3">
+                    <button type="button" class="btn btn-primary" id="next-to-personel">Selanjutnya</button>
                 </div>
-            </div> 
-            
-            <div id="step-2-personnel" class="form-step" style="display: none;">
-                <h3 class="form-step-title">Data Pegawai</h3>
-                <p>*Centang untuk memilih pegawai/mahasiswa yang akan ditugaskan!</p>
+            </div> <!-- End Initial Form -->
 
+            <!-- Data Pegawai and Mahasiswa Section -->
+            <div id="data-section" class="form-step">
+                <h3>Data Personel</h3>
+                <p>*Centang untuk memilih pegawai/mahasiswa yang akan ditugaskan!</p>
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <div class="dropdown">
@@ -174,7 +173,6 @@
                         <button class="btn btn-primary" id="search-button">Search</button>
                     </div>
                 </div>
-
                 {{-- TABEL PEGAWAI --}}
                 <div class="table-responsive" id="data-pegawai-table">
                     <table class="table table-striped" id="pegawaiTable">
@@ -221,7 +219,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 {{-- TABEL MAHASISWA --}}
                 <div class="table-responsive" id="data-mahasiswa-table" style="display: none;">
                     <table class="table table-striped" id="mahasiswaTable">
@@ -267,7 +264,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 {{-- TABEL PERSONEL TERPILIH (gabungan dari Pegawai dan Mahasiswa) --}}
                 <div class="mt-4" id="selectedPersonelContainer" style="display: none;">
                     <h5 class="mb-3">Personel Terpilih:</h5>
@@ -283,106 +279,103 @@
                                 </tr>
                             </thead>
                             <tbody id="selectedPersonelList">
-                                </tbody>
+                                <!-- Daftar personel terpilih akan muncul di sini (dibuat oleh JS) -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
-
-                <div class="button-next mt-3 d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" id="prev-step-2">Kembali</button>
-                    <button type="button" class="btn btn-primary" id="next-step-2">Buat Surat Tugas</button>
+                <div class="button-next mt-3">
+                    <button type="button" class="btn btn-primary" id="back">Kembali</button>
+                    <button type="button" class="btn btn-success" id="create-task">Buat Surat Tugas</button>
                     <button type="button" class="btn btn-warning" id="save-draft">Simpan Draft</button>
                 </div>
-            </div> <div id="step-3-surat-tugas" class="form-step" style="display: none;"> {{-- ID untuk langkah 3, disembunyikan --}}
-                <h3 class="form-step-title">Preview Surat Tugas</h3>
+            </div> <!-- End Data Section -->
+
+            <!-- Surat Tugas Section -->
+            <div id="surat-tugas-section" class="form-step">
                 <div class="document-container surat-tugas-body">
+                    <!-- =========== HEADER HALAMAN =========== -->
                     <div class="surat-tugas-header">
-                    <img src="{{ asset('img/polban.png') }}" alt="POLBAN Logo" />
-                    <div class="surat-tugas-header-text">
-                        <h1>KEMENTERIAN PENDIDIKAN TINGGI, SAINS,<br>DAN TEKNOLOGI</h1>
-                        <h2>POLITEKNIK NEGERI BANDUNG</h2>
-                        <p>Jalan Gegerkalong Hilir, Desa Ciwaruga, Bandung 40012, Kotak Pos 1234,</p>
-                        <p>Telepon: (022) 2013789, Faksimile: (022) 2013889</p>
-                        <p>Laman: <a href="https://www.polban.ac.id" target="_blank">www.polban.ac.id</a>,
-                        Pos Elektronik: polban@polban.ac.id</p>
-                    </div>
+                        <img src="{{ asset('img/polban.png') }}" alt="POLBAN Logo" />
+                        <div class="surat-tugas-header-text">
+                            <h1>KEMENTERIAN PENDIDIKAN TINGGI, SAINS,<br>DAN TEKNOLOGI</h1>
+                            <h2>POLITEKNIK NEGERI BANDUNG</h2>
+                            <p>Jalan Gegerkalong Hilir, Desa Ciwaruga, Bandung 40012, Kotak Pos 1234,</p>
+                            <p>Telepon: (022) 2013789, Faksimile: (022) 2013889</p>
+                            <p>Laman: <a href="https://www.polban.ac.id" target="_blank">www.polban.ac.id</a>,
+                               Pos Elektronik: polban@polban.ac.id</p>
+                        </div>
                     </div>
                     <hr class="surat-tugas-header-line" />
-
+                    <!-- =========== ISI UTAMA HALAMAN =========== -->
                     <div class="surat-tugas-content">
-
-                    <div class="surat-tugas-title-wrapper">
-                        <div class="surat-tugas-title-inner">
-                        <h3>SURAT TUGAS</h3>
-                        <p class="nomor">Nomor: <span id="nomor_surat_display"></span></p>
+                        <div class="surat-tugas-title-wrapper">
+                            <div class="surat-tugas-title-inner">
+                                <h3>SURAT TUGAS</h3>
+                                <p class="nomor">Nomor: <span id="nomor_surat_display"></span></p>
+                            </div>
                         </div>
-                    </div>
-
-                    <p style="margin-bottom: 10px;">
-                        Direktur memberi tugas kepada:
-                    </p>
-
-                    <div id="daftar_personel_surat_tugas" style="margin-bottom: 15px;">
-                        {{-- Konten dinamis daftar personel akan diisi oleh JavaScript --}}
-                    </div>
-
-
-                    <p style="margin-top: 20px; margin-bottom: 10px;">
-                        Untuk mengikuti kegiatan <span id="nama_kegiatan_display_text" class="fw-bold"></span>, diselenggarakan oleh <span id="penyelenggara_display" class="fw-bold"></span> pada:
-                    </p>
-
-                    <div class="surat-tugas-detail-row">
-                        <div class="surat-tugas-detail-label">Hari/tanggal</div>
-                        <div class="surat-tugas-detail-separator">:</div>
-                        <div class="surat-tugas-detail-value"><span id="tanggal_pelaksanaan_display"></span></div>
-                    </div>
-                    <div class="surat-tugas-detail-row">
-                        <div class="surat-tugas-detail-label">Tempat</div>
-                        <div class="surat-tugas-detail-separator">:</div>
-                        <div class="surat-tugas-detail-value">
-                        <span id="tempat_kegiatan_display"></span>
-                        <div id="alamat_kegiatan_display_detail" style="margin-left: 0;"></div>
+                        <p style="margin-bottom: 10px;">
+                            Direktur memberi tugas kepada:
+                        </p>
+                        <div id="daftar_personel_surat_tugas" style="margin-bottom: 15px;">
+                            {{-- Konten dinamis daftar personel akan diisi oleh JavaScript --}}
                         </div>
-                    </div>
-                    <div class="surat-tugas-detail-row">
-                        <div class="surat-tugas-detail-label">Kegiatan</div>
-                        <div class="surat-tugas-detail-separator">:</div>
-                        <div class="surat-tugas-detail-value"><span id="ditugaskan_sebagai_display"></span></div>
-                    </div>
-
-
-                    <p style="margin-top: 20px;">
-                        Surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.
-                    </p>
-
-                    <div class="surat-tugas-footer-wrapper">
-                        <div class="surat-tugas-date-block">
-                        <p class="date"><span id="tanggal_surat_display"></span></p>
-                        <p class="ditandatangani-oleh">Direktur,</p>
+                        <p style="margin-top: 20px; margin-bottom: 10px;">
+                            Untuk mengikuti kegiatan <span id="nama_kegiatan_display_text" class="fw-bold"></span>, diselenggarakan oleh <span id="penyelenggara_display" class="fw-bold"></span> pada:
+                        </p>
+                        <!-- Detail Kegiatan -->
+                        <div class="surat-tugas-detail-row">
+                            <div class="surat-tugas-detail-label">Hari/tanggal</div>
+                            <div class="surat-tugas-detail-separator">:</div>
+                            <div class="surat-tugas-detail-value"><span id="tanggal_pelaksanaan_display"></span></div>
                         </div>
-                        <div class="surat-tugas-tembusan-label">
-                        <p>Tembusan:</p>
+                        <div class="surat-tugas-detail-row">
+                            <div class="surat-tugas-detail-label">Tempat</div>
+                            <div class="surat-tugas-detail-separator">:</div>
+                            <div class="surat-tugas-detail-value">
+                                <span id="tempat_kegiatan_display"></span>
+                                <div id="alamat_kegiatan_display_detail" style="margin-left: 0;"></div>
+                            </div>
                         </div>
-                        <div class="surat-tugas-tembusan-list">
-                        <ol>
-                            <li>Para Wakil Direktur</li>
-                            <li>Ketua Jurusan</li>
-                        </ol>
+                        <div class="surat-tugas-detail-row">
+                            <div class="surat-tugas-detail-label">Kegiatan</div>
+                            <div class="surat-tugas-detail-separator">:</div>
+                            <div class="surat-tugas-detail-value"><span id="ditugaskan_sebagai_display"></span></div>
                         </div>
-                        <div class="surat-tugas-signature-block">
-                        <div style="height: 60px;"></div>
-                        <p>Maryani, S.E., M.Si., Ph.D.</p>
-                        <p>NIP 196405041990032001</p>
+                        <p style="margin-top: 20px;">
+                            Surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.
+                        </p>
+                        <!-- =========== FOOTER‐GRID (Tembusan & Signature) =========== -->
+                        <div class="surat-tugas-footer-wrapper">
+                            <div class="surat-tugas-date-block">
+                                <p class="date"><span id="tanggal_surat_display"></span></p>
+                                <p class="ditandatangani-oleh">Direktur,</p>
+                            </div>
+                            <div class="surat-tugas-tembusan-label">
+                                <p>Tembusan:</p>
+                            </div>
+                            <div class="surat-tugas-tembusan-list">
+                                <ol>
+                                    <li>Para Wakil Direktur</li>
+                                    <li>Ketua Jurusan</li>
+                                </ol>
+                            </div>
+                            <div class="surat-tugas-signature-block">
+                                <div style="height: 60px;"></div>
+                                <p>Maryani, S.E., M.Si., Ph.D.</p>
+                                <p>NIP 196405041990032001</p>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
                 {{-- Tombol Aksi untuk Surat Tugas --}}
                 <div class="p-4 d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" id="back-to-personnel">Kembali</button>
-                    <button type="button" class="btn btn-primary" id="submit-pengusulan-final">Usulkan</button>
+                    <button type="button" class="btn btn-secondary" id="back-to-form">Kembali</button>
+                    <button type="button" class="btn btn-primary" id="submit-surat">Usulkan</button>
                 </div>
-            </div> </form>
+            </div> <!-- End Surat Tugas Section -->
+        </form>
     </div>
 </div>
 @endsection

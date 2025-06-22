@@ -1,9 +1,9 @@
 // ===========================
-// PENGUSULAN JS UTAMA
+// PENGUSULAN JS UTAMA (PERBAIKAN)
 // ===========================
 
 let currentStep = 1;
-const formSteps = document.querySelectorAll('.form-step');
+let formSteps = []; // Pindahkan ke dalam ready agar tidak empty jika script diletakkan di head
 let selectedPersonel = [];
 
 // ---------------------------
@@ -33,8 +33,8 @@ function showStep(stepNumber) {
             $('#data-mahasiswa-table').hide();
             $('#data-selection-dropdown').text('Data Pegawai');
         }
-        if ($.fn.DataTable.isDataTable('#pegawaiTable')) $('#pegawaiTable').DataTable().columns.adjust().draw();
-        if ($.fn.DataTable.isDataTable('#mahasiswaTable')) $('#mahasiswaTable').DataTable().columns.adjust().draw();
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#pegawaiTable')) $('#pegawaiTable').DataTable().columns.adjust().draw();
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#mahasiswaTable')) $('#mahasiswaTable').DataTable().columns.adjust().draw();
     }
 }
 
@@ -42,195 +42,229 @@ function showStep(stepNumber) {
 // Document Ready
 // ---------------------------
 $(document).ready(function() {
-    showStep(1);
-
-    // Inisialisasi DataTable
-    if (!$.fn.DataTable.isDataTable('#pegawaiTable')) {
-        $('#pegawaiTable').DataTable({ paging: true, searching: true, info: true, pageLength: 5, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
-    } else {
-        $('#pegawaiTable').DataTable().columns.adjust().draw();
-    }
-    if (!$.fn.DataTable.isDataTable('#mahasiswaTable')) {
-        $('#mahasiswaTable').DataTable({ paging: true, searching: true, info: true, pageLength: 10, lengthMenu: [5, 10, 15], order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }] });
-    } else {
-        $('#mahasiswaTable').DataTable().columns.adjust().draw();
-    }
-
-    $('#selectedPersonelContainer').hide();
-
-    // Inisialisasi pagu toggle
-    $('#pagu_nominal_input_group').toggle($('#pagu_desentralisasi_checkbox').is(':checked'));
-    $('#pagu_desentralisasi_checkbox').on('change', function() {
-        $('#pagu_nominal_input_group').toggle(this.checked);
-        if (!this.checked) {
-            $('#pagu_nominal').val('');
-        }
-    });
-
-    // Pembiayaan radio sync ke hidden value
-    $('input[name="pembiayaan_option"]').on('change', function(){
-        $('#pembiayaan_value').val($(this).val());
-    });
-
-    // Set radio/checkbox dari old value (untuk edit/dari validasi)
-    $('input[name="pembiayaan_option"][value="' + ($('input[name="pembiayaan_option"]').data('old') || 'Polban') + '"]').prop('checked', true);
-    $('#pagu_desentralisasi_checkbox').prop('checked', $('#pagu_desentralisasi_checkbox').data('old') ? true : false);
-    $('#pagu_nominal_input_group').toggle($('#pagu_desentralisasi_checkbox').is(':checked'));
-
-    // Error validation (dari Laravel)
-    if (window.laravelErrors && window.laravelErrors.length) {
-        let html = '<ul>';
-        window.laravelErrors.forEach(e => html += `<li>${e}</li>`);
-        html += '</ul>';
-        Swal.fire({ icon: 'error', title: 'Error Validasi!', html });
+    try {
+        // Inisialisasi ulang formSteps agar selalu ada DOM-nya
+        formSteps = document.querySelectorAll('.form-step');
         showStep(1);
-    }
 
-    initializeSelectedPersonel();
-
-    // Tombol navigasi antar step
-    $('#next-to-personel').on('click', function (e) {
-        const form = document.getElementById('pengusulanForm');
-        if (!form.reportValidity()) {
-            Swal.fire('Error Validasi!', 'Mohon lengkapi semua field yang wajib diisi pada formulir pertama.', 'error');
-            return;
-        }
-        currentStep = 2;
-        showStep(currentStep);
-    });
-
-    $('#back').on('click', () => {
-        currentStep = 1;
-        showStep(currentStep);
-    });
-
-    // Tombol simpan draft
-    $('#save-draft').on('click', function () {
-        if (selectedPersonel.length === 0) {
-            Swal.fire('Peringatan!','Pilih setidaknya satu personel untuk simpan draft!','warning');
-            return;
-        }
-        const formData = new FormData(document.getElementById('pengusulanForm'));
-        selectedPersonel.forEach(p => {
-            if (p.type === 'pegawai') formData.append('pegawai_ids[]', p.id);
-            else if (p.type === 'mahasiswa') formData.append('mahasiswa_ids[]', p.id);
-        });
-        formData.append('status_pengajuan', 'draft');
-
-        fetch($("#pengusulanForm").attr('action'), {
-            method: 'POST', body: formData,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => { throw err; });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                Swal.fire('Draft Disimpan!', data.message || 'Draft berhasil disimpan.','success');
+        // Inisialisasi DataTable (cek apakah plugin sudah ada)
+        if ($.fn.DataTable) {
+            if (!$.fn.DataTable.isDataTable('#pegawaiTable')) {
+                $('#pegawaiTable').DataTable({
+                    paging: true, searching: true, info: true,
+                    pageLength: 5, lengthMenu: [5, 10, 15],
+                    order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }]
+                });
             } else {
-                Swal.fire('Gagal!', data.message || 'Gagal menyimpan draft.','error');
-            }
-        }).catch(error => {
-            console.error('Fetch Error:', error);
-            let errorMessage = 'Terjadi kesalahan jaringan.';
-            if (error.errors) {
-                errorMessage = '<strong>Kesalahan Validasi:</strong><ul>';
-                for (let key in error.errors) {
-                    errorMessage += `<li>${error.errors[key].join(', ')}</li>`;
-                }
-                errorMessage += '</ul>';
-            } else if (error.message) {
-                errorMessage = error.message;
-            }
-            Swal.fire('Error!', errorMessage,'error');
-        });
-    });
-
-    // DataTable: filter per pegawai/mahasiswa
-    $(document).on('click', '#data-section .dropdown-item[data-value]', function (e) {
-        e.preventDefault();
-        const section = $(this).data('value');
-        $('#data-selection-dropdown').text($(this).text());
-
-        $('#data-pegawai-table, #data-mahasiswa-table').hide();
-        if (section === 'data-pegawai') {
-            $('#data-pegawai-table').show();
-            if ($.fn.DataTable.isDataTable('#pegawaiTable')) {
                 $('#pegawaiTable').DataTable().columns.adjust().draw();
             }
-        } else if (section === 'data-mahasiswa') {
-            $('#data-mahasiswa-table').show();
-            if ($.fn.DataTable.isDataTable('#mahasiswaTable')) {
+            if (!$.fn.DataTable.isDataTable('#mahasiswaTable')) {
+                $('#mahasiswaTable').DataTable({
+                    paging: true, searching: true, info: true,
+                    pageLength: 10, lengthMenu: [5, 10, 15],
+                    order: [[1, 'asc']], columnDefs: [{ orderable: false, targets: 0 }]
+                });
+            } else {
                 $('#mahasiswaTable').DataTable().columns.adjust().draw();
             }
         }
-    });
 
-    // Search live pada datatable
-    $('#search-input').on('keyup', function () {
-        let tableAPI;
-        if ($('#data-pegawai-table').is(':visible')) {
-            tableAPI = $('#pegawaiTable').DataTable();
-        } else if ($('#data-mahasiswa-table').is(':visible')) {
-            tableAPI = $('#mahasiswaTable').DataTable();
-        } else {
-            return;
+        $('#selectedPersonelContainer').hide();
+
+        // Inisialisasi pagu toggle
+        $('#pagu_nominal_input_group').toggle($('#pagu_desentralisasi_checkbox').is(':checked'));
+        $('#pagu_desentralisasi_checkbox').on('change', function() {
+            $('#pagu_nominal_input_group').toggle(this.checked);
+            if (!this.checked) {
+                $('#pagu_nominal').val('');
+            }
+        });
+
+        // Pembiayaan radio sync ke hidden value
+        $('input[name="pembiayaan_option"]').on('change', function(){
+            $('#pembiayaan_value').val($(this).val());
+        });
+
+        // Set radio/checkbox dari old value (untuk edit/dari validasi)
+        $('input[name="pembiayaan_option"][value="' + ($('input[name="pembiayaan_option"]').data('old') || 'Polban') + '"]').prop('checked', true);
+        $('#pagu_desentralisasi_checkbox').prop('checked', $('#pagu_desentralisasi_checkbox').data('old') ? true : false);
+        $('#pagu_nominal_input_group').toggle($('#pagu_desentralisasi_checkbox').is(':checked'));
+
+        // Error validation (dari Laravel)
+        if (window.laravelErrors && window.laravelErrors.length && typeof Swal !== 'undefined') {
+            let html = '<ul>';
+            window.laravelErrors.forEach(e => html += `<li>${e}</li>`);
+            html += '</ul>';
+            Swal.fire({ icon: 'error', title: 'Error Validasi!', html });
+            showStep(1);
         }
-        tableAPI.search(this.value).draw();
-    });
 
-    // Checkbox select all
-    $('#select-all-pegawai').on('click', function () {
-        const isChecked = this.checked;
-        $('input.personel-checkbox[data-type="pegawai"]').each(function() {
-            if ($(this).prop('checked') !== isChecked) {
-                $(this).prop('checked', isChecked);
-                updateSelectedPersonel(this);
+        initializeSelectedPersonel();
+
+        // Tombol navigasi antar step
+        $('#next-to-personel').on('click', function (e) {
+            const form = document.getElementById('pengusulanForm');
+            if (!form.reportValidity()) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('Error Validasi!', 'Mohon lengkapi semua field yang wajib diisi pada formulir pertama.', 'error');
+                } else {
+                    alert('Mohon lengkapi semua field yang wajib diisi pada formulir pertama.');
+                }
+                return;
+            }
+            currentStep = 2;
+            showStep(currentStep);
+        });
+
+        $('#back').on('click', () => {
+            currentStep = 1;
+            showStep(currentStep);
+        });
+
+        // Tombol simpan draft
+        $('#save-draft').on('click', function () {
+            if (selectedPersonel.length === 0) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('Peringatan!','Pilih setidaknya satu personel untuk simpan draft!','warning');
+                } else {
+                    alert('Pilih setidaknya satu personel untuk simpan draft!');
+                }
+                return;
+            }
+            const formData = new FormData(document.getElementById('pengusulanForm'));
+            selectedPersonel.forEach(p => {
+                if (p.type === 'pegawai') formData.append('pegawai_ids[]', p.id);
+                else if (p.type === 'mahasiswa') formData.append('mahasiswa_ids[]', p.id);
+            });
+            formData.append('status_pengajuan', 'draft');
+
+            fetch($("#pengusulanForm").attr('action'), {
+                method: 'POST', body: formData,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (typeof Swal !== 'undefined') {
+                    if (data.success) {
+                        Swal.fire('Draft Disimpan!', data.message || 'Draft berhasil disimpan.','success');
+                    } else {
+                        Swal.fire('Gagal!', data.message || 'Gagal menyimpan draft.','error');
+                    }
+                } else {
+                    alert(data.message || (data.success ? 'Draft berhasil disimpan.' : 'Gagal menyimpan draft.'));
+                }
+            }).catch(error => {
+                console.error('Fetch Error:', error);
+                let errorMessage = 'Terjadi kesalahan jaringan.';
+                if (error.errors) {
+                    errorMessage = '<strong>Kesalahan Validasi:</strong><ul>';
+                    for (let key in error.errors) {
+                        errorMessage += `<li>${error.errors[key].join(', ')}</li>`;
+                    }
+                    errorMessage += '</ul>';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('Error!', errorMessage,'error');
+                } else {
+                    alert(errorMessage);
+                }
+            });
+        });
+
+        // DataTable: filter per pegawai/mahasiswa
+        $(document).on('click', '#data-section .dropdown-item[data-value]', function (e) {
+            e.preventDefault();
+            const section = $(this).data('value');
+            $('#data-selection-dropdown').text($(this).text());
+
+            $('#data-pegawai-table, #data-mahasiswa-table').hide();
+            if (section === 'data-pegawai') {
+                $('#data-pegawai-table').show();
+                if ($.fn.DataTable && $.fn.DataTable.isDataTable('#pegawaiTable')) {
+                    $('#pegawaiTable').DataTable().columns.adjust().draw();
+                }
+            } else if (section === 'data-mahasiswa') {
+                $('#data-mahasiswa-table').show();
+                if ($.fn.DataTable && $.fn.DataTable.isDataTable('#mahasiswaTable')) {
+                    $('#mahasiswaTable').DataTable().columns.adjust().draw();
+                }
             }
         });
-    });
-    $('#select-all-mahasiswa').on('click', function () {
-        const isChecked = this.checked;
-        $('input.personel-checkbox[data-type="mahasiswa"]').each(function() {
-            if ($(this).prop('checked') !== isChecked) {
-                $(this).prop('checked', isChecked);
-                updateSelectedPersonel(this);
+
+        // Search live pada datatable
+        $('#search-input').on('keyup', function () {
+            let tableAPI;
+            if ($('#data-pegawai-table').is(':visible')) {
+                tableAPI = $('#pegawaiTable').DataTable();
+            } else if ($('#data-mahasiswa-table').is(':visible')) {
+                tableAPI = $('#mahasiswaTable').DataTable();
+            } else {
+                return;
+            }
+            tableAPI.search(this.value).draw();
+        });
+
+        // Checkbox select all
+        $('#select-all-pegawai').on('click', function () {
+            const isChecked = this.checked;
+            $('input.personel-checkbox[data-type="pegawai"]').each(function() {
+                if ($(this).prop('checked') !== isChecked) {
+                    $(this).prop('checked', isChecked);
+                    updateSelectedPersonel(this);
+                }
+            });
+        });
+        $('#select-all-mahasiswa').on('click', function () {
+            const isChecked = this.checked;
+            $('input.personel-checkbox[data-type="mahasiswa"]').each(function() {
+                if ($(this).prop('checked') !== isChecked) {
+                    $(this).prop('checked', isChecked);
+                    updateSelectedPersonel(this);
+                }
+            });
+        });
+
+        // Untuk dropdown dynamic (Diusulkan Kepada, Provinsi, dsb)
+        $(document).on('click', '.pilih-option', function (e) {
+            e.preventDefault();
+            const targetInputId = $(this).data('target');
+            const selectedValue = $(this).data('value');
+            $('#' + targetInputId).val(selectedValue);
+
+            // Jika provinsi, tutup dropdown setelah pilih (Bootstrap 5)
+            if(targetInputId === 'provinsi') {
+                const dropdownToggle = $(this).closest('.dropdown').find('[data-bs-toggle="dropdown"]')[0];
+                if (dropdownToggle && window.bootstrap) {
+                    window.bootstrap.Dropdown.getOrCreateInstance(dropdownToggle).hide();
+                }
             }
         });
-    });
 
-    // Untuk dropdown dynamic (Diusulkan Kepada, Provinsi, dsb)
-    $(document).on('click', '.pilih-option', function (e) {
-        e.preventDefault();
-        const targetInputId = $(this).data('target');
-        const selectedValue = $(this).data('value');
-        $('#' + targetInputId).val(selectedValue);
-
-        // Jika provinsi, tutup dropdown setelah pilih (Bootstrap 5)
-        if(targetInputId === 'provinsi') {
-            const dropdownToggle = $(this).closest('.dropdown').find('[data-bs-toggle="dropdown"]')[0];
-            if (dropdownToggle && window.bootstrap) {
-                window.bootstrap.Dropdown.getOrCreateInstance(dropdownToggle).hide();
-            }
+        // ========== Date Picker Tanggal Pelaksanaan ==========
+        if (typeof flatpickr !== 'undefined') {
+            flatpickr("#tanggal_pelaksanaan", {
+                mode: "range",
+                dateFormat: "d-m-Y",
+                altInput: true,
+                altFormat: "d F Y",
+                locale: "id"
+            });
         }
-    });
 
-    // ========== Date Picker Tanggal Pelaksanaan ==========
-    if (typeof flatpickr !== 'undefined') {
-        flatpickr("#tanggal_pelaksanaan", {
-            mode: "range",
-            dateFormat: "d-m-Y",
-            altInput: true,
-            altFormat: "d F Y",
-            locale: "id"
-        });
+        // ========== API Provinsi ==========
+        loadProvinsiAPI();
+
+    } catch(e) {
+        console.error("ERROR di pengusulan.js:", e);
+        alert("Terjadi error pada halaman pengusulan, cek console untuk detail.");
     }
-
-    // ========== API Provinsi ==========
-    loadProvinsiAPI();
 });
 
 // ---------------------------
@@ -312,7 +346,19 @@ function removePersonel(personelId, type) {
 // API Provinsi
 // ---------------------------
 function loadProvinsiAPI() {
-    const dropdownList = document.getElementById('provinsi-dropdown');
+    // Pastikan <ul id="provinsi-dropdown"></ul> ada (edit blade jika belum)
+    let dropdownList = document.getElementById('provinsi-dropdown');
+    if (!dropdownList) {
+        // fallback: cari dropdown-menu dari provinsi input
+        let provInput = document.getElementById('provinsi');
+        if (provInput) {
+            let dropdown = provInput.closest('.d-flex').querySelector('.dropdown-menu');
+            if (dropdown) {
+                dropdownList = dropdown;
+                dropdownList.id = "provinsi-dropdown";
+            }
+        }
+    }
     const inputProvinsi = document.getElementById('provinsi');
     if (!dropdownList || !inputProvinsi) return;
 

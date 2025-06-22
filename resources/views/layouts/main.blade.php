@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     
-    @stack('styles') {{-- Untuk CSS spesifik halaman --}}
+    @stack('styles')
 </head>
 <body>
     {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}
