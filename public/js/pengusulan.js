@@ -316,8 +316,7 @@ function loadProvinsiAPI() {
     const inputProvinsi = document.getElementById('provinsi');
     if (!dropdownList || !inputProvinsi) return;
 
-    const oldVal = inputProvinsi.dataset.old || '';
-
+    // Ganti isi dropdown list dengan hasil API, hapus entry statis
     fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
         .then(r => r.json())
         .then(data => {
@@ -333,6 +332,7 @@ function loadProvinsiAPI() {
             });
 
             // Set nilai lama jika tersedia
+            const oldVal = inputProvinsi.getAttribute('data-old') || inputProvinsi.value || '';
             if (oldVal) inputProvinsi.value = oldVal;
         })
         .catch(console.error);
