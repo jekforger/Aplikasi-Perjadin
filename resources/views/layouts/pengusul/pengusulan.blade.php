@@ -137,9 +137,7 @@
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Pilih
                                 </button>
-                                    <ul class="dropdown-menu" id="provinsi-dropdown">
-                                        {{-- Akan diisi lewat JS --}}
-                                    </ul>
+                                    <ul class="dropdown-menu" id="provinsi-dropdown"></ul>
                                 </div>
                             </div>
                         </div>
@@ -153,8 +151,10 @@
                 <div class="text-start mt-4">
                     <button type="button" class="btn btn-primary" id="next-step-1">Selanjutnya</button>
                 </div>
-            </div> <div id="step-2-personnel" class="form-step" style="display: none;"> {{-- ID untuk langkah 2, disembunyikan --}}
-                <h3 class="form-step-title">Data Personel</h3>
+            </div> 
+            
+            <div id="step-2-personnel" class="form-step" style="display: none;">
+                <h3 class="form-step-title">Data Pegawai</h3>
                 <p>*Centang untuk memilih pegawai/mahasiswa yang akan ditugaskan!</p>
 
                 <div class="mb-3 d-flex justify-content-between align-items-center">
