@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Aplikasi Surat Tugas')</title>
+    <title>@yield('title')</title>
 
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('img/polban2.png') }}" type="image/png">
@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     
-    @stack('styles') {{-- Untuk CSS spesifik halaman --}}
+    @stack('styles')
 </head>
 <body>
     {{-- Global Success Alert untuk semua halaman aplikasi (setelah login) --}}

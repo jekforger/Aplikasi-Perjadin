@@ -43,7 +43,7 @@ class PengusulController extends Controller
                                       ->get();
 
 
-        return view('layouts.pengusul.dashboardPengusul', compact(
+        return view('layouts.pengusul.dashboard', compact(
             'totalUsulan', 'laporanSelesai', 'laporanBelumSelesai', 'sedangBertugas', 'dikembalikan', 'latestPengusulan'
         ));
     }

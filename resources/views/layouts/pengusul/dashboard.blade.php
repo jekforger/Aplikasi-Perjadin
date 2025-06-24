@@ -1,48 +1,50 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
-@section('content')
-<div class="card-container">
-  <h2 class="page-title mb-4">Dashboard</h2>
+@section('title', 'Dashboard')
+@section('pengusul_content')
+<div class="dashboard-container px-4 py-3">
+  <h1 class="dashboard-page-title mb-4">Dashboard</h1>
 
-  {{-- Kotak Statistik --}}
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 mb-4 px-4">
-    <div class="col">
-      <div class="dashboard-card bg-white border shadow-sm p-3 text-center rounded-3">
-        <h6 class="text-muted mb-1">Total Usulan</h6>
-        <h3 class="text-dark mb-0">{{ $totalUsulan ?? 0 }}</h3>
-      </div>
+  <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Total Usulan</p>
+                <h5 class="fw-bold mb-2">{{ $totalUsulan ?? 0 }}</h5>
+                <i class="bi bi-file-earmark-text fs-4 text-primary"></i>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Laporan Selesai</p>
+                <h5 class="fw-bold mb-2">{{ $laporanSelesai ?? 0 }}</h5>
+                <i class="bi bi-plus fs-4 text-success"></i>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Laporan Belum Selesai</p>
+                <h5 class="fw-bold mb-2">{{ $laporanBelumSelesai ?? 0 }}</h5>
+                <i class="bi bi-bar-chart-line fs-4 text-warning"></i>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Bertugas</p>
+                <h5 class="fw-bold mb-2">{{ $sedangBertugas ?? 0 }}</h5>
+                <i class="bi bi-people fs-4 text-info"></i>
+            </div>
+        </div>
+	      <div class="col-6 col-md-3">
+            <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
+                <p class="fw-semibold mb-1">Dikembalikan</p>
+                <h5 class="fw-bold mb-2">{{ $dikembalikan ?? 0 }}</h5>
+                <i class="bi bi-people fs-4 text-info"></i>
+            </div>
+        </div>
     </div>
-    <div class="col">
-      <div class="dashboard-card bg-white border shadow-sm p-3 text-center rounded-3">
-        <h6 class="text-muted mb-1">Laporan Selesai</h6>
-        <h3 class="text-dark mb-0">{{ $laporanSelesai ?? 0 }}</h3>
-      </div>
-    </div>
-    <div class="col">
-      <div class="dashboard-card bg-white border shadow-sm p-3 text-center rounded-3">
-        <h6 class="text-muted mb-1">Belum Selesai</h6>
-        <h3 class="text-dark mb-0">{{ $laporanBelumSelesai ?? 0 }}</h3>
-      </div>
-    </div>
-    <div class="col">
-      <div class="dashboard-card bg-white border shadow-sm p-3 text-center rounded-3">
-        <h6 class="text-muted mb-1">Sedang Bertugas</h6>
-        <h3 class="text-dark mb-0">{{ $sedangBertugas ?? 0 }}</h3>
-      </div>
-    </div>
-    <div class="col">
-      <div class="dashboard-card bg-white border shadow-sm p-3 text-center rounded-3">
-        <h6 class="text-muted mb-1">Dikembalikan</h6>
-        <h3 class="text-dark mb-0">{{ $dikembalikan ?? 0 }}</h3>
-      </div>
-    </div>
-  </div>
 
   {{-- Card Detail Pengusulan Terbaru --}}
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Pengusulan Terbaru Saya</h6>
-    </div>
+  <div class="p-4 shadow-sm bg-white rounded text-left">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-bordered" width="100%" cellspacing="0">
@@ -99,3 +101,8 @@
   </div>
 </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/dashboard_pengusul.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+@endpush
