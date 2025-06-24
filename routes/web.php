@@ -70,7 +70,7 @@ Route::prefix('wadir')->name('wadir.')->middleware('auth')->group(function () {
 });
 Route::prefix('direktur')->name('direktur.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard');
-    Route::get('/paraf', [ParafController::class, 'index'])->name('paraf'); // Link Paraf
+    Route::get('/persetujuan', [DirekturController::class, 'persetujuan'])->name('persetujuan');
 });
 Route::prefix('sekdir')->name('sekdir.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [SekdirController::class, 'dashboard'])->name('dashboard');

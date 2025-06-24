@@ -1,73 +1,68 @@
-/* public/css/direktur.css */
-
-/* Styling spesifik untuk Dashboard Direktur */
-
-/* === DASHBOARD GLOBAL STYLING === */
-.dashboard-direktur-container { /* Kontainer utama dashboard Direktur */
-    /* Padding sudah di main.content-area, tapi bisa ditambahkan jika perlu batas lebih jauh */
-    padding-left: 20px;
-    padding-right: 20px;
+:root {
+    --sidebar-width: 120px;
+    --sidebar-collapsed-width: 0px;
 }
 
-.dashboard-page-title { /* Styling untuk h1 Dashboard */
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 1.5rem;
-    padding-top: 0;
+.dashboard-container {
+    margin-left: var(--sidebar-width, 260px); /* default full sidebar */
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    padding: 2rem 2rem;
 }
 
-/* === INFO BOXES STYLING (Diwarisi dari main.css, tambahkan override jika perlu) === */
-.dashboard-info-boxes .col-xl-3,
-.dashboard-info-boxes .col-md-6,
-.dashboard-info-boxes .col-12 {
-    /* Padding/margin sudah di main.css, sesuaikan jika perlu di sini */
+body.sidebar-collapsed .dashboard-container {
+    margin-left: var(--sidebar-collapsed-width) !important;
 }
 
 .dashboard-card {
-    /* Styling dasar dari main.css, tambahkan override jika perlu */
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease-in-out;
+    min-height: 170px;
 }
 
-/* Warna border kiri kustom Direktur */
-.dashboard-card.border-left-blue { border-left: .25rem solid var(--color-blue)!important; }
-.dashboard-card.border-left-green { border-left: .25rem solid var(--color-green)!important; }
-.dashboard-card.border-left-purple { border-left: .25rem solid var(--color-purple)!important; }
-.dashboard-card.border-left-orange { border-left: .25rem solid var(--color-orange)!important; }
-
-/* Warna teks spesifik di card body untuk label */
-.dashboard-card .text-blue { color: var(--color-blue) !important; }
-.dashboard-card .text-green { color: var(--color-green) !important; }
-.dashboard-card .text-purple { color: var(--color-purple) !important; }
-.dashboard-card .text-orange { color: var(--color-orange) !important; }
-
-/* === TABEL STYLING (Diwarisi dari main.css, tambahkan override jika perlu) === */
-.dashboard-table-card {
-    /* Styling dasar dari main.css, tambahkan override jika perlu */
+.dashboard-page-title {
+    font-weight: 600;
+    font-size: 40px;
+    margin-top: 50px;
 }
 
-.table-title {
-    /* Styling dasar dari main.css, tambahkan override jika perlu */
+.dashboard-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-/* Pastikan semua elemen tabel (header, body, badge, button) juga diwarisi/disesuaikan dari main.css/wadir.css */
-/* Jika ada perbedaan signifikan pada tabel di Direktur, definisikan di sini */
+.dashboard-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
 
-/* Badge Status Khusus Direktur */
-.status-badge.badge-success { background-color: var(--color-green) !important; }
-.status-badge.badge-danger { background-color: var(--color-danger) !important; } /* Asumsi ada variabel --color-danger */
-.status-badge.badge-warning { background-color: var(--color-warning) !important; } /* Asumsi ada variabel --color-warning */
-.status-badge.badge-secondary { background-color: var(--color-dark-gray) !important; } /* Untuk Selesai */
+.dashboard-count {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 8px;
+}
 
+.dashboard-icon {
+    font-size: 28px;
+}
 
-/* === RESPONSIVE ADJUSTMENTS === */
-@media (max-width: 767.98px) { /* Mobile view */
-    .dashboard-direktur-container {
-        padding-left: 10px;
-        padding-right: 10px;
+.dashboard-detail-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin-left: 0 !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
-    .dashboard-page-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-    /* ... (Ambil aturan responsif card dan tabel dari wadir.css jika diperlukan) ... */
 }

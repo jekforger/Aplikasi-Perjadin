@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('img/polban2.png') }}" type="image/png">
-    <title>Aplikasi SPPD Polban</title>
-    <!-- {{ config('app.name', 'Aplikasi SPPD Polban') }} -->
+    <!-- <title>Aplikasi SPPD Polban</title> -->
+    <title>@yield('title', 'Aplikasi SPPD Polban')</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,8 +29,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
-    <!-- @include('partials.navbar') -->
 
         @yield('content') 
 

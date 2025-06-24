@@ -23,13 +23,6 @@
             </span>
             <span class="description">Persetujuan</span>
         </a>
-        {{-- Paraf Link --}}
-        <a href="{{ route('wadir.paraf') }}" class="nav-link {{ Request::is('wadir/paraf*') ? 'active' : '' }}">
-            <span class="icon">
-                <i class="bi bi-pen"></i>
-            </span>
-            <span class="description">Paraf</span>
-        </a>
         
         {{-- Ganti Role Link (dengan Submenu) --}}
         <a href="#submenu" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu">

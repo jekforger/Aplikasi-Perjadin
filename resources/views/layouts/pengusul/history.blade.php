@@ -6,6 +6,7 @@
     <h1 class="pengusul-page-title mb-4">History</h1>
 
     <div class="p-4 shadow-sm bg-white rounded">
+        
     </div>
 </div>
 @endsection

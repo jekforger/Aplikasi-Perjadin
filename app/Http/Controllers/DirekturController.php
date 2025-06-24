@@ -52,4 +52,8 @@ class DirekturController extends Controller
 
         return view('layouts.direktur.dashboard', compact('dashboardStats', 'pengusulanDetails', 'roleDisplayName', 'userRole'));
     }
+
+    public function persetujuan() {
+        return view('layouts.direktur.persetujuan');
+    }
 }

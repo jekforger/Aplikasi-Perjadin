@@ -17,18 +17,11 @@
             <span class="description">Dashboard</span>
         </a>
         {{-- Persetujuan Direktur Link --}}
-        <a href="#" class="nav-link {{ Request::is('direktur/persetujuan*') ? 'active' : '' }}">
+        <a href="{{ route('direktur.persetujuan') }}" class="nav-link {{ Request::is('direktur/persetujuan*') ? 'active' : '' }}">
             <span class="icon">
                 <i class="bi bi-check2-square"></i>
             </span>
             <span class="description">Persetujuan</span>
-        </a>
-        {{-- Histori Persetujuan Link --}}
-        <a href="{{ route('direktur.paraf') }}" class="nav-link {{ Request::is('direktur/histori-persetujuan*') ? 'active' : '' }}">
-            <span class="icon">
-                <i class="bi bi-pen"></i>
-            </span>
-            <span class="description">Tanda Tangan</span>
         </a>
         
         {{-- Ganti Role Link (dengan Submenu) - DIREKTUR BISA GANTI ROLE KE PELAKSANA --}}
