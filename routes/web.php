@@ -8,7 +8,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataPegawaiController;
 use App\Http\Controllers\DataMahasiswaController;
 use App\Http\Controllers\WadirController;
-use App\Http\Controllers\DirekturController; // Pastikan ini diimport
+use App\Http\Controllers\DirekturController;
+use App\Http\Controllers\PelaksanaController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -38,7 +39,11 @@ Route::prefix('pengusul')->name('pengusul.')->middleware('auth')->group(function
 
 // --- Rute Placeholder untuk Role Lain ---
 Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard Pelaksana (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [PelaksanaController::class, 'dashboard'])->name('dashboard');
+    Route::get('/bukti', [PelaksanaController::class, 'bukti'])->name('bukti');
+    Route::get('/laporan', [PelaksanaController::class, 'laporan'])->name('laporan');
+    Route::get('/dokumen', [PelaksanaController::class, 'dokumen'])->name('dokumen');
+    Route::get('/statusLaporan', [PelaksanaController::class, 'statusLaporan'])->name('statusLaporan');
 });
 Route::prefix('bku')->name('bku.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
