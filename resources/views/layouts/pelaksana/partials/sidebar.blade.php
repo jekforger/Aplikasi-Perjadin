@@ -16,19 +16,19 @@
             </a>
             <a href="{{ route('pelaksana.bukti') }}" class="nav-link {{ request()->is('bukti') ? 'active' : '' }}">
                 <span class="icon">
-                    <i class="bi bi-file-earmark-medical"></i>
+                    <i class="bi bi-image"></i>
                 </span>
                 <span class="description">Bukti</span>
             </a>
             <a href="{{ route('pelaksana.laporan') }}" class="nav-link {{ request()->is('laporan') ? 'active' : '' }}">
                 <span class="icon">
-                    <i class="bi bi-graph-up"></i>
+                    <i class="bi bi-file-earmark"></i>
                 </span>
                 <span class="description">Laporan</span>
             </a>
             <a href="{{ route('pelaksana.dokumen') }}" class="nav-link {{ request()->is('dokumen') ? 'active' : '' }}">
                 <span class="icon">
-                    <i class="bi bi-file-earmark"></i>
+                    <i class="bi bi-file-earmark-text"></i>
                 </span>
                 <span class="description">Dokumen</span>
             </a>

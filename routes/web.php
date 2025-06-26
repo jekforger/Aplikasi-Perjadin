@@ -11,6 +11,7 @@ use App\Http\Controllers\WadirController;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\PelaksanaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BkuController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -48,7 +49,9 @@ Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
     Route::get('/statusLaporan', [PelaksanaController::class, 'statusLaporan'])->name('statusLaporan');
 });
 Route::prefix('bku')->name('bku.')->group(function () {
-    Route::get('/dashboard', function() { return 'Dashboard BKU (belum dibuat)'; })->name('dashboard');
+    Route::get('/dashboard', [BkuController::class, 'dashboard'])->name('dashboard');
+    Route::get('/bukti', [BkuController::class, 'bukti'])->name('bukti');
+    Route::get('/laporan', [BkuController::class, 'laporan'])->name('laporan');
 });
 
 // --- Rute untuk Wakil Direktur (I-IV) ---
