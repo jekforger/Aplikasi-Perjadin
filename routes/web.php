@@ -10,6 +10,7 @@ use App\Http\Controllers\DataMahasiswaController;
 use App\Http\Controllers\WadirController;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\PelaksanaController;
+use App\Http\Controllers\UserController;
 
 // Halaman awal untuk memilih role (akan diakses di root URL: '/')
 Route::get('/', [LoginController::class, 'showSelectRoleForm'])->name('login.select-role');
@@ -22,6 +23,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
 
 // Proses Logout (akan dipanggil dari tombol logout di navbar)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/change-password', [UserController::class, 'changePassword'])->name('user.change-password');
 
 
 // --- Rute untuk Role Pengusul ---

@@ -9,22 +9,22 @@
         <div class="col-6 col-md-3">
             <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
                 <p class="fw-semibold mb-1">Total Penugasan</p>
-                <h5 class="fw-bold mb-2">0</h5>
-                <i class="bi bi-file-earmark-text fs-4 text-primary"></i>
+                <h5 class="fw-bold mb-2">{{ $totalPenugasan ?? 0 }}</h5>
+                <i class="bi bi-file-earmark"></i>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
                 <p class="fw-semibold mb-1">Penugasan Baru</p>
-                <h5 class="fw-bold mb-2">0</h5>
-                <i class="bi bi-plus fs-4 text-success"></i>
+                <h5 class="fw-bold mb-2">{{ $penugasanBaru ?? 0 }}</h5>
+                <i class="bi bi-file-earmark-plus"></i>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="p-4 shadow-sm bg-white rounded text-center dashboard-card">
                 <p class="fw-semibold mb-1">Laporan Belum Selesai</p>
                 <h5 class="fw-bold mb-2">{{ $laporanBelumSelesai ?? 0 }}</h5>
-                <i class="bi bi-bar-chart-line fs-4 text-warning"></i>
+                <i class="bi bi-exclamation-triangle"></i>
             </div>
         </div>
     <div class="p-4 shadow-sm bg-white rounded text-left">
