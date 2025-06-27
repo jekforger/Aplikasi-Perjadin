@@ -1,18 +1,12 @@
-{{-- resources/views/pelaksana/layout.blade.php --}}
+{{-- resources/views/layouts/pelaksana/layout.blade.php --}}
 @extends('layouts.main')
 
 @section('sidebar')
-    {{-- Ambil userRole dan roleDisplayName langsung di sini --}}
-    @php
-        $userRole = null; // Inisialisasi default
-        $roleDisplayName = 'Pengguna'; // Inisialisasi default
-        if (\Auth::check()) { // Pastikan user sudah login
-            $userRole = \Auth::user()->role;
-            $loginController = new \App\Http\Controllers\Auth\LoginController(); // Buat instance controller
-            $roleDisplayName = $loginController->getRoleDisplayName($userRole);
-        }
-    @endphp
-    @include('layouts.pelaksana.partials.sidebar', ['userRole' => $userRole, 'roleDisplayName' => $roleDisplayName])
+    {{-- Variabel akan diteruskan dari setiap metode di PelaksanaController --}}
+    @include('layouts.pelaksana.partials.sidebar', [
+        'userRole' => $userRole ?? 'pelaksana',
+        'roleDisplayName' => $roleDisplayName ?? 'Pelaksana'
+    ])
 @endsection
 
 @section('content')

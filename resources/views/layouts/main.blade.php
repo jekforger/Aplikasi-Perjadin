@@ -46,7 +46,19 @@
         </main>
     </div>
 
+    <!-- 1. jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- 3. SweetAlert2 JS (Untuk pop-up konfirmasi) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- 4. Global JS Anda (main.js) -->
+    <script src="{{ asset('js/main.js') }}"></script>
+
+    <!-- 5. Stack untuk skrip spesifik halaman anak -->
+    @stack('scripts')
 
     <script src="{{ asset('js/main.js') }}"></script>
     @stack('scripts') {{-- Untuk JS spesifik halaman --}}

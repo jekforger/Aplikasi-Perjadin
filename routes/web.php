@@ -39,15 +39,15 @@ Route::prefix('pengusul')->name('pengusul.')->middleware('auth')->group(function
     Route::get('/pilihpengusul', [PengusulController::class, 'pilih'])->name('pilih');
 });
 
+    Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
+        // ->middleware('role:pelaksana')
+        Route::get('/dashboard', [PelaksanaController::class, 'dashboard'])->name('dashboard');
+        Route::get('/bukti', [PelaksanaController::class, 'bukti'])->name('bukti');
+        Route::get('/laporan', [PelaksanaController::class, 'laporan'])->name('laporan');
+        Route::get('/dokumen', [PelaksanaController::class, 'dokumen'])->name('dokumen');
+        Route::get('/status-laporan', [PelaksanaController::class, 'statusLaporan'])->name('statusLaporan');
+    });
 
-// --- Rute Placeholder untuk Role Lain ---
-Route::prefix('pelaksana')->name('pelaksana.')->group(function () {
-    Route::get('/dashboard', [PelaksanaController::class, 'dashboard'])->name('dashboard');
-    Route::get('/bukti', [PelaksanaController::class, 'bukti'])->name('bukti');
-    Route::get('/laporan', [PelaksanaController::class, 'laporan'])->name('laporan');
-    Route::get('/dokumen', [PelaksanaController::class, 'dokumen'])->name('dokumen');
-    Route::get('/statusLaporan', [PelaksanaController::class, 'statusLaporan'])->name('statusLaporan');
-});
 Route::prefix('bku')->name('bku.')->group(function () {
     Route::get('/dashboard', [BkuController::class, 'dashboard'])->name('dashboard');
     Route::get('/bukti', [BkuController::class, 'bukti'])->name('bukti');
@@ -75,24 +75,14 @@ Route::prefix('wadir')->name('wadir.')->group(function () {
 });
 
 Route::prefix('direktur')->name('direktur.')->group(function () {
-    // Tambahkan middleware 'auth' di sini nanti
-    // ->middleware('auth', 'role:direktur')
-    Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard');
-
-    // Rute placeholder untuk Persetujuan Direktur (akan dibuat di fase selanjutnya)
-    Route::get('/persetujuan', function() { return 'Halaman Persetujuan Direktur (belum dibuat)'; })->name('persetujuan');
-    
-    // Rute placeholder untuk Tanda Tangan/Paraf Direktur (akan dibuat di fase selanjutnya)
-    Route::get('/paraf', function() { return 'Halaman Tanda Tangan Direktur (belum dibuat)'; })->name('paraf');
-    // Jika nanti ada upload paraf Direktur, tambahkan route POST untuk itu
-    // Route::post('/paraf/upload', [DirekturController::class, 'uploadParaf'])->name('paraf.upload');
-    // Route::post('/paraf/delete', [DirekturController::class, 'deleteParaf'])->name('paraf.delete');
-
-    // Rute placeholder untuk review surat tugas Direktur
-    Route::get('/surat-tugas/{id}/review', function($id) { return "Review Surat Tugas Direktur ID: {$id} (belum dibuat)"; })->name('review.surat_tugas');
-    // Rute placeholder untuk proses keputusan Direktur
-    Route::post('/surat-tugas/{id}/process-review', function($id) { return "Proses Keputusan Direktur ID: {$id} (belum dibuat)"; })->name('process.review.surat_tugas');
-});
+        // ->middleware('role:direktur')
+        Route::get('/dashboard', [DirekturController::class, 'dashboard'])->name('dashboard');
+        Route::get('/persetujuan', [DirekturController::class, 'persetujuan'])->name('persetujuan');
+        Route::get('/paraf', [DirekturController::class, 'paraf'])->name('paraf'); // Untuk upload TTD
+        Route::post('/paraf/upload', [DirekturController::class, 'uploadParaf'])->name('paraf.upload'); // Untuk proses upload TTD
+        Route::get('/surat-tugas/{id}/review', [DirekturController::class, 'reviewSuratTugas'])->name('review.surat_tugas');
+        Route::post('/surat-tugas/{id}/process-review', [DirekturController::class, 'processSuratTugasReview'])->name('process.review.surat_tugas');
+    });
 
 Route::prefix('sekdir')->name('sekdir.')->group(function () {
     Route::get('/dashboard', function() { return 'Dashboard Sekretaris Direktur (belum dibuat)'; })->name('dashboard');

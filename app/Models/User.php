@@ -12,12 +12,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = [
+protected $fillable = [
         'name',
         'email',
         'password',
         'role',
-        'para_file_path', // <-- TAMBAHKAN INI
+        'para_file_path',
+        'signature_file_path', // <-- TAMBAHKAN INI
+        'pegawai_id',
     ];
 
     protected $hidden = [
@@ -39,6 +41,11 @@ class User extends Authenticatable
     public function suratTugasWadirApprovals()
     {
         return $this->hasMany(SuratTugas::class, 'wadir_approver_id', 'id');
+    }
+
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
 
     // Relasi untuk surat tugas yang disetujui/ditolak oleh Direktur ini
