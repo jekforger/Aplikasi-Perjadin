@@ -248,3 +248,11 @@ body.sidebar-collapsed .pengusulan-container {
   .surat-tugas-personel-table th {
     background-color: #f2f2f2;
   }
+
+@media (max-width: 768px) {
+    .persetujuan-container {
+        margin-left: 0 !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

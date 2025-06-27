@@ -53,9 +53,9 @@
                     </div>
                 </form>
 
-                <p class="text-center mt-5 text-register">Belum punya akun?
+                <!-- <p class="text-center mt-5 text-register">Belum punya akun?
                     <span class="text-muted small-text-register text-orange-daftar">Daftar</span>
-                </p>
+                </p> -->
             </div>
         </div>
 
