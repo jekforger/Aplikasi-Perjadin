@@ -1,0 +1,58 @@
+/* === VARIABLES === */
+:root {
+    --sidebar-width: 250px;
+    --sidebar-collapsed-width: 80px;
+    --navbar-height: 60px;
+    --card-padding: 20px;
+  }
+  
+  /* === CARD CONTAINER === */
+  .card-container {
+    position: relative;
+    margin-left: var(--sidebar-width);
+    margin-top: var(--navbar-height);
+    padding: var(--card-padding);
+    transition: all 0.3s ease;
+    min-height: calc(100vh - var(--navbar-height));
+  }
+  
+  /* === CARD STYLE === */
+  .card {
+    width: calc(100% - 40px); /* Memberi jarak 20px di kiri dan kanan */
+    max-width: 1200px;
+    min-height: 650px;
+    background: white;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    padding: 25px;
+    box-sizing: border-box;
+    margin: 10px auto; /* Jarak vertikal dan horizontal */
+  }
+  
+  /* === RESPONSIVE ADJUSTMENTS === */
+  /* Sidebar collapsed state */
+  .sidebar-collapsed .card-container {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+  
+  /* Tablet view */
+  @media (max-width: 992px) {
+    .card-container {
+      margin-left: var(--sidebar-collapsed-width);
+      padding: 15px;
+    }
+    
+    .card {
+      width: calc(100% - 30px);
+      padding: 20px;
+      min-height: 600px;
+    }
+  }
+  
+
+
+  .page-title {
+    margin: 0 0 15px 20px;
+    color: black;
+    font-size: 1.5rem;
+  }

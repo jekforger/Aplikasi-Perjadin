@@ -1,0 +1,41 @@
+:root {
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 0px;
+  --transition-time: 0.3s;
+}
+
+/* 1. Container flex */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* 2. Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  transition: width var(--transition-time);
+}
+
+/* 3. Content */
+.dashboard-container {
+  flex: 1;
+  padding: 2rem;
+  overflow-x: hidden;
+  transition: padding var(--transition-time);
+}
+
+/* 4. Saat collapsed */
+body.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapsed-width) !important;
+}
+body.sidebar-collapsed .dashboard-container {
+  padding-left: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { width: 0 !important; }
+  .dashboard-container { padding: 1rem !important; }
+}

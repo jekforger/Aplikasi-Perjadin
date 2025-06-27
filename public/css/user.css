@@ -1,0 +1,211 @@
+/* public/css/user.css */
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 80px;
+}
+
+/* Styling khusus untuk halaman Ubah Kata Sandi */
+.change-password-wrapper {
+    position: relative;
+    padding: 2rem 0;      /* hanya atas-bawah, kiri-kanan 0 */
+    margin-top: 70px;
+    transition: padding-left 0.3s ease;
+}
+    
+body.sidebar-collapsed .change-password-wrapper {
+    padding-left: var(--sidebar-collapsed-width);
+}
+
+/* Kontainer full responsif di dalam wrapper */
+.change-password-container {
+    width: 100vw;         /* Benar-benar full lebar viewport */
+    max-width: 100vw;
+    margin: 0;            /* Tidak ada margin */
+    padding: 0;           /* Tidak ada padding */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Supaya card mepet kiri */
+    min-height: 100vh;
+}
+
+/* Card tetap ada max-width agar isi form tidak terlalu panjang */
+.change-password-card {
+    width: 100%;
+    max-width: 600px;     /* Batas maksimal biar tidak terlalu lebar */
+    min-width: 320px;
+    margin: 0;            /* Tidak ada margin kiri */
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    background-color: #fff;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    align-self: flex-start; /* Pastikan card nempel kiri container */
+}
+    
+.page-title,
+.change-password-title {
+    padding-left: 0;
+    margin-left: 0;
+    text-align: left;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 1.5rem;
+    padding-top: 60px;
+    padding-left: 0;
+    font-family: Poppins;
+    transition: padding-left 0.3s ease;
+}
+    
+body.sidebar-collapsed .page-title {
+    padding-left: var(--sidebar-collapsed-width);
+}
+    
+body.sidebar-collapsed .change-password-wrapper {
+    padding-left: var(--sidebar-collapsed-width);
+    margin-left: 0 !important;
+}
+    
+body.sidebar-collapsed .change-password-card {
+    margin-left: var(--sidebar-collapsed-width) !important;
+}
+
+.change-password-title { /* Styling khusus untuk judul "Change Password" */
+    font-size: 30px; /* Ukuran lebih besar dari page-title umum */
+    font-weight: 600;
+    color: black; /* Warna hitam pekat */
+    text-align: left; /* Sesuaikan alignment dengan desain */
+    margin-bottom: 2.5rem; /* Jarak bawah judul */
+    margin-left: 0; /* Beri jarak dari kiri agar tidak menempel */
+    margin-right: 20px;
+}
+
+.change-password-card { /* Styling khusus untuk card form change password */
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    padding: 2.5rem; /* Padding internal card yang lebih besar */
+    border: none; /* Hapus border bawaan */
+}
+
+/* Form Group (Label & Input) Styling */
+.form-group-password {
+    margin-bottom: 1.5rem; /* Jarak antar input fields */
+    font-family: Poppins;
+}
+.form-group-password:last-of-type {
+    margin-bottom: 2.5rem; /* Jarak yang lebih besar ke tombol submit */
+}
+
+.form-group-password .form-label { /* Label "Password Lama", "Password Baru" */
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Custom Input Fields */
+.custom-form-input {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #495057;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.075);
+    width: 70%;
+}
+.custom-form-input::placeholder {
+    color: #adb5bd;
+    opacity: 1;
+}
+.custom-form-input:focus {
+    border-color: #007bff; /* Biru Bootstrap primary */
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    outline: 0;
+}
+
+.password-input-with-icon {
+    padding-right: 2.5rem;
+}
+
+.input-group-password {
+    position: relative;
+    width: 100%; /* Sama seperti input width */
+}
+
+.input-group-password input {
+    width: 100%; /* Full width dalam grup */
+    padding-right: 2.5rem; /* Beri ruang untuk ikon */
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #333;
+    font-size: 1.1rem;
+    z-index: 10;
+}
+
+/* Styling untuk tombol submit "Simpan" */
+.custom-blue-button {
+    background-color: #007bff; /* Warna biru sesuai desain */
+    border-color: #007bff;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.0rem;
+    width: 50%; 
+}
+.custom-blue-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .change-password-wrapper {
+        margin-left: 0;
+        margin-top: 80px;
+        padding: 1rem 0;
+    }
+    .change-password-container {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 100vw;
+    }
+    .change-password-card {
+        width: 100%;
+        min-width: 0;
+        margin-left: 0;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    }
+}
+
+
+body {
+    background-color: #f6f7fb !important; /* warna solid */
+    background-image: none !important; /* pastikan tidak ada pola */
+    box-shadow: none !important;
+}
+    
+html {
+    box-shadow: none !important;
+}
+    
+* {
+    border-right: none !important;
+    background-image: none !important;
+}

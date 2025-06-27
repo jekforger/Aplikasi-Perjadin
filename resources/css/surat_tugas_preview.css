@@ -1,0 +1,199 @@
+/* public/css/surat_tugas_preview.css */
+
+/* ========================= */
+/*    GLOBAL & LAYOUT        */
+/* ========================= */
+body {
+  font-family: 'Times New Roman', serif;
+  margin: 0;
+  padding: 20px;
+  /* display: flex; REMOVE THESE if this CSS is only for the inner document-container */
+  /* justify-content: center; */
+  /* align-items: flex-start; */
+  /* min-height: 100vh; */
+  background-color: #f0f0f0;
+  box-sizing: border-box;
+}
+.document-container {
+  width: 21cm;              /* Lebar A4 */
+  /* min-height: 29.7cm; */ /* Ini bisa dihapus jika hanya preview section */
+  background-color: white;
+  /* Padding/margin: 2.5cm atas/bawah, 3cm kiri/kanan */
+  padding-top: 2.5cm;
+  padding-right: 3cm;
+  padding-bottom: 2.5cm;
+  padding-left: 3cm;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+/* ========================= */
+/*       HEADER STYLES       */
+/*  (Sama seperti Page 1 & 2) */
+/* ========================= */
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.header img {
+  width: 80px;
+  height: auto;
+  align-self: flex-start;
+}
+.header-text {
+  text-align: center;
+  font-size: 10pt;
+  margin-top: 10px;
+}
+.header-text h1 {
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.header-text h2 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin: 3px 0 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.header-text p {
+  font-size: 9.5pt;
+  margin: 1px 0;
+  line-height: 1.4;
+}
+.header-line {
+  border: 0;
+  border-top: 1px solid #000;
+  margin-top: 0;
+  margin-bottom: 20px;      /* Rapat vertikal sebelum konten */
+}
+
+/* ========================= */
+/*       CONTENT STYLES      */
+/* ========================= */
+.content {
+  font-size: 11pt;
+  line-height: 1.6;
+}
+.title-wrapper {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.title-inner {
+  display: inline-block;
+  text-align: left;
+}
+.title-inner h3 {
+  font-size: 13pt;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.title-inner .nomor {
+  font-size: 11pt;
+  margin: 2px 0 0;
+  line-height: 1.2;
+}
+.content p {
+  margin-bottom: 10px;
+  text-align: justify;
+}
+.detail-row {
+  display: flex;
+  margin-bottom: 4px;
+}
+.detail-label {
+  flex-basis: 150px;
+  min-width: 150px;
+  text-align: left;
+}
+.detail-separator {
+  flex-basis: 10px;
+  text-align: center;
+}
+.detail-value {
+  flex-grow: 1;
+  text-align: left;
+}
+
+/* ========================= */
+/*   FOOTER‐SECTIONS (Grid)   */
+/* ========================= */
+.footer-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  column-gap: 20px;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.date-block {
+  grid-column: 2;
+  grid-row: 1;
+  text-align: left;
+}
+.date-block .date {
+  margin: 0;
+  margin-bottom: 2px;
+  font-size: 11pt;
+  line-height: 1.2;
+}
+.date-block .ditandatangani-oleh {
+  margin: 0;
+  margin-bottom: 0;
+  font-size: 11pt;
+  line-height: 1.2;
+}
+
+.tembusan-label {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 10pt;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.tembusan-list {
+  grid-column: 1;
+  grid-row: 3;
+  font-size: 10pt;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+.tembusan-list ol {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: decimal;
+}
+.tembusan-list li {
+  margin-bottom: 2px;
+}
+
+.signature-block {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: start;
+  font-size: 11pt;
+  line-height: 1.5;
+  text-align: left;
+}
+.signature-block p {
+  margin: 0;
+}
+
+/* ========================= */
+/*       LINK STYLE          */
+/* ========================= */
+a {
+  color: black;
+  text-decoration: none;
+}
