@@ -197,12 +197,13 @@
                   <div style="margin-left: 0;">{!! nl2br(e($suratTugas->alamat_kegiatan)) !!}</div>
                 </div>
               </div>
-              <div class="surat-tugas-detail-row">
-                <div class="surat-tugas-detail-label">Kegiatan</div>
-                <div class="surat-tugas-detail-separator">:</div>
-                <div class="surat-tugas-detail-value">{{ $suratTugas->ditugaskan_sebagai }}</div>
-              </div>
-
+                  @if ($suratTugas->detailPelaksanaTugas->isEmpty())
+                      <div class="surat-tugas-detail-row">
+                          <div class="surat-tugas-detail-label">Kegiatan</div>
+                          <div class="surat-tugas-detail-separator">:</div>
+                          <div class="surat-tugas-detail-value">{{ $suratTugas->ditugaskan_sebagai }}</div>
+                      </div>
+                  @endif
               {{-- Jika ada surat undangan --}}
               @if ($suratTugas->path_file_surat_usulan)
                 <p style="margin-top: 20px;">

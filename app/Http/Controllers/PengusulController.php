@@ -246,8 +246,8 @@ class PengusulController extends Controller
                 'ditugaskan_sebagai'         => $data['ditugaskan_sebagai'],
             ]);
 
-            $pegawai_ids = $request->input('pegawai_ids', []);
-            $mahasiswa_ids = $request->input('mahasiswa_ids', []);
+            $pegawai_ids = array_unique($request->input('pegawai_ids', []));
+            $mahasiswa_ids = array_unique($request->input('mahasiswa_ids', []));
             $status_sebagai_setiap_personel = $data['ditugaskan_sebagai'];
 
             foreach ($pegawai_ids as $pegawai_id) {
