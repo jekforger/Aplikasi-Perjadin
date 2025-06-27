@@ -38,6 +38,32 @@
                 </span>
                 <span class="description">Status Laporan</span>
             </a>
+
+            @php
+            $rolesWithSwitch = ['wadir_1', 'wadir_2', 'wadir_3', 'wadir_4', 'direktur'];
+            @endphp
+            
+            @if (isset($userRole) && in_array($userRole, $rolesWithSwitch))
+                <a href="#submenu" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu">
+                    <span class="icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </span>
+                    <span class="description">Ganti Role <i class="bi bi-caret-down"></i></span>
+                </a>
+
+                <div class="sub-menu collapse" id="submenu">
+                    <a href="{{ route('wadir.dashboard') }}" class="nav-link sub-nav-link">
+                        <span class="description">
+                            {{ $roleDisplayName }}
+                        </span>
+                    </a>
+                    <a href="{{ route('pelaksana.dashboard') }}" class="nav-link sub-nav-link">
+                        <span class="description">
+                            Pelaksana
+                        </span>
+                    </a>
+                </div>
+            @endif
         </nav>
     </div>
 
