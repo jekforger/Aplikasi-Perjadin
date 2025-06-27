@@ -8,7 +8,7 @@
         </div>
     </div>
         <nav class="nav flex-column">
-            <a href="{{ route('pengusul.dashboard') }}" class="nav-link">
+            <a href="{{ route('pengusul.dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                 <span class="icon">
                     <i class="bi bi-columns-gap"></i>
                 </span>
