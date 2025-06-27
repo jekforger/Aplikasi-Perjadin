@@ -1,12 +1,12 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
-@section('content')
-<div class="card-container">
-    <h2 class="page-title mb-4">Status Pengusulan</h2>
+@section('title', 'Status')
+@section('pengusul_content')
+<div class="pengusul-container px-4 py-3">
+    <h1 class="pengusul-page-title mb-4">Status</h1>
 
-    <div class="card shadow mb-4">
+    <div class="p-4 shadow-sm bg-white rounded">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Status Pengusulan Saya</h6>
             <form action="{{ route('pengusul.status') }}" method="GET" class="d-flex">
                 <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Cari..." value="{{ request('search') }}">
                 <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
@@ -98,3 +98,7 @@ function showReason(reason) {
 }
 </script>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pengusul_content.css') }}">
+@endpush

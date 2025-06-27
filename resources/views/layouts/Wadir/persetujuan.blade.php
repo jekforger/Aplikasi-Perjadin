@@ -1,12 +1,12 @@
 {{-- resources/views/layouts/Wadir/persetujuan.blade.php --}}
 @extends('layouts.Wadir.layout')
 
-@section('title', 'Persetujuan & Paraf Surat Tugas')
+@section('title', 'Persetujuan')
 @section('wadir_content')
-<div class="container-fluid">
-    <h1 class="mb-4">Persetujuan & Paraf Surat Tugas</h1>
+<div class="wadir-container px-4 py-3">
+    <h1 class="wadir-page-title mb-4">Persetujuan</h1>
 
-    <div class="card shadow mb-4">
+    <div class="p-4 shadow-sm bg-white rounded">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Daftar Pengajuan Surat Tugas</h6>
         </div>
@@ -112,5 +112,5 @@
 @endsection
 
 @push('styles')
-    {{-- Jika ada style spesifik untuk halaman ini, tambahkan di sini --}}
+    <link rel="stylesheet" href="{{ asset('css/wadir_content.css') }}">
 @endpush

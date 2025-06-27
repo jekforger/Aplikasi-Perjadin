@@ -1,10 +1,11 @@
-@extends('layouts.pengusul.pagePengusul')
+@extends('layouts.pengusul.layout')
 
-@section('content')
-<div class="card-container">
-    <h2 class="page-title mb-4">Riwayat Pengusulan</h2>
+@section('title', 'History')
+@section('pengusul_content')
+<div class="pengusul-container px-4 py-3">
+    <h1 class="pengusul-page-title mb-4">History</h1>
 
-    <div class="card shadow mb-4">
+    <div class="p-4 shadow-sm bg-white rounded">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Riwayat Lengkap Surat Tugas</h6>
             <form action="{{ route('pengusul.history') }}" method="GET" class="d-flex">
@@ -81,3 +82,7 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pengusul_content.css') }}">
+@endpush

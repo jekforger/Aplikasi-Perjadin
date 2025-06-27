@@ -1,0 +1,33 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --sidebar-width: 120px;
+    --sidebar-collapsed-width: 0px;
+}
+
+.wadir-container {
+    margin-left: var(--sidebar-width, 260px); /* default full sidebar */
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    padding: 2rem 2rem;
+}
+
+body.sidebar-collapsed .wadir-container {
+    margin-left: var(--sidebar-collapsed-width) !important;
+}
+
+.wadir-page-title {
+    font-weight: 600;
+    font-size: 40px;
+    margin-top: 50px;
+}
+
+@media (max-width: 768px) {
+    .wadir-container {
+        margin-left: 0 !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

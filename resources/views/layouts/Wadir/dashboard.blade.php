@@ -205,5 +205,5 @@
 @endsection
 
 @push('styles')
-    {{-- Tidak perlu CSS lagi di sini, sudah di layouts/Wadir/layout.blade.php atau di wadir.css --}}
+    <link rel="stylesheet" href="{{ asset('css/wadir.css') }}">
 @endpush
