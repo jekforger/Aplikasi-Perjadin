@@ -58,6 +58,21 @@ class SuratTugas extends Model
         return $this->hasMany(DetailPelaksanaTugas::class, 'surat_tugas_id', 'surat_tugas_id');
     }
 
+    public function laporanPerjalananDinas()
+    {
+        return $this->hasOne(LaporanPerjalananDinas::class, 'surat_tugas_id', 'surat_tugas_id');
+    }
+
+    public function dokumenLampiran()
+    {
+        return $this->hasMany(DokumenLampiranLaporan::class, 'laporan_id', 'laporan_id');
+    }
+
+    public function laporan()
+    {
+        return $this->hasOne(LaporanPerjalananDinas::class, 'surat_tugas_id');
+    }
+
     // Relasi untuk siapa Wadir yang menyetujui (jika Anda menambahkan kolom wadir_approver_id di SuratTugas)
     public function wadirApprover()
     {

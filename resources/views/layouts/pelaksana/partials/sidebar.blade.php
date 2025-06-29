@@ -16,11 +16,11 @@
             </a>
             <a href="{{ route('pelaksana.bukti') }}" class="nav-link {{ request()->is('bukti') ? 'active' : '' }}">
                 <span class="icon">
-                    <i class="bi bi-image"></i>
+                    <i class="bi bi-file-earmark"></i>
                 </span>
-                <span class="description">Bukti</span>
+                <span class="description">Laporan & Bukti Perjalanan Dinas</span>
             </a>
-            <a href="{{ route('pelaksana.laporan') }}" class="nav-link {{ request()->is('laporan') ? 'active' : '' }}">
+            <!-- <a href="{{ route('pelaksana.laporan') }}" class="nav-link {{ request()->is('laporan') ? 'active' : '' }}">
                 <span class="icon">
                     <i class="bi bi-file-earmark"></i>
                 </span>
@@ -31,7 +31,7 @@
                     <i class="bi bi-file-earmark-text"></i>
                 </span>
                 <span class="description">Dokumen</span>
-            </a>
+            </a> -->
             <a href="{{ route('pelaksana.statusLaporan') }}" class="nav-link {{ request()->is('statusLaporan') ? 'active' : '' }}">
                 <span class="icon">
                     <i class="bi bi-list-check"></i>

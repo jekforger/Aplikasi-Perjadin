@@ -30,4 +30,9 @@ class DetailPelaksanaTugas extends Model
     {
         return $this->belongsTo(SuratTugas::class, 'surat_tugas_id', 'surat_tugas_id');
     }
+
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'personable_id');
+    }
 }

@@ -46,12 +46,25 @@ Route::prefix('pengusul')->name('pengusul.')->middleware('auth')->group(function
         Route::get('/laporan', [PelaksanaController::class, 'laporan'])->name('laporan');
         Route::get('/dokumen', [PelaksanaController::class, 'dokumen'])->name('dokumen');
         Route::get('/status-laporan', [PelaksanaController::class, 'statusLaporan'])->name('statusLaporan');
+        Route::get('/bukti/{id}/lihat-bukti', [PelaksanaController::class, 'lihatBukti'])->name('lihatBukti');
+        Route::post('/pelaksana/buat-laporan', [PelaksanaController::class, 'buatLaporan'])->name('buatLaporan');
+        Route::post('/pelaksana/upload-lampiran', [PelaksanaController::class, 'uploadLampiran'])->name('uploadLampiran');        
+        Route::delete('/bukti/{laporan_id}/lampiran/{dokumen_lampiran_id}', [PelaksanaController::class, 'destroyLampiran'])->name('bukti.destroyLampiran');
+        // Route::get('/bukti/{laporan_id}/lampiran/{lampiran_id}', [PelaksanaController::class, 'showLampiran'])->name('bukti.showLampiran');
+        // Route::get('/bukti/{laporan_id}/lampiran/{lampiran_id}/edit', [PelaksanaController::class, 'editLampiran'])->name('bukti.editLampiran');
+        // Route::put('/bukti/{laporan_id}/lampiran/{lampiran_id}', [PelaksanaController::class, 'updateLampiran'])->name('bukti.updateLampiran');
     });
+
 
 Route::prefix('bku')->name('bku.')->group(function () {
     Route::get('/dashboard', [BkuController::class, 'dashboard'])->name('dashboard');
     Route::get('/bukti', [BkuController::class, 'bukti'])->name('bukti');
     Route::get('/laporan', [BkuController::class, 'laporan'])->name('laporan');
+    Route::get('/laporan/{laporan_id}', [BkuController::class, 'showLaporan'])->name('laporan.show');
+    Route::get('/bukti/{id}/lihat-laporan', [BkuController::class, 'lihatLaporan'])->name('lihatLaporan');
+    Route::delete('/bukti/{laporan_id}/lampiran/{dokumen_lampiran_id}', [BkuController::class, 'destroyLampiran'])->name('destroyLampiran');
+    Route::post('/bku/laporan/{id}/terima', [BkuController::class, 'terimaLaporan'])->name('terimaLaporan');
+    Route::post('/bku/laporan/{id}/kembalikan', [BkuController::class, 'kembalikanLaporan'])->name('kembalikanLaporan');
 });
 
 // --- Rute untuk Wakil Direktur (I-IV) ---

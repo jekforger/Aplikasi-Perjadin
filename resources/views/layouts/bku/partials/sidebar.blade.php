@@ -14,17 +14,11 @@
                 </span>
                 <span class="description">Dashboard</span>
             </a>
-            <a href="{{ route('bku.bukti') }}" class="nav-link {{ request()->is('bukti') ? 'active' : '' }}">
-                <span class="icon">
-                    <i class="bi bi-image"></i>
-                </span>
-                <span class="description">Bukti</span>
-            </a>
             <a href="{{ route('bku.laporan') }}" class="nav-link {{ request()->is('laporan') ? 'active' : '' }}">
                 <span class="icon">
                     <i class="bi bi-file-earmark"></i> 
                 </span>
-                <span class="description">Laporan</span>
+                <span class="description">Laporan & Bukti Perjalanan Dinas</span>
             </a>
         </nav>
     </div>
