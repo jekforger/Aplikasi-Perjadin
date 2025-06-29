@@ -35,6 +35,10 @@ class SuratTugas extends Model
         'ditugaskan_sebagai',
         'wadir_approver_id',
         'direktur_approver_id',
+        'wadir_signature_data',
+        'direktur_signature_data',
+        'wadir_signature_position',
+        'direktur_signature_position',
     ];
 
     protected $casts = [
@@ -44,6 +48,8 @@ class SuratTugas extends Model
         'tanggal_persetujuan_direktur' => 'datetime',
         'pagu_desentralisasi' => 'boolean',
         'is_surat_perintah_langsung' => 'boolean',
+        'wadir_signature_position' => 'array',
+        'direktur_signature_position' => 'array',
     ];
 
     // Relasi ke User (Pengusul)

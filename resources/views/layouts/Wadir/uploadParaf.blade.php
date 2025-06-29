@@ -20,10 +20,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            {{-- Error validasi dari AJAX akan ditampilkan oleh SweetAlert2 --}}
 
             @if ($currentParafPath)
-                {{-- Tampilan jika Paraf sudah ada --}}
                 <div class="d-flex flex-column align-items-center mb-4">
                     <h5 class="text-primary mb-3">Paraf Anda Saat Ini:</h5>
                     @if (Str::endsWith($currentParafPath, '.pdf'))
@@ -34,7 +32,7 @@
                     @else
                         <img src="{{ Storage::url($currentParafPath) }}" alt="Paraf Digital" class="img-fluid border rounded mb-3" style="max-width: 200px; height: auto; max-height: 150px; object-fit: contain;">
                     @endif
-                    
+
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-h"></i>
@@ -47,7 +45,6 @@
                 </div>
             @endif
 
-            {{-- Form Upload (tersembunyi jika paraf sudah ada, kecuali diaktifkan via JS) --}}
             <div id="parafUploadFormContainer" style="{{ $currentParafPath ? 'display: none;' : '' }}">
                 <h5 class="text-primary mb-3">{{ $currentParafPath ? 'Upload Paraf Baru:' : 'Unggah Paraf Digital Anda:' }}</h5>
                 <form id="uploadParafForm" action="{{ route('wadir.paraf.upload') }}" method="POST" enctype="multipart/form-data">
@@ -79,6 +76,21 @@
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
                 </form>
+
+                {{-- Signature Pad --}}
+                <div class="text-center my-4">
+                    <span class="text-muted">Atau gunakan Signature Pad di bawah ini</span>
+                    <hr>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tanda Tangan Digital (Signature Pad)</label>
+                    <canvas id="signature-pad" class="border border-dark rounded w-100" style="height: 250px;"></canvas>
+                    <div class="mt-2 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-danger btn-sm" id="clear-signature">Bersihkan</button>
+                        <button type="button" class="btn btn-success btn-sm" id="save-signature">Simpan dari Signature Pad</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -86,6 +98,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const parafUploadFormContainer = document.getElementById('parafUploadFormContainer');
@@ -98,7 +111,6 @@
         const cancelUploadBtn = document.getElementById('cancelUploadBtn');
         const uploadParafForm = document.getElementById('uploadParafForm');
 
-        // Show upload form if "Upload Baru" is clicked
         if (uploadNewParafBtn) {
             uploadNewParafBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -106,16 +118,14 @@
             });
         }
 
-        // Hide upload form if "Cancel" is clicked
         if (cancelUploadBtn) {
             cancelUploadBtn.addEventListener('click', function() {
                 parafUploadFormContainer.style.display = 'none';
-                parafFileInput.value = ''; // Clear selected file
-                selectedFilePreview.style.display = 'none'; // Hide preview
+                parafFileInput.value = '';
+                selectedFilePreview.style.display = 'none';
             });
         }
 
-        // Display selected file name and size
         if (parafFileInput) {
             parafFileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
@@ -130,7 +140,6 @@
             });
         }
 
-        // Clear selected file
         if (clearSelectedFileBtn) {
             clearSelectedFileBtn.addEventListener('click', function() {
                 parafFileInput.value = '';
@@ -138,7 +147,6 @@
             });
         }
 
-        // Handle AJAX form submission for upload
         if (uploadParafForm) {
             uploadParafForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -151,22 +159,16 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => { throw err; });
-                    }
-                    return response.json();
-                })
+                .then(response => response.ok ? response.json() : response.json().then(err => { throw err }))
                 .then(data => {
                     if (data.success) {
-                        Swal.fire('Berhasil!', data.message, 'success')
-                        .then(() => {
-                            window.location.reload(); // Reload page to show new paraf image/file
+                        Swal.fire('Berhasil!', data.message, 'success').then(() => {
+                            window.location.reload();
                         });
                     } else {
-                        let errorMessage = data.message || 'Terjadi kesalahan saat mengunggah.';
+                        let errorMessage = data.message || 'Terjadi kesalahan.';
                         if (data.errors) {
-                            errorMessage += '<br><ul>';
+                            errorMessage += '<ul>';
                             for (let key in data.errors) {
                                 errorMessage += `<li>${data.errors[key].join(', ')}</li>`;
                             }
@@ -182,7 +184,6 @@
             });
         }
 
-        // Handle delete paraf functionality
         if (deleteParafBtn) {
             deleteParafBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -201,15 +202,14 @@
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                'Content-Type': 'application/json', // Penting untuk POST tanpa FormData
+                                'Content-Type': 'application/json',
                             }
                         })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                Swal.fire('Dihapus!', data.message, 'success')
-                                .then(() => {
-                                    window.location.reload(); // Reload page to update UI
+                                Swal.fire('Dihapus!', data.message, 'success').then(() => {
+                                    window.location.reload();
                                 });
                             } else {
                                 Swal.fire('Gagal!', data.message, 'error');
@@ -217,12 +217,63 @@
                         })
                         .catch(error => {
                             console.error('Delete Fetch Error:', error);
-                            Swal.fire('Error Jaringan!', 'Terjadi kesalahan koneksi saat menghapus.', 'error');
+                            Swal.fire('Error Jaringan!', 'Terjadi kesalahan koneksi.', 'error');
                         });
                     }
                 });
             });
         }
+
+        // === Signature Pad ===
+        const canvas = document.getElementById("signature-pad");
+        const signaturePad = new SignaturePad(canvas, {
+            backgroundColor: "rgb(255,255,255)",
+            penColor: "black"
+        });
+
+        function resizeCanvas() {
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+            signaturePad.clear();
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        document.getElementById("clear-signature").addEventListener("click", () => signaturePad.clear());
+
+        document.getElementById("save-signature").addEventListener("click", () => {
+            if (signaturePad.isEmpty()) {
+                Swal.fire('Kosong!', 'Silakan tanda tangani terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const dataURL = signaturePad.toDataURL("image/png");
+
+            fetch("{{ route('wadir.paraf.upload') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ signature: dataURL })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Berhasil!', data.message, 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Gagal!', data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire('Error!', 'Gagal mengirim data tanda tangan.', 'error');
+            });
+        });
     });
 </script>
 @endpush

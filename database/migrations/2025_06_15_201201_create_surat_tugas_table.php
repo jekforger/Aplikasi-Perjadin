@@ -35,6 +35,12 @@ return new class extends Migration
             // Timestamps persetujuan dari PDM
             $table->timestamp('tanggal_paraf_wadir')->nullable(); // Waktu Wadir menyetujui/memparaf
             $table->timestamp('tanggal_persetujuan_direktur')->nullable(); // Waktu Direktur menyetujui
+            
+            // Kolom untuk signature digital
+            $table->text('wadir_signature_data')->nullable(); // Data signature base64 dari Wadir
+            $table->text('direktur_signature_data')->nullable(); // Data signature base64 dari Direktur
+            $table->json('wadir_signature_position')->nullable(); // Posisi signature Wadir (x, y, width, height)
+            $table->json('direktur_signature_position')->nullable(); // Posisi signature Direktur (x, y, width, height)
 
             $table->boolean('is_surat_perintah_langsung')->default(false); // Dari PDM
 

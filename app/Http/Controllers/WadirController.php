@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Auth\LoginController;
 use App\Models\SuratTugas;
@@ -41,22 +42,17 @@ class WadirController extends Controller
         }
 
         // --- Statistik Dashboard ---
-        $totalPengusulanWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
-                                        ->where('status_surat', '!=', 'draft')
-                                        ->count();
+        $totalPengusulanWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)->count();
         $usulanBaruWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
-                                    ->where('status_surat', 'pending_wadir_review')
-                                    ->count();
+                                    ->where('status_surat', 'pending_wadir_review')->count();
         $dalamProsesDirekturWadir = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
-                                            ->where('status_surat', 'approved_by_wadir')
-                                            ->count();
+                                            ->where('status_surat', 'approved_by_wadir')->count();
         $bertugas = SuratTugas::where('status_surat', 'diterbitkan')
-                            ->whereDate('tanggal_berangkat', '<=', Carbon::today())
-                            ->whereDate('tanggal_kembali', '>=', Carbon::today())
-                            ->count();
+                                ->whereDate('tanggal_berangkat', '<=', Carbon::today())
+                                ->whereDate('tanggal_kembali', '>=', Carbon::today())
+                                ->count();
         $dikembalikanDitolak = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
-                                        ->whereIn('status_surat', ['reverted_by_wadir', 'rejected_by_wadir', 'reverted_by_direktur', 'rejected_by_direktur'])
-                                        ->count();
+                                        ->whereIn('status_surat', ['reverted_by_wadir', 'rejected_by_wadir', 'reverted_by_direktur', 'rejected_by_direktur'])->count();
 
         $dashboardStats = [
             'total_pengusulan' => $totalPengusulanWadir,
@@ -71,7 +67,6 @@ class WadirController extends Controller
         $perPage = $request->input('per_page', 10);
 
         $allSuratTugas = SuratTugas::where('diusulkan_kepada', $wadirDisplayName)
-                                ->where('status_surat', '!=', 'draft') // Tambahkan filter untuk mengecualikan draft
                                 ->when($search, function ($query) use ($search) {
                                     return $query->where('perihal_tugas', 'like', "%{$search}%")
                                                 ->orWhere('nomor_surat_usulan_jurusan', 'like', "%{$search}%");
@@ -162,42 +157,54 @@ class WadirController extends Controller
             return response()->json(['success' => false, 'message' => 'Akses Ditolak: Anda bukan Wakil Direktur yang valid.'], 403);
         }
 
-        $validator = Validator::make($request->all(), [
-            'paraf_file' => 'required|file|mimes:pdf,png,jpg,jpeg|max:1024', // Max 1MB
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validasi gagal.', 'errors' => $validator->errors()], 422);
-        }
-
         $user = Auth::user();
 
         try {
-            // Hapus file paraf lama jika ada
+            // Jika ada input base64 dari signature pad
+            if ($request->has('signature')) {
+                $data = $request->input('signature');
+                $image = str_replace('data:image/png;base64,', '', $data);
+                $image = str_replace(' ', '+', $image);
+                $imageData = base64_decode($image);
+
+                $fileName = 'paraf_wadir/' . uniqid() . '.png';
+                Storage::disk('public')->put($fileName, $imageData);
+
+                // Hapus file lama
+                if ($user->para_file_path) {
+                    Storage::disk('public')->delete($user->para_file_path);
+                }
+
+                $user->para_file_path = $fileName;
+                $user->save();
+
+                return response()->json(['success' => true, 'message' => 'Tanda tangan berhasil disimpan.']);
+            }
+
+            // Kalau tidak, fallback ke upload file manual
+            $validator = Validator::make($request->all(), [
+                'paraf_file' => 'required|file|mimes:pdf,png,jpg,jpeg|max:1024',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => 'Validasi gagal.', 'errors' => $validator->errors()], 422);
+            }
+
             if ($user->para_file_path) {
                 Storage::disk('public')->delete($user->para_file_path);
             }
 
-            // Simpan file baru
             $filePath = $request->file('paraf_file')->store('paraf_wadir', 'public');
-
-            // Update path di kolom user
             $user->para_file_path = $filePath;
             $user->save();
 
-            Log::info("Wadir (ID: {$user->id}, Role: {$user->role}) berhasil mengunggah file paraf: {$filePath}");
-
             return response()->json(['success' => true, 'message' => 'File paraf berhasil diunggah.', 'filePath' => Storage::url($filePath)]);
-
         } catch (\Exception $e) {
-            Log::error('Error mengunggah file paraf oleh Wadir: '.$e->getMessage(), [
-                'user_id' => $user->id,
-                'user_role' => $user->role,
-                'trace' => $e->getTraceAsString(),
-            ]);
-            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat mengunggah file: ' . $e->getMessage()], 500);
+            Log::error('Error unggah paraf: '.$e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan.']);
         }
     }
+
 
     public function deleteParaf(Request $request)
     {
@@ -254,6 +261,8 @@ class WadirController extends Controller
             'action' => 'required|string|in:approve,reject,revert',
             'catatan_revisi' => 'nullable|string|max:1000',
             'updated_sumber_dana' => 'nullable|string|in:RM,PNBP,Polban,Penyelenggara,Polban dan Penyelenggara', // Validasi untuk sumber dana baru
+            'signature_data' => 'nullable|string', // Validasi untuk data signature
+            'signature_position' => 'nullable|string', // Validasi untuk posisi signature
         ]);
 
         if ($validator->fails()) {
@@ -270,6 +279,8 @@ class WadirController extends Controller
             $action = $request->input('action');
             $catatanRevisi = $request->input('catatan_revisi');
             $updatedSumberDana = $request->input('updated_sumber_dana'); // Ambil sumber dana yang diupdate
+            $signatureData = $request->input('signature_data'); // Ambil data signature
+            $signaturePosition = $request->input('signature_position'); // Ambil posisi signature
 
             // Jika sumber dana diupdate dari modal, terapkan perubahannya
             if ($updatedSumberDana) {
@@ -281,6 +292,15 @@ class WadirController extends Controller
                     $suratTugas->status_surat = 'approved_by_wadir';
                     $suratTugas->tanggal_paraf_wadir = Carbon::now();
                     $suratTugas->wadir_approver_id = Auth::id();
+                    
+                    // Simpan signature data dan posisi jika ada
+                    if ($signatureData) {
+                        $suratTugas->wadir_signature_data = $signatureData;
+                    }
+                    if ($signaturePosition) {
+                        $suratTugas->wadir_signature_position = json_decode($signaturePosition, true);
+                    }
+                    
                     $message = 'Surat tugas berhasil disetujui dan diteruskan ke Direktur.';
                     break;
                 case 'reject':
